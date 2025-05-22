@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('fine', function (Blueprint $table) {
             $table->id();
             $table->integer('fine_total');
-            $table->boolean('payment_status');
+            $table->boolean('payment_status')->default(0);
             $table->foreignId('id_borrowing')->constrained('borrowing')->onDelete('cascade');
             $table->timestamps();
         });

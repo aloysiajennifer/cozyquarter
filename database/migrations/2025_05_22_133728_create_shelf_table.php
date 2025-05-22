@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('shelf', function (Blueprint $table) {
             $table->id();
-            $table->string('code_shelf');
+            $table->string('code_shelf')->unique();
             $table->timestamps();
         });
     }

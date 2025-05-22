@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
         $table->string('phone');
         $table->string('username');
-        $table->integer('penalty_counter');
+        $table->integer('penalty_counter')->default(0);
         //$table->foreignId('id_role')->constrained('role')->onDelete('cascade');
         });
     }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('isbn_book');
             $table->string('synopsis_book');
             $table->string('cover_book');
-            $table->boolean('status_book');
+            $table->boolean('status_book')->default(0);
             $table->foreignId('id_category')->constrained('category')->onDelete('cascade');
             $table->foreignId('id_shelf')->constrained('shelf')->onDelete('cascade');
             $table->timestamps();
