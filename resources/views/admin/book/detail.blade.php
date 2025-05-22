@@ -42,10 +42,10 @@
                     <div class="w-2/3">
                         <input type="file" name="cover_book" id="cover_book" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" aria-describedby="cover_book_help">
                         <p class="mt-1 text-sm text-gray-500" id="cover_book_help">JPG, JPEG, or PNG.</p>
-                    </div>
-                    @if(isset($book) && $book->cover_book)
+                        @if(isset($book) && $book->cover_book)
                             <img src="{{ asset('storage/' . $book->cover_book) }}" class="mt-2 h-24">
                         @endif
+                    </div>
                 </div>
 
                 <div class="mb-6 flex">
