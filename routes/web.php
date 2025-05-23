@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShelfController;
+use App\Http\Controllers\BorrowingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,3 +39,8 @@ Route::post('/book/update/',action: [BookController::class, 'update'])->name('bo
 Route::post('/book/delete/{id}',[BookController::class, 'delete'])->name('book.delete');
 
 //HOME
+
+// BORROWING
+Route::get('/borrowing/index', [BorrowingController::class, 'index'])->name('borrowing.index');
+Route::get('/borrowing/form',[BorrowingController::class, 'form'])->name('borrowing.form');
+Route::post('/borrowing/insert',[BorrowingController::class, 'insert'])->name('borrowing.insert');
