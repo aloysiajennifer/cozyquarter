@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ShelfController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,8 +14,20 @@ Route::get('/', function () {
 // });
 
 //SHELF CRUD
+Route::get('/shelf/index',[ShelfController::class, 'index'])->name('shelf.index');
+Route::get('/shelf/form',[ShelfController::class, 'form'])->name('shelf.form');
+Route::post('/shelf/insert',[ShelfController::class, 'insert'])->name('shelf.insert');
+Route::get('/shelf/detail/{id}',[ShelfController::class, 'detail'])->name('shelf.detail');
+Route::post('/shelf/update/',action: [ShelfController::class, 'update'])->name('shelf.update');
+Route::post('/shelf/delete/{id}',[ShelfController::class, 'delete'])->name('shelf.delete');
 
 //CATEGORY CRUD
+Route::get('/category/index',[CategoryController::class, 'index'])->name('category.index');
+Route::get('/category/form',[CategoryController::class, 'form'])->name('category.form');
+Route::post('/category/insert',[CategoryController::class, 'insert'])->name('category.insert');
+Route::get('/category/detail/{id}',[CategoryController::class, 'detail'])->name('category.detail');
+Route::post('/category/update/',action: [CategoryController::class, 'update'])->name('category.update');
+Route::post('/category/delete/{id}',[CategoryController::class, 'delete'])->name('category.delete');
 
 //BOOK CRUD
 Route::get('/book/index',[BookController::class, 'index'])->name('book.index');

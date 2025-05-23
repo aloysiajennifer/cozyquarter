@@ -10,11 +10,11 @@
                 deleteButtons.forEach(button => {
                     button.addEventListener('click', function () {
                         const form = this.closest('form');
-                        const bookTitle = this.getAttribute('data-title');
+                        const categoryName = this.getAttribute('data-title');
 
                         Swal.fire({
                             title: 'Are you sure?',
-                            text: `You are about to delete "${bookTitle}"`,
+                            text: `You are about to delete "${categoryName}"`,
                             icon: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#d33',
@@ -33,9 +33,9 @@
 
         <div class="w-full p-4 min-h-screen">
 
-            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Book List</h1>
+            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Category List</h1>
 
-            <form action="{{ route('book.index') }}" method="GET" class="max-w-md mx-auto mb-4">
+            <form action="{{ route('category.index') }}" method="GET" class="max-w-md mx-auto mb-4">
                 <label for="search" class="mb-2 text-sm font-medium text-primary sr-only">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -47,7 +47,7 @@
                     </div>
                     <input type="search" name="search" id="search"
                         class="block w-full p-4 pl-10 text-sm text-primary border border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
-                        placeholder="Search by title..." value="{{ request('search') }}">
+                        placeholder="Search by name..." value="{{ request('search') }}">
                     <button type="submit"
                         class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 absolute right-2.5 bottom-2.5">
                         Search
@@ -109,54 +109,32 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 z-10">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-primary">No</th>
-                            <th scope="col" class="px-6 py-3 text-primary">Cover</th>
-                            <th scope="col" class="px-6 py-3 text-primary">Title</th>
-                            <th scope="col" class="px-6 py-3 text-primary">Author</th>
-                            <th scope="col" class="px-6 py-3 text-primary">ISBN</th>
-                            <th scope="col" class="px-6 py-3 text-primary">Synopsis</th>
-                            <th scope="col" class="px-6 py-3 text-primary">Category</th>
-                            <th scope="col" class="px-6 py-3 text-primary">Shelf</th>
+                            <th scope="col" class="px-6 py-3 text-primary">Category Name</th>
                             <th scope="col" class="px-6 py-3"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($books as $book)
+                        @foreach($categories as $category)
                             <tr class="bg-white border-b hover:bg-gray-100">
                                 <td class="px-6 py-4 text-primary">{{ $loop->iteration }}</td>
-                                <td class="px-6 py-4">
-                                    <img src="{{ asset('storage/' . $book->cover_book) }}" alt="Cover"
-                                        class="w-16 h-20 object-cover rounded">
-                                </td>
-                                <td class="px-6 py-4 font-medium text-[var(--primary)] whitespace-nowrap">
-                                    {{ $book->title_book }}</td>
-                                <td class="px-6 py-4 text-[var(--primary)]">{{ $book->author_book }}</td>
-                                <td class="px-6 py-4 text-[var(--primary)]">{{ $book->isbn_book }}</td>
-
-                                <!-- Batasi tampilan sinopsis -->
-                                <td
-                                    class="px-6 py-4 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap text-[var(--primary)]">
-                                    {{ $book->synopsis_book }}
-                                </td>
-
-                                <td class="px-6 py-4 text-[var(--primary)]">{{ $book->category->name_category }}</td>
-                                <td class="px-6 py-4 text-[var(--primary)]">{{ $book->shelf->code_shelf }}</td>
+                                <td class="px-6 py-4 font-medium text-[var(--primary)]">{{ $category->name_category }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex space-x-2 justify-end">
-                                    <a href="{{ url('book/detail/' . encrypt($book->id)) }}">
-                                        <button type="button"
-                                            class="bg-[var(--highlight)] text-white hover:bg-amber-400 focus:ring-4 focus:ring-amber-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2">
-                                            Edit
-                                        </button>
-                                    </a>
-                                    <form action="{{ route('book.delete', ['id' => encrypt($book->id)]) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        <button type="button"
-                                            class="delete-button text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5"
-                                            data-title="{{ $book->title_book }}">
-                                            Delete
-                                        </button>
-                                    </form>
+                                        <a href="{{ url('category/detail/' . encrypt($category->id)) }}">
+                                            <button type="button"
+                                                class="bg-[var(--highlight)] text-white hover:bg-amber-400 focus:ring-4 focus:ring-amber-200 font-medium rounded-lg text-sm px-5 py-2.5">
+                                                Edit
+                                            </button>
+                                        </a>
+                                        <form action="{{ route('category.delete', ['id' => encrypt($category->id)]) }}"
+                                            method="POST">
+                                            @csrf
+                                            <button type="button"
+                                                class="delete-button text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5"
+                                                data-title="{{ $category->name_category }}">
+                                                Delete
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -166,7 +144,7 @@
             </div>
 
             <div class="mb-4 mt-4 text-right">
-                <a href="{{ url('/book/form') }}">
+                <a href="{{ url('/category/form') }}">
                     <button
                         class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5">
                         Add
