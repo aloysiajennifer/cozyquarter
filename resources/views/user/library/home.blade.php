@@ -44,13 +44,14 @@
         <!-- bawah carousel -->
         <div class="py-10 px-10">
             <form action="{{ route('library.home') }}" method="GET" class="max-w-lg mx-auto">
-                <input type="hidden" name="category" value="{{ request('category') }}">
+                <input type="hidden" name="category" id="category-input" value="{{ $selectedCategory }}">
+
                 <div class="flex relative">
-                    {{-- category dropdown --}}
+                    {{-- Dropdown kategori --}}
                     <div class="relative">
                         <button id="dropdown-button" type="button" onclick="toggleCategoryDropdown()"
                             class="shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-[var(--primary)] bg-[var(--highlight)] border border-gray-300 rounded-l-lg hover:bg-amber-400 focus:ring-4 focus:outline-none focus:ring-amber-200">
-                            {{ request('category') ? $categories->find(request('category'))->name_category : 'All Categories' }}
+                            {{ $selectedCategoryName ?? 'All Categories' }}
                             <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -62,13 +63,18 @@
                             class="z-10 hidden absolute mt-1 bg-white divide-y divide-gray-100 rounded-lg max-h-40 overflow-y-auto shadow-sm w-44">
                             <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdown-button">
                                 <li>
-                                    <button type="button" onclick="selectCategory('')"
-                                        class="inline-flex w-full px-4 py-2 hover:bg-[var(--highlight)]">All Categories</button>
+                                    <button type="button" onclick="selectCategory('', 'All Categories')"
+                                        class="inline-flex w-full px-4 py-2 hover:bg-[var(--highlight)]">All
+                                        Categories</button>
                                 </li>
                                 @foreach ($categories as $category)
                                     <li>
-                                        <button type="button" onclick="selectCategory('{{ $category->id }}')"
-                                            class="inline-flex w-full px-4 py-2 hover:bg-[var(--highlight)]">{{ $category->name_category }}</button>
+                                        {{-- Ganti encrypt id_category menjadi encrypt id --}}
+                                        <button type="button"
+                                            onclick="selectCategory('{{ encrypt($category->id) }}', '{{ $category->name_category }}')"
+                                            class="inline-flex w-full px-4 py-2 hover:bg-[var(--highlight)]">
+                                            {{ $category->name_category }}
+                                        </button>
                                     </li>
                                 @endforeach
                             </ul>
@@ -79,9 +85,9 @@
                     <div class="relative flex-grow">
                         <input type="search" name="search" id="search-dropdown"
                             class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border border-gray-300 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
-                            placeholder="Search by title..." value="{{ request('search') }}" />
+                            placeholder="Search by title..." value="{{ $searchTerm ?? request('search') }}" />
                         <button type="submit"
-                            class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-[var(--accent-blue)] rounded-r-lg  hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none">
+                            class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-[var(--accent-blue)] rounded-r-lg hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none">
                             <span class="sr-only">Search</span>
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 20 20">
@@ -93,32 +99,32 @@
                 </div>
             </form>
 
+
             <script>
                 function toggleCategoryDropdown() {
                     const dropdown = document.getElementById('dropdown');
                     dropdown.classList.toggle('hidden');
                 }
 
-                function selectCategory(categoryId) {
+                function selectCategory(categoryId, categoryName) {
                     const dropdown = document.getElementById('dropdown');
                     dropdown.classList.add('hidden');
 
-                    const categoryInput = document.querySelector('input[name="category"]');
+                    const categoryInput = document.getElementById('category-input');
                     if (categoryInput) {
                         categoryInput.value = categoryId;
                     }
 
-                    const selectedCategory = categoryId === '' ? 'All Categories' :
-                        (document.querySelector(`[onclick="selectCategory('${categoryId}')"]`)?.innerText || 'Selected');
+                    // Update teks tombol dropdown dengan kategori terpilih
                     document.getElementById('dropdown-button').innerHTML = `
-            ${selectedCategory}
-            <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-            </svg>
-        `;
+                ${categoryName}
+                <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                </svg>
+            `;
                 }
 
-                // Close dropdown if clicked outside
+                // Tutup dropdown kalau klik di luar tombol dropdown
                 window.onclick = function (event) {
                     if (!event.target.closest('#dropdown-button')) {
                         const dropdown = document.getElementById('dropdown');
@@ -128,7 +134,6 @@
                     }
                 }
             </script>
-
         </div>
 
         <div class="px-10">

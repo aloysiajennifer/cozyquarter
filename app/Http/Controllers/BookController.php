@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\Shelf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
@@ -148,76 +149,90 @@ class BookController extends Controller
     }
 
 
+//home page library
 
-//user home
-    public function home(Request $request){
-        $search = $request->query('search');
-        $categoryId = $request->query('category');
+public function home(Request $request){
+    $search = $request->query('search');
+    $encryptedCategoryId = $request->query('category');
+    $categoryId = null;
 
-        $query = Book::query();
-
-        if ($search) {
-            $query->where('title_book', 'like', '%' . $search . '%');
-        }
-
-        if ($categoryId) {
-            $query->where('id_category', $categoryId);
-        }
-
-        $books = $query->get();
-        $categories = Category::all();
-
-    
-        $selectedCategoryName = null;
-        if ($categoryId) {
-            $category = $categories->where('id_category', $categoryId)->first();
-            $selectedCategoryName = $category ? $category->name_category : null;
-        }
-
-        // no result
-        if ($books->isEmpty()) {
-            $message = "No result found";
-            if ($search && $selectedCategoryName) {
-                $message .= " for title \"$search\" in category \"$selectedCategoryName\".";
-            } elseif ($search) {
-                $message .= " for title \"$search\".";
-            } elseif ($selectedCategoryName) {
-                $message .= " in category \"$selectedCategoryName\".";
-            }
-
-            return view('user.library.home', [
-            'books' => [],
-            'categories' => $categories,
-            'message' => $message,
-            'alertType' => 'error', // gunakan 'error' saat tidak ada hasil
-            'selectedCategory' => $categoryId,
-            'searchTerm' => $search
+    // decrypt
+    if ($encryptedCategoryId) {
+        try {
+            $categoryId = Crypt::decrypt($encryptedCategoryId);
+        } catch (\Exception $e) {
+            return redirect()->route('library.home')->with([
+                'alertType' => 'error',
+                'message' => 'Invalid category filter.'
             ]);
         }
+    }
 
-    // ada result
-        $message = null;
-        $alertType = null;
-        if ($search) {
-            $message = "Search result for \"$search\"";
-            if ($selectedCategoryName) {
-                $message .= " in category \"$selectedCategoryName\"";
-            }
-            $message .= ".";
-            $alertType = 'info';
+    $query = Book::query();
+
+    if ($search) {
+        $query->where('title_book', 'like', '%' . $search . '%');
+    }
+
+    if ($categoryId) {
+        $query->where('id_category', $categoryId);  // Filter buku berdasarkan foreign key id_category
+    }
+
+    $books = $query->get();
+    $categories = Category::all();
+
+    $selectedCategoryName = null;
+    if ($categoryId) {
+        $category = $categories->where('id', $categoryId)->first();  // Filter berdasarkan id kategori
+        $selectedCategoryName = $category ? $category->name_category : null;
+    }
+
+    // klo g ada hasil
+    if ($books->isEmpty()) {
+        $message = "No result found";
+        if ($search && $selectedCategoryName) {
+            $message .= " for title \"$search\" in category \"$selectedCategoryName\".";
+        } elseif ($search) {
+            $message .= " for title \"$search\".";
         } elseif ($selectedCategoryName) {
-            $message = "Books in category \"$selectedCategoryName\".";
-            $alertType = 'info';
+            $message .= " in category \"$selectedCategoryName\".";
         }
 
         return view('user.library.home', [
+            'books' => [],
+            'categories' => $categories,
+            'message' => $message,
+            'alertType' => 'error',
+            'selectedCategory' => $encryptedCategoryId,
+            'searchTerm' => $search,
+            'selectedCategoryName' => $selectedCategoryName
+        ]);
+    }
+
+    // klo ada hasil
+    $message = null;
+    $alertType = null;
+    if ($search) {
+        $message = "Search result for \"$search\"";
+        if ($selectedCategoryName) {
+            $message .= " in category \"$selectedCategoryName\"";
+        }
+        $message .= ".";
+        $alertType = 'info';
+    } elseif ($selectedCategoryName) {
+        $message = "Books in category \"$selectedCategoryName\".";
+        $alertType = 'info';
+    }
+
+    return view('user.library.home', [
         'books' => $books,
         'categories' => $categories,
         'message' => $message,
         'alertType' => $alertType,
-        'selectedCategory' => $categoryId,
-        'searchTerm' => $search
-        ]);
+        'selectedCategory' => $encryptedCategoryId,
+        'searchTerm' => $search,
+        'selectedCategoryName' => $selectedCategoryName 
+    ]);
 }
 
 }
