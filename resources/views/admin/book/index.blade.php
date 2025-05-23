@@ -128,7 +128,8 @@
                                         class="w-16 h-20 object-cover rounded">
                                 </td>
                                 <td class="px-6 py-4 font-medium text-[var(--primary)] whitespace-nowrap">
-                                    {{ $book->title_book }}</td>
+                                    {{ $book->title_book }}
+                                </td>
                                 <td class="px-6 py-4 text-[var(--primary)]">{{ $book->author_book }}</td>
                                 <td class="px-6 py-4 text-[var(--primary)]">{{ $book->isbn_book }}</td>
 
@@ -142,21 +143,21 @@
                                 <td class="px-6 py-4 text-[var(--primary)]">{{ $book->shelf->code_shelf }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex space-x-2 justify-end">
-                                    <a href="{{ url('book/detail/' . encrypt($book->id)) }}">
-                                        <button type="button"
-                                            class="bg-[var(--highlight)] text-white hover:bg-amber-400 focus:ring-4 focus:ring-amber-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2">
-                                            Edit
-                                        </button>
-                                    </a>
-                                    <form action="{{ route('book.delete', ['id' => encrypt($book->id)]) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        <button type="button"
-                                            class="delete-button text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5"
-                                            data-title="{{ $book->title_book }}">
-                                            Delete
-                                        </button>
-                                    </form>
+                                        <a href="{{ url('book/detail/' . encrypt($book->id)) }}">
+                                            <button type="button"
+                                                class="bg-[var(--highlight)] text-white hover:bg-amber-400 focus:ring-4 focus:ring-amber-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2">
+                                                Edit
+                                            </button>
+                                        </a>
+                                        <form action="{{ route('book.delete', ['id' => encrypt($book->id)]) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            <button type="button"
+                                                class="delete-button text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5"
+                                                data-title="{{ $book->title_book }}">
+                                                Delete
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

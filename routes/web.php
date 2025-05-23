@@ -14,6 +14,8 @@ Route::get('/', function () {
 //     return view('user.beveragesMenu');
 // });
 
+//ROUTE NAVBAR
+
 //SHELF CRUD
 Route::get('/shelf/index',[ShelfController::class, 'index'])->name('shelf.index');
 Route::get('/shelf/form',[ShelfController::class, 'form'])->name('shelf.form');
@@ -38,7 +40,8 @@ Route::get('/book/detail/{id}',[BookController::class, 'detail'])->name('book.de
 Route::post('/book/update/',action: [BookController::class, 'update'])->name('book.update');
 Route::post('/book/delete/{id}',[BookController::class, 'delete'])->name('book.delete');
 
-//HOME
+//HOME LIBRARY
+Route::get('/library/home',[BookController::class, 'home'])->name('library.home');
 
 // BORROWING
 Route::get('/borrowing/index', [BorrowingController::class, 'index'])->name('borrowing.index');

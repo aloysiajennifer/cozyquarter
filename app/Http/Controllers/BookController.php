@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-   public function index(Request $request)
-{
+    //crud book
+   public function index(Request $request){
     $search = $request->query('search');
 
     if ($search) {
@@ -146,4 +146,78 @@ class BookController extends Controller
 
         return redirect()->route('book.index')->with('success', 'Book successfully deleted!');
     }
+
+
+
+//user home
+    public function home(Request $request){
+        $search = $request->query('search');
+        $categoryId = $request->query('category');
+
+        $query = Book::query();
+
+        if ($search) {
+            $query->where('title_book', 'like', '%' . $search . '%');
+        }
+
+        if ($categoryId) {
+            $query->where('id_category', $categoryId);
+        }
+
+        $books = $query->get();
+        $categories = Category::all();
+
+    
+        $selectedCategoryName = null;
+        if ($categoryId) {
+            $category = $categories->where('id_category', $categoryId)->first();
+            $selectedCategoryName = $category ? $category->name_category : null;
+        }
+
+        // no result
+        if ($books->isEmpty()) {
+            $message = "No result found";
+            if ($search && $selectedCategoryName) {
+                $message .= " for title \"$search\" in category \"$selectedCategoryName\".";
+            } elseif ($search) {
+                $message .= " for title \"$search\".";
+            } elseif ($selectedCategoryName) {
+                $message .= " in category \"$selectedCategoryName\".";
+            }
+
+            return view('user.library.home', [
+            'books' => [],
+            'categories' => $categories,
+            'message' => $message,
+            'alertType' => 'error', // gunakan 'error' saat tidak ada hasil
+            'selectedCategory' => $categoryId,
+            'searchTerm' => $search
+            ]);
+        }
+
+    // ada result
+        $message = null;
+        $alertType = null;
+        if ($search) {
+            $message = "Search result for \"$search\"";
+            if ($selectedCategoryName) {
+                $message .= " in category \"$selectedCategoryName\"";
+            }
+            $message .= ".";
+            $alertType = 'info';
+        } elseif ($selectedCategoryName) {
+            $message = "Books in category \"$selectedCategoryName\".";
+            $alertType = 'info';
+        }
+
+        return view('user.library.home', [
+        'books' => $books,
+        'categories' => $categories,
+        'message' => $message,
+        'alertType' => $alertType,
+        'selectedCategory' => $categoryId,
+        'searchTerm' => $search
+        ]);
+}
+
 }

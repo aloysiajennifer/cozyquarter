@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Layout</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="{{ asset('images/logo.jpeg') }}" type="image/jpeg">
     <style>
         :root {
             --primary: #1C1F26;
@@ -43,9 +44,9 @@
 
                 <!-- Desktop Menu -->
                 <div class="hidden sm:flex sm:items-center sm:space-x-4">
-                    <a href=""
+                    <a href="{{ route('library.home') }}"
                         class="rounded-md px-3 py-2 text-sm font-medium 
-                        {{ Route::currentRouteName() == ''
+                        {{ Route::currentRouteName() == 'library.home'
                             ? 'bg-[var(--accent-blue)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Home
