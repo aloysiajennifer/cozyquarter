@@ -46,7 +46,7 @@
                 class="block w-full p-4 pl-10 text-sm text-primary border border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
                 placeholder="Search by title..." value="{{ request('search') }}">
             <button type="submit"
-                class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-[var(--accent-green)] focus:outline-none font-medium rounded-lg text-sm px-4 py-2 absolute right-2.5 bottom-2.5">
+                class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 absolute right-2.5 bottom-2.5">
                 Search
             </button>
         </div>
@@ -129,7 +129,7 @@
                     <td class="px-6 py-4 text-[var(--primary)]">{{ $book->shelf->code_shelf }}</td>
                     <td class="px-6 py-4">
                         <a href="{{ url('book/detail/' . encrypt($book->id)) }}">
-                            <button type="button" class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-[var(--accent-green)] font-medium rounded-lg text-sm px-5 py-2.5 me-2">
+                            <button type="button" class="bg-[var(--highlight)] text-white hover:bg-amber-400 focus:ring-4 focus:ring-amber-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2">
                                 Edit
                             </button>
                         </a>
@@ -151,7 +151,7 @@
 
     <div class="mb-4 mt-4 text-right">
         <a href="{{ url('/book/form') }}">
-            <button class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-[var(--accent-green)] font-medium rounded-lg text-sm px-5 py-2.5">
+            <button class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5">
                 Add
             </button>
         </a>
