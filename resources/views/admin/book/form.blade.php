@@ -19,49 +19,49 @@
                     <div>
                         <div class="mb-6 flex">
                             <label for="title_book"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Title</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Title</label>
                             <input type="text" id="title_book" name="title_book"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 placeholder="Enter book title" required />
                         </div>
                         <div class="mb-6 flex">
                             <label for="author_book"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Author</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] ">Author</label>
                             <input type="text" id="author_book" name="author_book"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 placeholder="Enter author name" required />
                         </div>
                         <div class="mb-6 flex">
                             <label for="isbn_book"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">ISBN</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] ">ISBN</label>
                             <input type="text" id="isbn_book" name="isbn_book"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 placeholder="Enter ISBN" required />
                         </div>
                         <div class="mb-6 flex">
                             <label for="synopsis_book"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Synopsis</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Synopsis</label>
                             <textarea id="synopsis_book" name="synopsis_book" rows="4"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 placeholder="Enter synopsis" required></textarea>
                         </div>
                         <div class="mb-6 flex">
                             <label for="cover_book"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Cover</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Cover</label>
                             <div class="w-2/3">
                                 <input
-                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
                                     aria-describedby="cover_book_help" id="cover_book" type="file" name="cover_book"
                                     required>
-                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="cover_book_help">JPG, JPEG, or
+                                <p class="mt-1 text-sm text-gray-500 " id="cover_book_help">JPG, JPEG, or
                                     PNG.</p>
                             </div>
                         </div>
                         <div class="mb-6 flex">
                             <label for="id_category"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Kategori</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] ">Kategori</label>
                             <select id="id_category" name="id_category"
-                                class="bg-gray-50 border border-gray-300 text-[var(--primary)] text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-[var(--primary)] text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 required>
                                 <option value="">Choose Category</option>
                                 @foreach ($categories as $category)
@@ -71,9 +71,9 @@
                         </div>
                         <div class="mb-6 flex">
                             <label for="id_shelf"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Rak</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Rak</label>
                             <select id="id_shelf" name="id_shelf"
-                                class="bg-gray-50 border border-gray-300 text-[var(--primary)] text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-[var(--primary)] text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 required>
                                 <option value="">Choose Shelf</option>
                                 @foreach ($shelves as $shelf)

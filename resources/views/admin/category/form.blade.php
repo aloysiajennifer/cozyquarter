@@ -19,10 +19,10 @@
                     <div>
                         <div class="mb-6 flex">
                             <label for="name_category"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Category
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Category
                                 Name</label>
                             <input type="text" id="name_category" name="name_category"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 placeholder="Enter category name" required />
                         </div>
                     </div>
