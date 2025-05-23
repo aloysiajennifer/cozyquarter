@@ -19,8 +19,19 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'phone',
         'email',
+        'username',
         'password',
+        'penalty_counter'
+    ];
+
+    public static array $rules = [
+        'name' => 'required|string',
+        'phone' => 'required|string',
+        'email' => 'required|string',
+        'username' => 'required|string',
+        'password' => 'required|string',
     ];
 
     /**
