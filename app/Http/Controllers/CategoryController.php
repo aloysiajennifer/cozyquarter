@@ -42,7 +42,7 @@ class CategoryController extends Controller
     }
 
     public function insert(Request $request) {
-        // Validasi input
+        // Validasi
         $request->validate([
             'name_category' => 'required'
         ]);

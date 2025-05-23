@@ -52,7 +52,7 @@ class BookController extends Controller
     }
 
     public function insert(Request $request) {
-        // Validasi input
+        // Validasi 
         $request->validate([
             'title_book' => 'required',
             'author_book' => 'required',
@@ -65,7 +65,7 @@ class BookController extends Controller
 
         $book = new Book;
 
-        // Simpan cover jika ada
+        // simpan cover di storage pake link
         if ($request->hasFile('cover_book')) {
             $coverPath = $request->file('cover_book')->store('covers', 'public');
             $book->cover_book = $coverPath;
@@ -113,7 +113,7 @@ class BookController extends Controller
         $book = Book::find($id);
 
         if ($request->hasFile('cover_book')) {
-            // Hapus cover lama jika ada
+            // klo ada cover lama hapus
             if ($book->cover_book && Storage::disk('public')->exists($book->cover_book)) {
                 Storage::disk('public')->delete($book->cover_book);
             }
@@ -137,7 +137,7 @@ class BookController extends Controller
         $id = decrypt($request->id);
         $book = Book::firstWhere('id', $id);
 
-        // Hapus file cover dari storage
+        // Hapus cover di storage
         if ($book->cover_book && Storage::disk('public')->exists($book->cover_book)) {
             Storage::disk('public')->delete($book->cover_book);
         }

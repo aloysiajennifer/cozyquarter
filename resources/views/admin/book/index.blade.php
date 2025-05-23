@@ -133,7 +133,7 @@
                                 <td class="px-6 py-4 text-[var(--primary)]">{{ $book->author_book }}</td>
                                 <td class="px-6 py-4 text-[var(--primary)]">{{ $book->isbn_book }}</td>
 
-                                <!-- Batasi tampilan sinopsis -->
+                                <!-- sinopsis dicut-->
                                 <td
                                     class="px-6 py-4 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap text-[var(--primary)]">
                                     {{ $book->synopsis_book }}

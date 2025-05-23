@@ -41,12 +41,12 @@
             </div>
         </div>
 
-        <!-- Book List -->
+        <!-- bawah carousel -->
         <div class="py-10 px-10">
             <form action="{{ route('library.home') }}" method="GET" class="max-w-lg mx-auto">
                 <input type="hidden" name="category" value="{{ request('category') }}">
                 <div class="flex relative">
-                    {{-- Category Dropdown --}}
+                    {{-- category dropdown --}}
                     <div class="relative">
                         <button id="dropdown-button" type="button" onclick="toggleCategoryDropdown()"
                             class="shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100">
@@ -103,13 +103,11 @@
                     const dropdown = document.getElementById('dropdown');
                     dropdown.classList.add('hidden');
 
-                    // Update existing hidden category input
                     const categoryInput = document.querySelector('input[name="category"]');
                     if (categoryInput) {
                         categoryInput.value = categoryId;
                     }
 
-                    // Optional: update button label
                     const selectedCategory = categoryId === '' ? 'All Categories' :
                         (document.querySelector(`[onclick="selectCategory('${categoryId}')"]`)?.innerText || 'Selected');
                     document.getElementById('dropdown-button').innerHTML = `
@@ -183,7 +181,7 @@
                 @endif
             @endif
 
-            <!-- Grid Buku -->
+            <!-- list buku -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 @foreach ($books as $book)
                     <div class="bg-[var(--accent-blue)] rounded-xl shadow p-2 text-center cursor-pointer"
@@ -204,7 +202,7 @@
                         </span>
                     </div>
 
-                    <!-- Modal for each book -->
+                    <!--  modal buat info buku lengkap -->
                     <div id="modal-{{ $book->id }}"
                         class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
                         <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative overflow-y-auto max-h-[90vh]">
@@ -232,7 +230,7 @@
                 @endforeach
             </div>
 
-            <!-- Modal JS -->
+            <!-- buat modal-->
             <script>
                 function openModal(id) {
                     document.getElementById('modal-' + id).classList.remove('hidden');
