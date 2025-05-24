@@ -66,11 +66,16 @@ class BookController extends Controller
 
         $book = new Book;
 
-        // simpan cover di storage pake link
-        if ($request->hasFile('cover_book')) {
-            $coverPath = $request->file('cover_book')->store('covers', 'public');
-            $book->cover_book = $coverPath;
-        }
+       if ($request->hasFile('cover_book')) {
+    $cover = $request->file('cover_book');
+    $destinationPath = public_path('images/covers');
+    if (!file_exists($destinationPath)) {
+        mkdir($destinationPath, 0755, true);
+    }
+    $filename = uniqid() . '_' . $cover->getClientOriginalName();
+    $cover->move($destinationPath, $filename);
+    $book->cover_book = 'images/covers/' . $filename;
+    }
 
         $book->title_book = $request->title_book;
         $book->author_book = $request->author_book;
@@ -114,12 +119,19 @@ class BookController extends Controller
         $book = Book::find($id);
 
         if ($request->hasFile('cover_book')) {
-            // klo ada cover lama hapus
-            if ($book->cover_book && Storage::disk('public')->exists($book->cover_book)) {
-                Storage::disk('public')->delete($book->cover_book);
-            }
-            $coverPath = $request->file('cover_book')->store('covers', 'public');
-            $book->cover_book = $coverPath;
+    
+        if ($book->cover_book && file_exists(public_path($book->cover_book))) {
+            unlink(public_path($book->cover_book));
+        }
+    
+        $cover = $request->file('cover_book');
+        $destinationPath = public_path('images/covers');
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+        $filename = uniqid() . '_' . $cover->getClientOriginalName();
+        $cover->move($destinationPath, $filename);
+        $book->cover_book = 'images/covers/' . $filename;
         }
 
         $book->title_book = $request->title_book;
@@ -138,9 +150,9 @@ class BookController extends Controller
         $id = decrypt($request->id);
         $book = Book::firstWhere('id', $id);
 
-        // Hapus cover di storage
-        if ($book->cover_book && Storage::disk('public')->exists($book->cover_book)) {
-            Storage::disk('public')->delete($book->cover_book);
+       
+        if ($book->cover_book && file_exists(public_path($book->cover_book))) {
+            unlink(public_path($book->cover_book));
         }
 
         $book->delete();

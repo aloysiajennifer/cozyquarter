@@ -192,8 +192,7 @@
                     <div class="bg-[var(--accent-blue)] hover:bg-[var(--accent-green)] rounded-xl shadow p-2 text-center cursor-pointer"
                         onclick="openModal({{ $book->id }})">
                         <div class="aspect-[2/3]">
-                            <img src="{{ asset('storage/' . $book->cover_book) }}" alt="{{ $book->title_book }}"
-                                class="rounded-lg object-cover w-full h-full mx-auto mb-1">
+                            <img src="{{ asset($book->cover_book) }}" alt="{{ $book->title_book }}" class="rounded-lg object-cover w-full h-full mx-auto mb-1">
                         </div>
                         <h3 class="text-sm text-white font-semibold truncate max-w-full" title="{{ $book->title_book }}">
                             {{ $book->title_book }}
@@ -213,8 +212,7 @@
                         <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative overflow-y-auto max-h-[90vh]">
                             <button onclick="closeModal({{ $book->id }})"
                                 class="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl">&times;</button><br>
-                            <img src="{{ asset('storage/' . $book->cover_book) }}" alt="Cover"
-                                class="w-full h-auto object-contain rounded mb-4">
+                                <img src="{{ asset($book->cover_book) }}" alt="{{ $book->title_book }}" class="w-full h-auto object-contain rounded mb-4">
                             <h2 class="text-xl font-bold mb-2">{{ $book->title_book }}</h2>
                             <p class="text-sm text-[var(--primary)]  mb-1"><strong>Author:</strong> {{ $book->author_book }}</p>
                             <p class="text-sm text-[var(--primary)] mb-1"><strong>ISBN:</strong> {{ $book->isbn_book }}</p>

@@ -63,7 +63,7 @@
                                     aria-describedby="cover_book_help">
                                 <p class="mt-1 text-sm text-gray-500" id="cover_book_help">JPG, JPEG, or PNG.</p>
                                 @if(isset($book) && $book->cover_book)
-                                    <img src="{{ asset('storage/' . $book->cover_book) }}" class="mt-2 h-24">
+                                    <img src="{{ asset($book->cover_book) }}" alt="{{ $book->title_book }}" class="mt-2 h-24">
                                 @endif
                             </div>
                         </div>
