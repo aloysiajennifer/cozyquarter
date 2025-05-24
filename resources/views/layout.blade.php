@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@1.5.0/dist/flowbite.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@1.5.0/dist/flowbite.min.css" rel="stylesheet" />
+     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Layout</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="{{ asset('images/logo.jpeg') }}" type="image/jpeg">
     <style>
         :root {
             --primary: #1C1F26;
@@ -43,9 +44,9 @@
 
                 <!-- Desktop Menu -->
                 <div class="hidden sm:flex sm:items-center sm:space-x-4">
-                    <a href=""
+                    <a href="{{ route('library.home') }}"
                         class="rounded-md px-3 py-2 text-sm font-medium 
-                        {{ Route::currentRouteName() == ''
+                        {{ Route::currentRouteName() == 'library.home'
                             ? 'bg-[var(--accent-blue)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Home

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title_book');
             $table->string('author_book');
-            $table->string('isbn_book');
+            $table->string('isbn_book')->unique();
             $table->string('synopsis_book');
             $table->string('cover_book');
             $table->boolean('status_book')->default(0);

@@ -1,0 +1,59 @@
+@extends('formLayout')
+
+@section('content')
+    <div class="bg-gray-100 min-h-screen">
+        <div class="container mx-auto p-4">
+            <div class="text-left">
+                <a href="{{ route('category.index') }}">
+                    <button
+                        class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                        Back
+                    </button>
+                </a>
+            </div>
+
+            <h1 class="text-center text-3xl font-semibold text-gray-800 mb-6">Update Category Form</h1>
+            <form action="{{ route('category.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                @if(isset($category))
+                    <input type="hidden" name="id" value="{{ encrypt($category->id) }}">
+                @endif
+
+                <div class="max-w-3xl mx-auto">
+                    <div>
+                        <div class="mb-6 flex">
+                            <label for="name_category" class="w-1/3 block mb-2 text-sm font-medium text-gray-900">Category
+                                Name</label>
+                            <input type="text" id="name_category" name="name_category"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
+                                value="{{ old('name_category', $category->name_category ?? '') }}" required />
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                        <button type="submit"
+                            class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        @if ($errors->any())
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    Swal.fire({
+                        title: 'Validation Error!',
+                        html: `{!! implode('<br>', $errors->all()) !!}`,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+            </script>
+        @endif
+
+
+
+    </div>
+
+@endsection
