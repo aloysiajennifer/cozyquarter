@@ -47,6 +47,7 @@ Route::get('/cwspace/index', [CwspaceController::class, 'index'])->name('cwspace
 Route::post('/cwspace/insert',[CwspaceController::class, 'insert'])->name('cwspace.insert'); //add cwspace to the db
 Route::put('/cwspace/{id}', [CwspaceController::class, 'update'])->name('cwspace.update'); //update
 Route::delete('/cwspace/{id}', [CwspaceController::class, 'delete'])->name('cwspace.delete');
+
 //HOME LIBRARY
 Route::get('/library/home',[BookController::class, 'home'])->name('library.home');
 
@@ -54,3 +55,8 @@ Route::get('/library/home',[BookController::class, 'home'])->name('library.home'
 Route::get('/borrowing/index', [BorrowingController::class, 'index'])->name('borrowing.index');
 Route::get('/borrowing/form',[BorrowingController::class, 'form'])->name('borrowing.form');
 Route::post('/borrowing/insert',[BorrowingController::class, 'insert'])->name('borrowing.insert');
+
+// HOME ADMIN
+Route::get('admin/home', function(){
+    return view('admin.layoutAdmin');
+});

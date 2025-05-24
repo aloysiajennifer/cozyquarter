@@ -1,7 +1,10 @@
-@extends('formLayout')
+@extends('admin.layoutAdmin')
+
+<!-- Title page -->
+@section('title', 'CRUD - Update Category')
 
 @section('content')
-    <div class="bg-gray-100 min-h-screen">
+    <div class="p-4 mt-16 bg-gray-100 min-h-screen">
         <div class="container mx-auto p-4">
             <div class="text-left">
                 <a href="{{ route('category.index') }}">

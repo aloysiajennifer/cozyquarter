@@ -52,8 +52,9 @@ class CwspaceController extends Controller
             // Cek kode error duplicate entry (23000)
             if ($e->getCode() == 23000) {
                 return back()->with('error', "Gagal update data: kode ruang '{$request->code_cwspace}' sudah ada. Silakan gunakan kode lain.");
+            } else {
+                return back()->with('error', 'Gagal update data karena kesalahan database.');
             }
-            return back()->with('error', 'Gagal update data karena kesalahan database.');
         }
     }
 

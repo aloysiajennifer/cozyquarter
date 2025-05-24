@@ -1,4 +1,7 @@
-@extends('layout')
+@extends('admin.layoutAdmin')
+
+<!-- Title page -->
+@section('title', 'CRUD - Home Book')
 
 @section('content')
 

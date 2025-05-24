@@ -1,7 +1,9 @@
-@extends('layout')
+@extends('admin.layoutAdmin')
+
+<!-- Title page -->
+@section('title', 'CRUD - Home Category')
 
 @section('content')
-
     <div class="pt-16">
         <script>
             document.addEventListener('DOMContentLoaded', function () {

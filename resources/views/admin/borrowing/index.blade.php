@@ -1,9 +1,9 @@
-@extends('layout')
+@extends('admin.layoutAdmin')
 
 @section('content')
 
 {{-- Menampilkan list pemesanan lapangan untuk semua tanggal --}}
-<div class="px-12 md:px-24 py-5 mb-15">
+<div class="mt-16 px-12 md:px-24 py-5 mb-15">
 
     <div class="flex flex-wrap justify-between items-center mb-1.5">
         <h3 class="text-zinc-900 text-left text-xl md:text-2xl font-bold tracking-tight w-full md:w-auto">Borrowings</h3>

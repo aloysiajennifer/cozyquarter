@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->foreignId('id_time')->constrained('times')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('id_cwspace')->constrained('cwspaces')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('id_reservation')->constrained('reservations')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

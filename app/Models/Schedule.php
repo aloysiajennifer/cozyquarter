@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
+    
     public function time(){
         return $this->belongsTo(Time::class, 'id_time', 'id');
     }
