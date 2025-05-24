@@ -47,56 +47,58 @@ class BeverageController extends Controller
         $beverage = new Beverages;
 
         if ($request->hasFile('image')) {
-            $beverage->image = $request->file('image')->store('beverages', 'public');
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('images/beverages');
+            $file->move($destinationPath, $filename);
+
+            $relativePath = 'images/beverages/' . $filename;
+        } else {
+            $relativePath = null; // or set a default image path
         }
 
-        $beverage->name = $request->name;
-        $beverage->price = $request->price;
-        $beverage->availability = $request->availability;
-
-        $beverage->save();
+        Beverages::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'image' => $relativePath, // store relative path
+            'availability' => $request->availability,
+        ]);
 
         return redirect()->route('beverage.index')->with('success', 'Beverage created successfully.');
     }
 
     // Form edit beverage
-    public function edit($encryptedId)
+    public function edit($id)
     {
-        $id = Crypt::decrypt($encryptedId);
         $beverage = Beverages::findOrFail($id);
-
-        return view('admin.beverage.edit', compact('beverage'));
+        return view('admin.beverage.DetailBeverage', compact('beverage'));
     }
 
+
     // Update beverage
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $id = Crypt::decrypt($request->id);
         $beverage = Beverages::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|integer|min:0',
-            'availability' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'name' => 'required',
+            'price' => 'required|numeric|min:0',
+            'availability' => 'required|in:0,1',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-
-        if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
-            if ($beverage->image && Storage::disk('public')->exists($beverage->image)) {
-                Storage::disk('public')->delete($beverage->image);
-            }
-
-            $beverage->image = $request->file('image')->store('beverages', 'public');
-        }
 
         $beverage->name = $request->name;
         $beverage->price = $request->price;
         $beverage->availability = $request->availability;
 
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+            $beverage->image = 'storage/' . $imagePath;
+        }
+
         $beverage->save();
 
-        return redirect()->route('beverage.index')->with('success', 'Beverage updated successfully.');
+        return redirect()->route('beverage.index')->with('success', 'Beverage updated successfully!');
     }
 
     // Hapus beverage

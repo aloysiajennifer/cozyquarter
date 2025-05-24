@@ -136,11 +136,7 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex space-x-2 justify-end">
-<<<<<<< HEAD
                                     <a href="{{ route('beverage.edit', $beverage->id) }}">
-=======
-                                    <a href="{{ url('beverage/detail/' . encrypt($beverage->id)) }}">
->>>>>>> 52c76d88329c1d2515840df4107164a6e26264e3
                                         <button type="button"
                                             class="bg-[var(--highlight)] text-white hover:bg-amber-400 focus:ring-4 focus:ring-amber-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2">
                                             Edit
