@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CwspaceController;
+use App\Models\Cwspace;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,3 +26,9 @@ Route::post('/book/update/',action: [BookController::class, 'update'])->name('bo
 Route::post('/book/delete/{id}',[BookController::class, 'delete'])->name('book.delete');
 
 //HOME
+
+// CWSPACE CRUD
+Route::get('/cwspace/index', [CwspaceController::class, 'index'])->name('cwspace.index'); //return the page with all cwspaces
+Route::post('/cwspace/insert',[CwspaceController::class, 'insert'])->name('cwspace.insert'); //add cwspace to the db
+Route::put('/cwspace/{id}', [CwspaceController::class, 'update'])->name('cwspace.update'); //update
+Route::delete('/cwspace/{id}', [CwspaceController::class, 'delete'])->name('cwspace.delete');
