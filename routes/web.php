@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CwspaceController;
+use App\Models\Cwspace;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BorrowingController;
@@ -47,3 +49,9 @@ Route::get('/library/home',[BookController::class, 'home'])->name('library.home'
 Route::get('/borrowing/index', [BorrowingController::class, 'index'])->name('borrowing.index');
 Route::get('/borrowing/form',[BorrowingController::class, 'form'])->name('borrowing.form');
 Route::post('/borrowing/insert',[BorrowingController::class, 'insert'])->name('borrowing.insert');
+
+// CWSPACE CRUD
+Route::get('/cwspace/index', [CwspaceController::class, 'index'])->name('cwspace.index'); //return the page with all cwspaces
+Route::post('/cwspace/insert',[CwspaceController::class, 'insert'])->name('cwspace.insert'); //add cwspace to the db
+Route::put('/cwspace/{id}', [CwspaceController::class, 'update'])->name('cwspace.update'); //update
+Route::delete('/cwspace/{id}', [CwspaceController::class, 'delete'])->name('cwspace.delete');
