@@ -70,32 +70,103 @@
 
                         <div class="mb-6 flex">
                             <label for="id_category"
-                                class="w-1/3 block mb-2 text-sm font-medium text-gray-900">Kategori</label>
-                            <select id="id_category" name="id_category"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
-                                required>
-                                <option value="">Choose Category</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('id_category', $book->id_category ?? '') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name_category }}
-                                    </option>
-                                @endforeach
-                            </select>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Kategori</label>
+                            <div class="w-2/3 relative">
+                                <button id="dropdownCategoryButton" data-dropdown-toggle="dropdownCategory"
+                                    class="text-gray-900 bg-[var(--highlight)] hover:bg-amber-400 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-left inline-flex items-center"
+                                    type="button">
+                                    {{ $categories->firstWhere('id', old('id_category', $book->id_category ?? ''))?->name_category ?? 'Choose Category' }}
+                                    <svg class="w-2.5 h-2.5 ms-3 ml-auto" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                </button>
+
+                                <input type="hidden" name="id_category" id="selectedCategoryId"
+                                    value="{{ old('id_category', $book->id_category ?? '') }}" required>
+
+                                <div id="dropdownCategory"
+                                    class="z-10 hidden absolute w-full bg-white divide-y divide-gray-100 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                    <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownCategoryButton">
+                                        @foreach ($categories as $category)
+                                            <li>
+                                                <button type="button"
+                                                    onclick="selectCategory({{ $category->id }}, '{{ $category->name_category }}')"
+                                                    class="w-full text-left px-4 py-2 hover:bg-[var(--highlight)]">
+                                                    {{ $category->name_category }}
+                                                </button>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
 
+                        <script>
+                            function selectCategory(id, name) {
+                                document.getElementById('selectedCategoryId').value = id;
+                                document.getElementById('dropdownCategoryButton').innerHTML = `
+                ${name}
+                <svg class="w-2.5 h-2.5 ms-3 ml-auto" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" d="m1 1 4 4 4-4" />
+                </svg>`;
+                                document.getElementById('dropdownCategory').classList.add('hidden');
+                            }
+                        </script>
+
+
                         <div class="mb-6 flex">
-                            <label for="id_shelf" class="w-1/3 block mb-2 text-sm font-medium text-gray-900">Rak</label>
-                            <select id="id_shelf" name="id_shelf"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
-                                required>
-                                <option value="">Choose Shelf</option>
-                                @foreach ($shelves as $shelf)
-                                    <option value="{{ $shelf->id }}" {{ old('id_shelf', $book->id_shelf ?? '') == $shelf->id ? 'selected' : '' }}>
-                                        {{ $shelf->code_shelf }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <label for="id_shelf"
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Rak</label>
+                            <div class="w-2/3 relative">
+                                <button id="dropdownShelfButton" data-dropdown-toggle="dropdownShelf"
+                                    class="text-gray-900 bg-[var(--highlight)] hover:bg-amber-400 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-left inline-flex items-center"
+                                    type="button">
+                                    {{ $shelves->firstWhere('id', old('id_shelf', $book->id_shelf ?? ''))?->code_shelf ?? 'Choose Shelf' }}
+                                    <svg class="w-2.5 h-2.5 ms-3 ml-auto" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                </button>
+
+                                <input type="hidden" name="id_shelf" id="selectedShelfId"
+                                    value="{{ old('id_shelf', $book->id_shelf ?? '') }}" required>
+
+                                <div id="dropdownShelf"
+                                    class="z-10 hidden absolute w-full bg-white divide-y divide-gray-100 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                    <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownShelfButton">
+                                        @foreach ($shelves as $shelf)
+                                            <li>
+                                                <button type="button"
+                                                    onclick="selectShelf({{ $shelf->id }}, '{{ $shelf->code_shelf }}')"
+                                                    class="w-full text-left px-4 py-2 hover:bg-[var(--highlight)]">
+                                                    {{ $shelf->code_shelf }}
+                                                </button>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+
+                        <script>
+                            function selectShelf(id, name) {
+                                document.getElementById('selectedShelfId').value = id;
+                                document.getElementById('dropdownShelfButton').innerHTML = `
+                ${name}
+                <svg class="w-2.5 h-2.5 ms-3 ml-auto" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" d="m1 1 4 4 4-4" />
+                </svg>`;
+                                document.getElementById('dropdownShelf').classList.add('hidden');
+                            }
+                        </script>
+
                     </div>
 
                     <div class="text-right">
