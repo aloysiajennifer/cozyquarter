@@ -75,5 +75,9 @@ class DatabaseSeeder extends Seeder
             'status_cwspace' => 0],
         ]);
 
+        $this->call([
+            BeverageSeeder::class,
+        ]);
+
     }
 }
