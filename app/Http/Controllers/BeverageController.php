@@ -47,6 +47,7 @@ class BeverageController extends Controller
         $beverage = new Beverages;
 
         if ($request->hasFile('image')) {
+<<<<<<< HEAD
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $destinationPath = public_path('images/beverages');
@@ -87,10 +88,16 @@ class BeverageController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+=======
+            $beverage->image = $request->file('image')->store('beverages', 'public');
+        }
+
+>>>>>>> 52c76d88329c1d2515840df4107164a6e26264e3
         $beverage->name = $request->name;
         $beverage->price = $request->price;
         $beverage->availability = $request->availability;
 
+<<<<<<< HEAD
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images', 'public');
             $beverage->image = 'storage/' . $imagePath;
@@ -99,6 +106,51 @@ class BeverageController extends Controller
         $beverage->save();
 
         return redirect()->route('beverage.index')->with('success', 'Beverage updated successfully!');
+=======
+        $beverage->save();
+
+        return redirect()->route('beverage.index')->with('success', 'Beverage created successfully.');
+    }
+
+    // Form edit beverage
+    public function edit($encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
+        $beverage = Beverages::findOrFail($id);
+
+        return view('admin.beverage.edit', compact('beverage'));
+    }
+
+    // Update beverage
+    public function update(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);
+        $beverage = Beverages::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|integer|min:0',
+            'availability' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($beverage->image && Storage::disk('public')->exists($beverage->image)) {
+                Storage::disk('public')->delete($beverage->image);
+            }
+
+            $beverage->image = $request->file('image')->store('beverages', 'public');
+        }
+
+        $beverage->name = $request->name;
+        $beverage->price = $request->price;
+        $beverage->availability = $request->availability;
+
+        $beverage->save();
+
+        return redirect()->route('beverage.index')->with('success', 'Beverage updated successfully.');
+>>>>>>> 52c76d88329c1d2515840df4107164a6e26264e3
     }
 
     // Hapus beverage
@@ -121,6 +173,10 @@ class BeverageController extends Controller
     {
         $id = Crypt::decrypt($encryptedId);
         $beverage = Beverages::findOrFail($id);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 52c76d88329c1d2515840df4107164a6e26264e3
         return view('admin.beverage.show', compact('beverage'));
     }
 }

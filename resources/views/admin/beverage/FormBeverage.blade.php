@@ -33,6 +33,7 @@
                                 placeholder="Enter price" required />
                         </div>
 
+<<<<<<< HEAD
                         <div class="mb-6 flex items-center">
                             <label class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Availability</label>
                             <div class="w-2/3 flex space-x-6">
@@ -45,6 +46,14 @@
                                     <span class="ml-2">Available</span>
                                 </label>
                             </div>
+=======
+                        <div class="mb-6 flex">
+                            <label for="availability"
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Availability</label>
+                            <input type="number" id="availability" name="availability" min="0"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
+                                placeholder="Enter availability quantity" required />
+>>>>>>> 52c76d88329c1d2515840df4107164a6e26264e3
                         </div>
 
                         <div class="mb-6 flex">

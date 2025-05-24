@@ -61,10 +61,19 @@ Route::delete('/cwspace/{id}', [CwspaceController::class, 'delete'])->name('cwsp
 Route::prefix('beverage')->group(function () {
     Route::get('/index', [BeverageController::class, 'index'])->name('beverage.index'); // List beverage
     Route::get('/form', [BeverageController::class, 'create'])->name('beverage.create'); // Form tambah
+<<<<<<< HEAD
    
     Route::post('/store', [BeverageController::class, 'store'])->name('beverage.store'); // Simpan baru
     Route::get('/edit/{id}', [BeverageController::class, 'edit'])->name('beverage.edit'); // Form edit
     Route::put('/update/{id}', [BeverageController::class, 'update'])->name('beverage.update');
     Route::post('/delete/{id}', [BeverageController::class, 'destroy'])->name('beverage.delete'); // Hapus data
     
+=======
+    Route::post('/store', [BeverageController::class, 'store'])->name('beverage.store'); // Simpan baru
+
+    Route::get('/detail/{id}', [BeverageController::class, 'edit'])->name('beverage.edit'); // Form edit
+    Route::post('/update', [BeverageController::class, 'update'])->name('beverage.update'); // Update data
+
+    Route::post('/delete/{id}', [BeverageController::class, 'destroy'])->name('beverage.delete'); // Hapus data
+>>>>>>> 52c76d88329c1d2515840df4107164a6e26264e3
 });
