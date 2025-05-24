@@ -6,6 +6,7 @@ use App\Models\Cwspace;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BorrowingController;
+use App\Http\Controllers\BeverageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -55,3 +56,15 @@ Route::get('/cwspace/index', [CwspaceController::class, 'index'])->name('cwspace
 Route::post('/cwspace/insert',[CwspaceController::class, 'insert'])->name('cwspace.insert'); //add cwspace to the db
 Route::put('/cwspace/{id}', [CwspaceController::class, 'update'])->name('cwspace.update'); //update
 Route::delete('/cwspace/{id}', [CwspaceController::class, 'delete'])->name('cwspace.delete');
+
+//BEVERAGES CRUD
+Route::prefix('beverage')->group(function () {
+    Route::get('/index', [BeverageController::class, 'index'])->name('beverage.index'); // List beverage
+    Route::get('/form', [BeverageController::class, 'create'])->name('beverage.create'); // Form tambah
+   
+    Route::post('/store', [BeverageController::class, 'store'])->name('beverage.store'); // Simpan baru
+    Route::get('/edit/{id}', [BeverageController::class, 'edit'])->name('beverage.edit'); // Form edit
+    Route::put('/update/{id}', [BeverageController::class, 'update'])->name('beverage.update');
+    Route::post('/delete/{id}', [BeverageController::class, 'destroy'])->name('beverage.delete'); // Hapus data
+    
+});
