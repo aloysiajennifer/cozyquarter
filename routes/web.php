@@ -13,10 +13,6 @@ Route::get('/', function () {
     return view('layout');
 });
 
-// Route::get('/menu', function(){
-//     return view('user.beveragesMenu');
-// });
-
 //ROUTE NAVBAR
 
 //SHELF CRUD
@@ -73,3 +69,6 @@ Route::prefix('beverage')->group(function () {
     Route::post('/delete/{id}', [BeverageController::class, 'destroy'])->name('beverage.delete'); // Hapus data
     
 });
+
+//BEVERAGES USER
+Route::get('/menu', [BeverageController::class, 'menu'])->name('beverages.menu');

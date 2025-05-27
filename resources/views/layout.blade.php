@@ -60,7 +60,7 @@
                     </a>
                     <a href=""
                         class="rounded-md px-3 py-2 text-sm font-medium 
-                        {{ Route::currentRouteName() == 'room'
+                        {{ Route::currentRouteName() == ''
                             ? 'bg-[var(--highlight)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Co-Working Space

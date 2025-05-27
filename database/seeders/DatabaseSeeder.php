@@ -77,6 +77,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             BeverageSeeder::class,
+            ShelfSeeder::class,
+            CategorySeeder::class,
+            BookSeeder::class,
         ]);
 
     }

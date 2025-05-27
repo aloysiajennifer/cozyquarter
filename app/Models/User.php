@@ -23,7 +23,8 @@ class User extends Authenticatable
         'email',
         'username',
         'password',
-        'penalty_counter'
+        'penalty_counter',
+        'role_id',
     ];
 
     public static array $rules = [
@@ -32,6 +33,7 @@ class User extends Authenticatable
         'email' => 'required|string',
         'username' => 'required|string',
         'password' => 'required|string',
+        'role_id' => 'required',
     ];
 
     /**
@@ -41,6 +43,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'role_id',
         'remember_token',
     ];
 
@@ -55,5 +58,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role(){
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
+    public function borrowing(){
+        return $this->hasMany(Borrowing::class, 'id_user', 'id');
     }
 }

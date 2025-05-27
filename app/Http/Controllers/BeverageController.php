@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
 
+use function PHPUnit\Framework\isTrue;
+
 class BeverageController extends Controller
 {
     // Tampilkan list semua beverage dengan pagination dan pencarian
@@ -122,5 +124,10 @@ class BeverageController extends Controller
         $id = Crypt::decrypt($encryptedId);
         $beverage = Beverages::findOrFail($id);
         return view('admin.beverage.show', compact('beverage'));
+    }
+
+    public function menu(){
+        $beverages = Beverages::where('availability',true)->get();
+        return view('user.beveragesMenu', compact('beverages'));
     }
 }

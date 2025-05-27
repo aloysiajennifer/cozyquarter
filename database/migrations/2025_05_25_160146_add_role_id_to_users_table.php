@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('beverages', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->integer('price');
-            $table->string('image');
-            $table->boolean('availability');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('role_id');
+            $table->foreign('role_id')->references('id')->on('role')->onDelete('cascade');
         });
     }
 
@@ -26,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('beverages');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

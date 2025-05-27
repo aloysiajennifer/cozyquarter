@@ -16,37 +16,37 @@ class BeverageSeeder extends Seeder
                 'name' => 'Iced Coffee', 
                 'price' => 20000, 
                 'image' => 'images/beverages/Coffee.png', 
-                'availability' => 1
+                'availability' => true
             ],
             [
                 'name' => 'Matcha', 
                 'price' => 32000, 
                 'image' => 'images/beverages/Matcha.png', 
-                'availability' => 1
+                'availability' => true
             ],
             [
                 'name' => 'Strawberry Milkshake', 
                 'price' => 35000, 
                 'image' => 'images/beverages/StrawberryMilkshake.png', 
-                'availability' => 0
+                'availability' => false
             ],
             [
                 'name' => 'Orange Juice', 
                 'price' => 16000, 
                 'image' => 'images/beverages/OrangeJuice.png', 
-                'availability' => 0
+                'availability' => false
             ],
             [
                 'name' => 'Boba', 
                 'price' => 30000, 
                 'image' => 'images/beverages/Boba.png', 
-                'availability' => 1
+                'availability' => true
             ],
             [
                 'name' => 'Hot Chocolate', 
                 'price' => 22000, 
                 'image' => 'images/beverages/HotChoco.png', 
-                'availability' => 1
+                'availability' => true
             ],
         ];
 
