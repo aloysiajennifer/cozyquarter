@@ -9,7 +9,7 @@ use App\Models\User;
 class BorrowingController extends Controller
 {
     public function index() {
-        $borrowings = Borrowing::get();
+        $borrowings = Borrowing::with(['user', 'book', 'fine'])->get();
         return view('admin.borrowing.index')->with('borrowings', $borrowings);
     }
 
@@ -66,7 +66,7 @@ class BorrowingController extends Controller
         }
 
         $borrowing->status_returned = 1;
-        // $borrowing->boarding_time = now();
+        $borrowing->return_date = now();
         
         $borrowing->save();
 
