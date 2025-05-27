@@ -12,7 +12,7 @@ class Borrowing extends Model
         return $this->belongsTo(Book::class, 'id_book', 'id');
     }
     public function fine(){
-        return $this->hasOne(Fine::class, 'id_fine', 'id');
+        return $this->hasOne(Fine::class, 'id_borrowing', 'id');
     }
 
     public function user(){

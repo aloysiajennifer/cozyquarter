@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\BeverageController;
+use App\Http\Controllers\FineController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -44,6 +45,8 @@ Route::get('/library/home',[BookController::class, 'home'])->name('library.home'
 
 // BORROWING
 Route::get('/borrowing/index', [BorrowingController::class, 'index'])->name('borrowing.index');
+Route::put('/borrowing/returned/{id}', [BorrowingController::class, 'returned'])->name('borrowing.returned');
+Route::put('/fine/paid/{id}', [FineController::class, 'paid'])->name('fine.paid');
 Route::get('/borrowing/form',[BorrowingController::class, 'form'])->name('borrowing.form');
 Route::post('/borrowing/insert',[BorrowingController::class, 'insert'])->name('borrowing.insert');
 
