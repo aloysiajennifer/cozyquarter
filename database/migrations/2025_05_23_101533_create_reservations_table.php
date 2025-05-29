@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->tinyInteger('status_reservation')->nullable(); //0= attended, 1=not attended 2=cancelled 3=closed
+            $table->dateTime('check_in_time')->nullable();
+            $table->dateTime('check_out_time')->nullable();
+            $table->timestamp('timestamp_reservation');
+            $table->foreignId('id_reservation')->constrained('reservations')->onUpdate('cascade')->onDelete('cascade');
+            //$table->timestamps();
         });
     }
 

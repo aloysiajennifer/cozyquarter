@@ -11,6 +11,12 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+
     <title>@yield('title', 'Home Admin')</title>
     <link rel="icon" href="{{ asset('images/logo.jpeg') }}" type="image/jpeg">
 
@@ -132,7 +138,7 @@
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 pl-11">Co-working Space</a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="{{route('schedule.index')}}"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 pl-11">Schedule</a>
                         </li>
                         <li>

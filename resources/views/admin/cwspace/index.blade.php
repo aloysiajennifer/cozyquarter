@@ -4,12 +4,12 @@
 @section('title', 'CRUD Co-working Space')
 @section('content')
 <div class="mt-16 p-4">
-    <p class="text-2xl font-bold text-center">CO-WORKING SPACE LIST</p>
+    <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Co-working Space List</h1>
 
     <!-- Button add cwspace -->
     <div class="mt-8 mb-3">
         <button data-modal-target="cwspace-create" data-modal-toggle="cwspace-create"
-            class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 
+            class="w-full sm:w-auto  max-w-md block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 
                 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 
                 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
             + ADD CWSPACE
@@ -56,7 +56,7 @@
                         {{ $cwspace -> capacity_cwspace}}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $cwspace -> status_cwspace == 0? "Available" : "Closed"}}
+                        {{ $cwspace -> status_cwspace == 0? "Open" : "Closed"}}
                     </td>
 
                     <!-- Edit -->
@@ -118,7 +118,7 @@
                                             <label for="status_cwspace" class="block text-sm font-medium text-gray-900 dark:text-white">Status</label>
                                             <select name="status_cwspace"
                                                 class="border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5">
-                                                <option value="0" {{ $cwspace->status_cwspace == 0 ? 'selected' : '' }}>Available</option>
+                                                <option value="0" {{ $cwspace->status_cwspace == 0 ? 'selected' : '' }}>Open</option>
                                                 <option value="1" {{ $cwspace->status_cwspace == 1 ? 'selected' : '' }}>Closed</option>
                                             </select>
                                         </div>

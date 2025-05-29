@@ -8,6 +8,7 @@ use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\BeverageController;
 use App\Http\Controllers\FineController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -75,3 +76,9 @@ Route::prefix('beverage')->group(function () {
 
 //BEVERAGES USER
 Route::get('/menu', [BeverageController::class, 'menu'])->name('beverages.menu');
+
+// SCHEDULES CRUD
+Route::get('/schedules/index', [ScheduleController::class, 'index'])->name('schedule.index');
+Route::put('/schedules/{id}',  [ScheduleController::class, 'index'])->name('schedule.update');
+
+
