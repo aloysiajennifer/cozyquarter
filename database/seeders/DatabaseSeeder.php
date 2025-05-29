@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Cwspace;
 use App\Models\OperationalDay;
+use App\Models\Role;
 use App\Models\Time;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
        
         // Jalanin seeder otomatis
          $this->call([
+            RoleSeeder::class,
             UserSeeder::class,
             BeverageSeeder::class,
             CategorySeeder::class,
