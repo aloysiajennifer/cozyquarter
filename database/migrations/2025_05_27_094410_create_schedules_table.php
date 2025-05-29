@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            // room available or not, 0 = available 1=reserved
-            $table->boolean('status_schedule')->default(0);
-            $table->date('date');
+            $table->tinyInteger('status_schedule');
+            // closed = 0/available = 1/reserved =2
+            $table->foreignId('id_operational_day')->constrained('operational_days')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('id_time')->constrained('times')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('id_cwspace')->constrained('cwspaces')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('id_reservation')->constrained('reservations')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

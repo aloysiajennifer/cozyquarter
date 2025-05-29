@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\BeverageController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -73,3 +74,9 @@ Route::prefix('beverage')->group(function () {
     Route::post('/delete/{id}', [BeverageController::class, 'destroy'])->name('beverage.delete'); // Hapus data
     
 });
+
+// SCHEDULES CRUD
+Route::get('/schedules/index', [ScheduleController::class, 'index'])->name('schedule.index');
+Route::put('/schedules/{id}',  [ScheduleController::class, 'index'])->name('schedule.update');
+
+
