@@ -79,6 +79,6 @@ Route::get('/menu', [BeverageController::class, 'menu'])->name('beverages.menu')
 
 // SCHEDULES CRUD
 Route::get('/schedules/index', [ScheduleController::class, 'index'])->name('schedule.index');
-Route::put('/schedules/{id}',  [ScheduleController::class, 'index'])->name('schedule.update');
+Route::put('/schedules/{id}',  [ScheduleController::class, 'update'])->name('schedule.update');
 
 
