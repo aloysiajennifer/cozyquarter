@@ -29,7 +29,7 @@ class GenerateSchedule extends Command
      * Execute the console command.
      */
     public function handle() // jalanin pakai -> php artisan generate:schedule
-    
+
     {
         $days = OperationalDay::all();
         $times = Time::all();
@@ -52,15 +52,29 @@ class GenerateSchedule extends Command
                             $status = 1;
                         }
                     }
-                    // Minggu: semua status = 0
+                    // Minggu: semua status = 0 (closed)
 
-                    Schedule::updateOrCreate([
+                    // Cek apakah sudah ada schedule untuk kombinasi hari + waktu + space
+                    $existing = Schedule::where([
                         'id_operational_day' => $day->id,
                         'id_time' => $time->id,
                         'id_cwspace' => $space->id,
-                    ], [
-                        'status_schedule' => $status,
-                    ]);
+                    ])->first();
+
+                    if (!$existing) {
+                        // Jika belum ada, buat baru dengan default status otomatis
+                        Schedule::updateOrCreate(
+                            [
+                                'id_operational_day' => $day->id,
+                                'id_time' => $time->id,
+                                'id_cwspace' => $space->id,
+                            ],
+                            [
+                                'status_schedule' => $status,
+                                'updated_at' => now(),
+                            ]
+                        );
+                    }
                 }
             }
         }

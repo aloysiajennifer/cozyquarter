@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
        
         // Jalanin seeder otomatis
          $this->call([
+            RoleSeeder::class,
             UserSeeder::class,
             BeverageSeeder::class,
             CategorySeeder::class,
@@ -26,8 +27,8 @@ class DatabaseSeeder extends Seeder
             BookSeeder::class,
             TimeSeeder::class,
             CwspaceSeeder::class,
-            OperationalDaySeeder::class,
-            ScheduleSeeder::class,
+            //OperationalDaySeeder::class,
+            //ScheduleSeeder::class,
         ]);
 
     }

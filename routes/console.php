@@ -9,6 +9,5 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// php artisan schedule:run
-Schedule::command('operational:update')->daily('23:59');
+
 
