@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Cwspace;
 use App\Models\OperationalDay;
+use App\Models\Reservation;
 use App\Models\Time;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -27,8 +28,10 @@ class DatabaseSeeder extends Seeder
             BookSeeder::class,
             TimeSeeder::class,
             CwspaceSeeder::class,
-            //OperationalDaySeeder::class,
-            //ScheduleSeeder::class,
+            OperationalDaySeeder::class,
+            ScheduleSeeder::class,
+            ReservationSeeder::class,
+            OrderSeeder::class,
         ]);
 
     }

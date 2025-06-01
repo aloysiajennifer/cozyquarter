@@ -9,6 +9,7 @@ use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\BeverageController;
 use App\Http\Controllers\FineController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -81,4 +82,5 @@ Route::get('/menu', [BeverageController::class, 'menu'])->name('beverages.menu')
 Route::get('/schedules/index', [ScheduleController::class, 'index'])->name('schedule.index');
 Route::put('/schedules/{id}',  [ScheduleController::class, 'update'])->name('schedule.update');
 
-
+//ORDER USER
+Route::get('/yourorder', [OrderController::class, 'orderdetails'])->name('yourOrder');
