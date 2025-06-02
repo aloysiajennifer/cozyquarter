@@ -14,4 +14,22 @@ class OrderController extends Controller
 
         return view('user.yourOrder', compact('orders'));
     }
+
+    public function index()
+    {
+        $orders = Order::with('orderdetails')->get();
+
+        return view('admin.order.orderIndex', [
+            'orders' => $orders
+        ]);
+    }
+
+    public function confirm($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->status_order = 1;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Order marked as paid.');
+    }
 }
