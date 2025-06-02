@@ -10,6 +10,7 @@ use App\Http\Controllers\BeverageController;
 use App\Http\Controllers\FineController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -84,3 +85,5 @@ Route::put('/schedules/{id}',  [ScheduleController::class, 'update'])->name('sch
 
 //ORDER USER
 Route::get('/yourorder', [OrderController::class, 'orderdetails'])->name('yourOrder');
+
+//RESERVATION CRUD

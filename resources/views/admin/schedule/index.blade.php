@@ -8,29 +8,52 @@
     <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Schedule List</h1>
 
     <form method="GET" action="{{ route('schedule.index') }}" class="mb-6">
-        <!-- Filter Tanggal -->
-        <label for="date" class="block text-sm font-semibold text-[var(--primary)] mb-2">Choose Operational Date:</label>
-        <input type="text" id="date" name="date" class="w-full px-4 py-2 rounded-md border border-gray-300 bg-white text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--accent-blue)] focus:outline-none shadow-sm" value="{{ $selectedDate }}" placeholder="Select date" readonly>
+        <div class="flex flex-col md:flex-row md:items-center md:gap-6 mb-6">
 
+            <!-- Operational Date -->
+            <div class="flex flex-col md:flex-row md:items-center md:gap-3 mb-4 md:mb-0 md:flex-1">
+                <label for="date" class="font-semibold text-[var(--primary)] mb-1 md:mb-0 md:w-48">
+                    Choose Operational Date:
+                </label>
+                <input type="text" id="date" name="date"
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 bg-white text-[var(--text-primary)] shadow-sm focus:ring-2 focus:ring-[var(--accent-blue)] focus:outline-none"
+                    value="{{ $selectedDate }}" placeholder="dd/mm/yyyy" readonly>
+            </div>
 
-
-        <!-- Filter Cwspace -->
-        <label for="cwspace" class="block text-sm font-semibold text-[var(--primary)] mb-2">Filter by CW Space:</label>
-        <select name="cwspace" id="cwspace" class="w-full px-4 py-2 rounded-md border border-gray-300 bg-white text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--accent-blue)] focus:outline-none shadow-sm" onchange="this.form.submit()">
-            <option value="">-- All CW Spaces --</option>
-            @foreach ($cwspaces as $space)
-            <option value="{{ $space->id }}" {{ request('cwspace') == $space->id ? 'selected' : '' }}>
-                {{ $space->code_cwspace }}
-            </option>
-            @endforeach
-        </select>
+            <!-- CW Space -->
+            <div class="flex flex-col md:flex-row md:items-center md:gap-3 md:flex-1">
+                <label for="cwspace" class="font-semibold text-[var(--primary)] mb-1 md:mb-0 md:w-48">
+                    Filter by CW Space:
+                </label>
+                <select name="cwspace" id="cwspace"
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 bg-white text-[var(--text-primary)] shadow-sm focus:ring-2 focus:ring-[var(--accent-blue)] focus:outline-none"
+                    onchange="this.form.submit()">
+                    <option value="">-- All CW Spaces --</option>
+                    @foreach ($cwspaces as $space)
+                    <option value="{{ $space->id }}" {{ request('cwspace') == $space->id ? 'selected' : '' }}>
+                        {{ $space->code_cwspace }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
     </form>
 
-    @if ($schedules)
+    @if ($selectedCwspaceObj && $selectedCwspaceObj->status_cwspace == 1)
+    <div class="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+        </svg>
+
+        <span class="pl-3 block font-semibold">CW Space tutup, tidak ada jadwal.</span>
+    </div>
+
+    @elseif ($schedules && count($schedules) > 0)
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-md text-center rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
+                    <th scope="col" class="px-6 py-3">No</th>
                     <th scope="col" class="px-6 py-3">Time</th>
                     <th scope="col" class="px-6 py-3">CW Space</th>
                     <th scope="col" class="px-6 py-3">Status</th>
@@ -40,6 +63,7 @@
             <tbody>
                 @foreach ($schedules as $schedule)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                    <td class="px-6 py-4">{{ $loop -> iteration}}</td>
                     <td class="px-4 py-2">{{ $schedule->time->start_time }} - {{ $schedule->time->end_time }}</td>
                     <td class="px-4 py-2">{{ $schedule->cwspace->code_cwspace }}</td>
                     <td class="px-4 py-2">
@@ -47,10 +71,12 @@
                         $statusLabels = ['Closed', 'Available', 'Reserved'];
                         $statusColors = ['text-red-600', 'text-green-600', 'text-yellow-600'];
                         @endphp
-                        <span class="{{ $statusColors[$schedule->status_schedule] }}">
+                        <span class="{{ $statusColors[$schedule->status_schedule] }} font-semibold">
                             {{ $statusLabels[$schedule->status_schedule] }}
                         </span>
+
                     </td>
+
                     <td class="px-6 py-4">
                         <button data-modal-target="schedule-edit-{{ $schedule->id }}" data-modal-toggle="schedule-edit-{{ $schedule->id }}"
                             class="block mx-auto text-white bg-amber-400 hover:bg-amber-500 focus:ring-4 focus:outline-none focus:ring-amber-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -104,8 +130,6 @@
             </tbody>
         </table>
     </div>
-    @elseif ($selectedDate)
-    <p class="text-gray-800 mt-4">No schedules found for selected date.</p>
     @endif
 </div>
 

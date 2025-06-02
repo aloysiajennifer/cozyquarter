@@ -56,7 +56,9 @@
                         {{ $cwspace -> capacity_cwspace}}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $cwspace -> status_cwspace == 0? "Open" : "Closed"}}
+                        <span class="font-semibold {{ $cwspace->status_cwspace == 0 ? 'text-green-600' : 'text-red-600' }}">
+                            {{ $cwspace->status_cwspace == 0 ? 'Open' : 'Closed' }}
+                        </span>
                     </td>
 
                     <!-- Edit -->

@@ -21,7 +21,7 @@ class CwspaceSeeder extends Seeder
 
             ['code_cwspace' => 'B',
             'capacity_cwspace' => 5,
-            'status_cwspace' => 0],
+            'status_cwspace' => 1],
 
             ['code_cwspace' => 'C',
             'capacity_cwspace' => 10,
