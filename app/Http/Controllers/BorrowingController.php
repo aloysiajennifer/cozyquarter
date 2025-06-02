@@ -55,7 +55,7 @@ class BorrowingController extends Controller
         $borrowing->book->save();
 
 
-        // Hitung denda
+        // HITUNG DENDA
         $returnDue = Carbon::parse($borrowing->return_due)->startOfDay();
         $returnDate = Carbon::parse($borrowing->return_date)->startOfDay();
         if ($returnDate->greaterThan($returnDue)) {
@@ -98,8 +98,8 @@ class BorrowingController extends Controller
         $borrowing = new Borrowing;
         $borrowing->id_user = $request->id_user;
         $borrowing->id_book = $request->id_book;
-        $borrowing->borrowing_date = Carbon::now();
-        $borrowing->return_due = Carbon::now()->addDays(7)->format('Y-m-d');
+        $borrowing->borrowing_date = Carbon::parse($request->borrowing_date);
+        $borrowing->return_due = Carbon::parse($request->return_due);
         $borrowing->status_returned = 0;
         $borrowing->save();
 
