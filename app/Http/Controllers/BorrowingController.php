@@ -58,14 +58,15 @@ class BorrowingController extends Controller
         // HITUNG DENDA
         $returnDue = Carbon::parse($borrowing->return_due)->startOfDay();
         $returnDate = Carbon::parse($borrowing->return_date)->startOfDay();
+        // Cek returnDate nya melebihi returnDue tidak
         if ($returnDate->greaterThan($returnDue)) {
-            $daysLate = $returnDate->diffInDays($returnDue);
-            $dailyFine = 5000; // Contoh denda per hari (misal Rp 5000)
+            $daysLate = $returnDue->diffInDays($returnDate);
+            $fineAmount = 1000; // Denda per hari
 
             // Simpan atau update denda
             $fine = Fine::updateOrCreate(
-                ['borrowing_id' => $borrowing->id],
-                ['amount' => $daysLate * $dailyFine]
+                ['id_borrowing' => $borrowing->id],
+                ['fine_total' => $daysLate * $fineAmount]
             );
         }
 
@@ -78,8 +79,11 @@ class BorrowingController extends Controller
         try {
             $listUsers = User::all();
             $listBooks = Book::where('status_book', 1)->get();
-            $borrowingDate = Carbon::now();
-            $returnDue = Carbon::now()->addDays(7)->setTime(23, 59, 59);
+            // $borrowingDate = Carbon::now();
+            // $returnDue = Carbon::now()->addDays(7)->setTime(23, 59, 59);
+            $borrowingDate = Carbon::parse('2025-05-01 10:00:00');  // contoh tanggal pinjam sudah lalu
+            $returnDue = Carbon::parse('2025-05-08 23:59:59');      // contoh tanggal harus kembali (7 hari kemudian)
+
             return view('admin.borrowing.form', compact('listUsers', 'listBooks', 'borrowingDate', 'returnDue'));
         } 
         catch (\Exception $e) {
