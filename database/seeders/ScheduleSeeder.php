@@ -18,7 +18,7 @@ class ScheduleSeeder extends Seeder
     public function run(): void
     {
         // Ambil semua data cwspace & time
-        $cwspaces = Cwspace::all();
+        $cwspaces =  Cwspace::where('status_cwspace', 0)->get(); // Ambil cwspace yg open aja
         $times = Time::all();
         $operationalDays = OperationalDay::all();
 

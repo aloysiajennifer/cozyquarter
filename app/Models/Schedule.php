@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    protected $fillable = ['status_schedule', 'id_operational_day', 'id_time', 'id_cwspace', ];
+    protected $fillable = ['status_schedule', 'id_operational_day', 'id_time', 'id_cwspace', 'id_reservation'];
     
     public function time(){
         return $this->belongsTo(Time::class, 'id_time', 'id');
@@ -19,5 +19,9 @@ class Schedule extends Model
 
     public function operationalDay(){
         return $this->belongsTo(OperationalDay::class, 'id_operational_day', 'id');
+    }
+
+    public function reservation(){
+        return $this->belongsTo(Reservation::class, 'id_reservation', 'id');
     }
 }

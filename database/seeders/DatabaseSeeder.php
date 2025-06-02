@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Cwspace;
 use App\Models\OperationalDay;
+use App\Models\Reservation;
 use App\Models\Role;
 use App\Models\Time;
 use App\Models\User;
@@ -28,8 +29,11 @@ class DatabaseSeeder extends Seeder
             BookSeeder::class,
             TimeSeeder::class,
             CwspaceSeeder::class,
-            //OperationalDaySeeder::class,
-            //ScheduleSeeder::class,
+            //Cara bikin operational sm schedule otomatis untuk 2 minggu kedepan
+            OperationalDaySeeder::class, // hbs jalanin seeder ketik -> php artisan operational:update
+            ScheduleSeeder::class, // hbs jalanin seeder ketik -> php artisan generate:schedule
+            ReservationSeeder::class,
+            OrderSeeder::class,
         ]);
 
     }

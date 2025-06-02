@@ -5,18 +5,18 @@
     <div class="grid grid-cols-3 gap-4 p-5">
         @foreach ($beverages as $b)
             <div
-                class="w-full max-w-sm hover:text-[var(--primary)] text-[var(--background-light)] bg-[var(--accent-blue)] rounded-lg hover:bg-[var(--highlight)] shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                class="beverage-card w-full max-w-sm hover:text-[var(--primary)] text-[var(--background-light)] bg-[var(--accent-blue)] rounded-lg hover:bg-[var(--highlight)] shadow-sm dark:bg-gray-800 dark:border-gray-700">
                 <img class="p-3 rounded-t-lg" src="{{ $b->image }}" alt="product image" />
                 <div class="px-5 pb-5">
                     <h5 class="text-2xl text-center font-semibold tracking-tight dark:text-white">{{ $b->name }}</h5>
                     <h5 class="text-l text-center tracking-tight dark:text-white">
                         Rp{{ number_format($b->price, 0, ',', '.') }}</h5>
                     <div class="flex items-center justify-center space-x-2 mt-3">
-                        <button id="decreaseBtn"
-                            class="px-3 py-1 rounded bg-[var(--accent-green)] hover:bg-[var(--accent-blue)] text-lg font-bold">-</button>
-                        <span id="quantity" class="px-4 py-1 text-lg font-medium">0</span>
-                        <button id="increaseBtn"
-                            class="px-3 py-1 rounded bg-[var(--accent-green)] hover:bg-[var(--accent-blue)] text-lg font-bold">+</button>
+                        <button
+                            class="decreaseBtn px-3 py-1 rounded bg-[var(--accent-green)] hover:bg-[var(--accent-blue)] text-lg font-bold">-</button>
+                        <span class="quantity px-4 py-1 text-lg font-medium">0</span>
+                        <button
+                            class="increaseBtn px-3 py-1 rounded bg-[var(--accent-green)] hover:bg-[var(--accent-blue)] text-lg font-bold">+</button>
                     </div>
                 </div>
             </div>
@@ -24,8 +24,9 @@
     </div>
 
     <div class="m-3 p-3">
-        <a href="">
-            <div class="flex items-center text-black hover:text-white hover:bg-[var(--primary)] justify-between bg-[var(--secondary)] rounded p-6 hover:shadow-lg transition-shadow duration-300">
+        <a href="{{route('yourOrder')}}">
+            <div
+                class="flex items-center text-black hover:text-white hover:bg-[var(--primary)] justify-between bg-[var(--secondary)] rounded p-6 hover:shadow-lg transition-shadow duration-300">
                 <h5 class="text-2xl font-semibold tracking-tight dark:text-white">YOUR ORDER</h5>
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
@@ -36,23 +37,35 @@
     </div>
 
     <script>
-        const decreaseBtn = document.getElementById("decreaseBtn");
-        const increaseBtn = document.getElementById("increaseBtn");
-        const quantity = document.getElementById("quantity");
+        const decreaseBtn = document.querySelectorAll("#decreaseBtn");
+        const increaseBtn = document.querySelectorAll("#increaseBtn");
+        const quantity = document.querySelectorAll("#quantity");
 
-        let qty = 0;
+        document.querySelectorAll(".beverage-card").array.forEach(card => {
+            const beverageId = card.dataset.beverageId;
+            const decreaseBtn = card.querySelector(".decreaseBtn");
+            const increaseBtn = card.querySelector(".increaseBtn");
+            const quantitySpan = card.querySelector(".quantity");
 
-        increaseBtn.addEventListener("click", () => {
-            qty++;
-            quantity.textContent = qty;
-        });
+            let order = JSON.parse(localStorage.getItem("order")) || {};
+            quantitySpan.textContent = order[beverageId] || 0;
 
-        decreaseBtn.addEventListener("click", () => {
-            qty--;
-            if (qty < 0) {
-                qty = 0;
-            }
-            quantity.textContent = qty;
+            increaseBtn.addEventListener("click", () => {
+                let qty = order[beverageId] || 0;
+                qty++;
+                order[beverageId] = qty;
+                localStorage.setItem("order", JSON.stringify(order));
+                quantitySpan.textContent = qty;
+            });
+
+            decreaseBtn.addEventListener("click", () => {
+                let qty = order[beverageId] || 0;
+                qty--;
+                if (qty < 0) qty = 0;
+                order[beverageId] = qty;
+                localStorage.setItem("order", JSON.stringify(order));
+                quantitySpan.textContent = qty;
+            });
         });
     </script>
 @endsection

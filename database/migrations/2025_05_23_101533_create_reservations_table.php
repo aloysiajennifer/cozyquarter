@@ -17,8 +17,8 @@ return new class extends Migration
             $table->dateTime('check_in_time')->nullable();
             $table->dateTime('check_out_time')->nullable();
             $table->timestamp('timestamp_reservation');
-            $table->foreignId('id_reservation')->constrained('reservations')->onUpdate('cascade')->onDelete('cascade');
-            //$table->timestamps();
+            $table->foreignId('id_user')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

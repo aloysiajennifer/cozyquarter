@@ -11,7 +11,7 @@ class Beverages extends Model
     protected $connection = 'mysql';
     protected $table = 'beverages';
 
-    public $fillable = [
+    protected $fillable = [
         'name',
         'price',
         'image',
@@ -20,12 +20,15 @@ class Beverages extends Model
 
     public static array $rules = [
         'name' => 'required|string|max: 255',
-        'price' => 'required|integer',
+        'price' => 'required|integer|gt:0',
         'image' => 'required|string',
-        'availability' => 'required|integer|in:0,1',
+        'availability' => 'required|boolean',
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];
 
-    //relasi (MASIH BELUM)
+      public function orderdetail()
+    {
+        return $this->hasMany(OrderDetails::class, 'beverage_id', 'id');
+    }
 }
