@@ -19,8 +19,6 @@ class ReservationSeeder extends Seeder
             'check_in_time' => Carbon::now()->addDay(), 
             'timestamp_reservation' => Carbon::now(),
             'id_user' => 7, 
-            'id_schedule' => 1,
-            
         ]);
     }
 }

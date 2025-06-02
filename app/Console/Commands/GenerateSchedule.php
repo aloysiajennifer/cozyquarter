@@ -33,7 +33,7 @@ class GenerateSchedule extends Command
     {
         $days = OperationalDay::all();
         $times = Time::all();
-        $cwspaces = Cwspace::all();
+        $cwspaces = Cwspace::where('status_cwspace', 0)->get(); // Ambil cwspace yg open aja
 
         foreach ($days as $day) {
             $carbonDate = Carbon::parse($day->date);
@@ -52,7 +52,7 @@ class GenerateSchedule extends Command
                             $status = 1;
                         }
                     }
-                    // Minggu: semua status = 0 (closed)
+
 
                     // Cek apakah sudah ada schedule untuk kombinasi hari + waktu + space
                     $existing = Schedule::where([
@@ -63,17 +63,22 @@ class GenerateSchedule extends Command
 
                     if (!$existing) {
                         // Jika belum ada, buat baru dengan default status otomatis
-                        Schedule::updateOrCreate(
+                        Schedule::create(
                             [
                                 'id_operational_day' => $day->id,
                                 'id_time' => $time->id,
                                 'id_cwspace' => $space->id,
-                            ],
-                            [
                                 'status_schedule' => $status,
                                 'updated_at' => now(),
                             ]
                         );
+                    } else {
+                        // Kalau sudah ada, update status hanya jika berbeda
+                        if ($existing->status_schedule != $status) {
+                            $existing->status_schedule = $status;
+                            $existing->updated_at = now();
+                            $existing->save();
+                        }
                     }
                 }
             }

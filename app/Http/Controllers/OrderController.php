@@ -8,6 +8,7 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
+    
     public function orderdetails()
     {
         $orders = Order::with('orderDetails.beverage')->get();

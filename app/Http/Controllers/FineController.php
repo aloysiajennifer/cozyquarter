@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class FineController extends Controller
 {
-    // Fungsi update status returned
+    // Fungsi update status paid
     public function paid(Request $request) {
         $fine = Fine::find($request->id);
         if (!$fine) {

@@ -10,6 +10,7 @@ use App\Http\Controllers\BeverageController;
 use App\Http\Controllers\FineController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
