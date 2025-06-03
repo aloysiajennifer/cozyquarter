@@ -29,25 +29,31 @@
                         </button>
                     </div>
 
-                    {{-- Start Date Picker --}}
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            {{-- <i class="far fa-calendar"></i> --}}
+                    <div class="flex bg-gray-50 text-sm text-primary border border-gray-300 rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]
+                                justify-center items-center h-full">
+                        {{-- Start Date Picker --}}
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                {{-- <i class="far fa-calendar"></i> --}}
+                            </div>
+                            <input type="date" name="start_date" id="start_date"
+                                class="block p-4 pl-10 text-sm text-primary border-r border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
+                                value="{{ request('start_date') }}">
                         </div>
-                        <input type="date" name="start_date" id="start_date"
-                            class="block w-full p-4 pl-10 text-sm text-primary border border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
-                            value="{{ request('start_date') }}">
-                    </div>
 
-                    {{-- End Date Picker --}}
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            {{-- <i class="far fa-calendar"></i> --}}
+                        {{-- End Date Picker --}}
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                {{-- <i class="far fa-calendar"></i> --}}
+                            </div>
+                            <input type="date" name="end_date" id="end_date"
+                                class="block w-full p-4 pl-10 text-sm text-primary rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
+                                value="{{ request('end_date') }}">
                         </div>
-                        <input type="date" name="end_date" id="end_date"
-                            class="block w-full p-4 pl-10 text-sm text-primary border border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
-                            value="{{ request('end_date') }}">
-                        </div>
+
+                        <div></div>
+                    </div>
+                    
 
                 </div>
             </form>
