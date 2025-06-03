@@ -49,26 +49,38 @@
                             <tr class="bg-white border-b hover:bg-gray-100">
                                 <td class="px-6 py-4 text-primary">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4 font-medium text-[var(--primary)] whitespace-nowrap">
-                                    {{ $order->reservation->schedule->cwspace->code_cwspace }}
+                                    @php
+                                        $schedules =
+                                            $order->reservation->status_reservation == 0
+                                                ? $order->reservation->schedules->first()
+                                                : null;
+                                    @endphp
+                                    {{ $schedules->cwspace->code_cwspace }}
                                 </td>
                                 <td class="px-6 py-4 text-[var(--primary)]">{{ $order->reservation->user->name }}</td>
                                 <td class="px-6 py-4 text-[var(--primary)]">
                                     @foreach ($order->orderdetails as $detail)
                                         • {{ $detail->quantity }} {{ $detail->beverage->name }} x
-                                        {{ $order->orderdetails->quantity }} =
+                                        {{ $detail->quantity }} =
                                         Rp{{ number_format($detail->subtotal, 0, ',', '.') }} <br>
                                     @endforeach
                                 </td>
                                 <td
                                     class="px-6 py-4 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap text-[var(--primary)]">
-                                    {{ $order->total_price }}
+                                    Rp{{ number_format($order->total_price, 0, ',', '.') }}
                                 </td>
-                                <td class="px-6 py-4 text-[var(--primary)]"> {{ $order->status_order ? 'Paid' : 'Unpaid' }}
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="{{ $order->status_order ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold' }}">
+                                        {{ $order->status_order ? 'Paid' : 'Unpaid' }}
+                                    </span>
+                                </td>
                                 </td>
                                 <td class="px-6 py-4">
                                     @if (!$order->status_order)
                                         <form action="{{ route('order.confirm', $order->id) }}" method="POST">
                                             @csrf
+                                            @method('PUT')
                                             <button type="submit"
                                                 class="bg-green-600 text-white hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5">
                                                 Confirm Payment

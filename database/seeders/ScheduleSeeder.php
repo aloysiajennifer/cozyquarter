@@ -35,5 +35,13 @@ class ScheduleSeeder extends Seeder
                 }
             }
         }
+
+        $firstSchedule = Schedule::first();
+        if ($firstSchedule) {
+            $firstSchedule->update([
+                'id_reservation' => 1,
+                'status_schedule' => 0 //ubah jadi closed
+            ]);
+        }
     }
 }

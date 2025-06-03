@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       
+
         // Jalanin seeder otomatis
-         $this->call([
+        $this->call([
             RoleSeeder::class,
             UserSeeder::class,
             BeverageSeeder::class,
@@ -31,10 +31,9 @@ class DatabaseSeeder extends Seeder
             CwspaceSeeder::class,
             //Cara bikin operational sm schedule otomatis untuk 2 minggu kedepan
             OperationalDaySeeder::class, // hbs jalanin seeder ketik -> php artisan operational:update
-            ScheduleSeeder::class, // hbs jalanin seeder ketik -> php artisan generate:schedule
             ReservationSeeder::class,
+            ScheduleSeeder::class, // hbs jalanin seeder ketik -> php artisan generate:schedule
             OrderSeeder::class,
         ]);
-
     }
 }

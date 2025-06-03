@@ -84,7 +84,8 @@ Route::get('/schedules/index', [ScheduleController::class, 'index'])->name('sche
 Route::put('/schedules/{id}',  [ScheduleController::class, 'update'])->name('schedule.update');
 
 //ORDER USER
-Route::get('/yourorder', [OrderController::class, 'orderdetails'])->name('yourOrder');
+Route::get('/yourOrder', [OrderController::class, 'yourOrder'])->name('yourOrder');
+Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('placeOrder');
 
 //ORDER CRUD
 Route::get('/order/index', [OrderController::class, 'index'])->name('order.index');

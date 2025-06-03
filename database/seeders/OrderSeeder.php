@@ -17,7 +17,7 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
        $reservations = Reservation::pluck('id');
-        $beverages = Beverages::where('availability',true)->get();
+        $beverages = Beverages::where('stock','>',0)->get();
 
         foreach ($reservations as $reservationId) {
             // Mulai dari total = 0
