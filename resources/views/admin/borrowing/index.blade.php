@@ -81,7 +81,8 @@
                                         @csrf
                                         @method('PUT')
                                         <input type="hidden" name="id" value="{{ $brw->id }}">
-                                        <button type="submit" class="bg-zinc-500 hover:bg-zinc-400 text-white px-6 py-1 rounded-full">Return</button>
+                                        <button type="submit" class="text-white w-full px-6 py-1 rounded-full
+                                             {{ \Carbon\Carbon::parse($brw->return_due)->isPast() ? 'bg-red-500 hover:bg-red-600' : 'bg-zinc-500 hover:bg-zinc-400' }}">Return</button>
                                     </form>
                                 @else
                                     <p>Returned on {{ \Carbon\Carbon::parse($brw->return_date)->format('Y-m-d') }}</p>
@@ -99,8 +100,8 @@
                                     <form action="{{ route('fine.paid', $brw->id) }}" method="POST">
                                         @csrf
                                         @method('PUT')
-                                        <input type="hidden" name="id" value="{{ $brw->id }}">
-                                        <button type="submit" class="bg-zinc-500 hover:bg-zinc-400 text-white px-6 py-1 rounded-full">Pay Fine</button>
+                                        <input type="hidden" name="id" value="{{ $brw->fine->id }}">
+                                        <button type="submit" class="bg-zinc-500 hover:bg-zinc-400 text-white w-full px-6 py-1 rounded-full">Pay Fine</button>
                                     </form>
                                 @elseif($brw->fine)
                                     <p class="px-6 py-3 text-primary whitespace-nowrap">Paid on {{ \Carbon\Carbon::parse($brw->fine->date_finepayment)->format('Y-m-d') }}</p>
