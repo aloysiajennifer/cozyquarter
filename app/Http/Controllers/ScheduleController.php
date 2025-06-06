@@ -13,6 +13,7 @@ class ScheduleController extends Controller
 
     public function index(Request $request)
     {
+
         $operationalDays = OperationalDay::orderBy('date')->get();
 
 
@@ -35,12 +36,17 @@ class ScheduleController extends Controller
                 ->get();
         }
 
+        $selectedCwspaceObj = null;
+        if ($selectedCwspace) {
+            $selectedCwspaceObj = Cwspace::find($selectedCwspace);
+        }
         return view('admin.schedule.index', compact(
             'operationalDays',
             'selectedDate',
             'schedules',
             'cwspaces',
-            'selectedCwspace'
+            'selectedCwspace',
+            'selectedCwspaceObj'
         ));
     }
 

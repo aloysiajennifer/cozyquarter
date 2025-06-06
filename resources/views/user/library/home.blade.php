@@ -201,8 +201,8 @@
                             by {{ $book->author_book }}
                         </p>
                         <span
-                            class="text-xs font-medium text-white px-2 py-1 rounded {{ $book->status_book == 1 ? 'bg-red-500' : 'bg-green-500' }}">
-                            {{ $book->status_book == 1 ? 'Unavailable' : 'Available' }}
+                            class="text-xs font-medium text-white px-2 py-1 rounded {{ $book->status_book == 0 ? 'bg-red-500' : 'bg-green-500' }}">
+                            {{ $book->status_book == 0 ? 'Unavailable' : 'Available' }}
                         </span>
                     </div>
 
@@ -211,8 +211,8 @@
                         class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
                         <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative overflow-y-auto max-h-[90vh]">
                             <button onclick="closeModal({{ $book->id }})"
-                                class="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl">&times;</button><br>
-                                <img src="{{ asset($book->cover_book) }}" alt="{{ $book->title_book }}" class="w-full h-auto object-contain rounded mb-4">
+                                class="sticky top-2 right-2 self-end z-10 text-gray-500 hover:text-black text-2xl">&times;</button><br>
+                                <img src="{{ asset($book->cover_book) }}" alt="{{ $book->title_book }}" class="w-full h-auto object-contain rounded mb-4 mt-4">
                             <h2 class="text-xl font-bold mb-2">{{ $book->title_book }}</h2>
                             <p class="text-sm text-[var(--primary)]  mb-1"><strong>Author:</strong> {{ $book->author_book }}</p>
                             <p class="text-sm text-[var(--primary)] mb-1"><strong>ISBN:</strong> {{ $book->isbn_book }}</p>
@@ -222,8 +222,8 @@
                                 {{ $book->shelf->code_shelf ?? 'N/A' }}
                             </p>
                             <p class="text-sm text-[var(--text-primary)] mb-1"><strong>Status:</strong>
-                                <span class="{{ $book->status_book == 1 ? 'text-red-500' : 'text-green-500' }}">
-                                    {{ $book->status_book == 1 ? 'Unavailable in the library' : 'Available in the library' }}
+                                <span class="{{ $book->status_book == 0 ? 'text-red-500' : 'text-green-500' }}">
+                                    {{ $book->status_book == 0 ? 'Unavailable in the library' : 'Available in the library' }}
                                 </span>
                             </p>
                             <hr class="my-2">
