@@ -27,6 +27,8 @@
             /* Jet Black */
             --highlight: #FFD700;
             /* Cyber Gold */
+            --medium-blue: #007BA7;
+            /* Cerulean Blue */
         }
     </style>
 </head>

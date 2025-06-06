@@ -7,12 +7,12 @@
     <div class="w-full p-4 min-h-screen">
         <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Borrowing List</h1>
 
-        <form action="{{ route('borrowing.index') }}" method="GET" class="max-w-3xl mx-auto mb-4">    
+        <form action="{{ route('borrowing.index') }}" method="GET" class="max-w-4xl mx-auto mb-5" id="filterForm">    
             <div class="flex flex-wrap gap-4 items-center">
 
                 {{-- Search input --}}
                 <div class="relative flex-grow">
-                        <label for="search" class="mb-2 text-sm font-medium text-primary sr-only">Search</label>
+                        <label for="search" class="my-1 text-sm font-medium text-gray-700 sr-only">Search</label>
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 20 20">
@@ -21,38 +21,47 @@
                             </svg>
                         </div>
                         <input type="search" name="search" id="search"
-                            class="block w-full p-4 pl-10 text-sm text-primary border border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
+                            class="block w-full p-5 pl-10 text-sm text-primary border border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
                             placeholder="Search by user or title..." value="{{ request('search') }}">
-                        <button type="submit"
-                            class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 absolute right-2.5 bottom-2.5">
+                            <button type="submit"
+                            class="w-18 h-10 bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 absolute right-2.5 bottom-2.5">
                             Search
                         </button>
-                    </div>
+                </div>
 
-                    <div class="flex bg-gray-50 text-sm text-primary border border-gray-300 rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]
+                    {{-- FILTER --}}
+                    <div class="flex relative bg-gray-50 text-sm text-primary border border-gray-300 rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]
                                 justify-center items-center h-full">
                         {{-- Start Date Picker --}}
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                {{-- <i class="far fa-calendar"></i> --}}
-                            </div>
-                            <input type="date" name="start_date" id="start_date"
-                                class="block p-4 pl-10 text-sm text-primary border-r border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
+                        <div class="flex flex-col pl-4 pr-2 border-r border-gray-300 rounded-lg">
+                            <label for="start_date" class="my-1 text-sm font-medium text-gray-700 ">Start Date</label>
+                            <input type="date" placeholder="Start Date" name="start_date" id="start_date"
+                                class="block pb-3 px-3 text-sm text-primary bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
                                 value="{{ request('start_date') }}">
                         </div>
 
                         {{-- End Date Picker --}}
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                {{-- <i class="far fa-calendar"></i> --}}
-                            </div>
-                            <input type="date" name="end_date" id="end_date"
-                                class="block w-full p-4 pl-10 text-sm text-primary rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
+                        <div class="flex flex-col pl-4 pr-2">
+                            <label for="end_date" class="my-1 text-sm font-medium text-gray-700 ">End Date</label>
+                            <input type="date" placeholder="Start Date" name="end_date" id="end_date"
+                                class="block pb-3 px-3 text-sm text-primary bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
                                 value="{{ request('end_date') }}">
                         </div>
-
-                        <div></div>
+                        {{-- Button Filter --}}
+                        <div class="px-3">
+                            <button type="submit"
+                                class="w-18 h-10 bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
+                                Filter
+                            </button>
+                        </div>
                     </div>
+
+                    {{-- Reset Button --}}
+                     <button type="button" id="resetBtn"
+                        class="text-white bg-amber-400 hover:bg-amber-500 focus:ring-4 
+                                focus:outline-none focus:ring-amber-400 font-medium rounded-lg text-sm px-4 py-2">
+                        Reset
+                    </button>
                     
 
                 </div>
@@ -60,9 +69,9 @@
 
 
 
-        <div class="relative overflow-x-auto overflow-y-auto max-h-[80vh] rounded-lg shadow">
-            <table class="min-w-full text-sm text-left text-gray-500 bg-white border border-gray-200">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 z-10">
+        <div class="relative overflow-x-scroll overflow-y-scroll max-h-[80vh] rounded-lg shadow">
+            <table class="min-w-full text-sm text-left text-gray-500 bg-white border border-gray-200 border-collapse">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 z-50">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-primary whitespace-nowrap">No</th>
                         <th scope="col" class="px-6 py-3 text-primary whitespace-nowrap">Borrowing Date</th>
@@ -87,16 +96,16 @@
                                         @csrf
                                         @method('PUT')
                                         <input type="hidden" name="id" value="{{ $brw->id }}">
-                                        <button type="submit" class="text-white w-full px-6 py-1 rounded-full
-                                             {{ \Carbon\Carbon::parse($brw->return_due)->isPast() ? 'bg-red-500 hover:bg-red-600' : 'bg-zinc-500 hover:bg-zinc-400' }}">Return</button>
+                                        <button type="submit" class="btnReturn text-white w-full px-6 py-1 rounded-full
+                                             {{ \Carbon\Carbon::parse($brw->return_due)->isPast() ? 'bg-red-500 hover:bg-red-600' : 'bg-[#007BA7] hover:bg-[#339FCF]' }}">Return</button>
                                     </form>
                                 @else
                                     <p>Returned on {{ \Carbon\Carbon::parse($brw->return_date)->format('Y-m-d') }}</p>
                                 @endif
                             </td>
                             <td class="border border-gray-300 px-6 py-3 text-primary whitespace-nowrap">
-                                @if($brw->fine)
-                                    <p>Rp{{ number_format($brw->fine->fine_total, 0, ',', '.') }} </p>
+                                @if(isset($brw->fine_realtime) && $brw->fine_realtime > 0)
+                                    <p>Rp{{ number_format($brw->fine_realtime, 0, ',', '.') }} </p>
                                 @else
                                     -
                                 @endif
@@ -107,7 +116,7 @@
                                         @csrf
                                         @method('PUT')
                                         <input type="hidden" name="id" value="{{ $brw->fine->id }}">
-                                        <button type="submit" class="bg-zinc-500 hover:bg-zinc-400 text-white w-full px-6 py-1 rounded-full">Pay Fine</button>
+                                        <button type="submit" id="" class="btnPay bg-[#007BA7] hover:bg-[#339FCF] text-white w-full px-6 py-1 rounded-full">Pay Fine</button>
                                     </form>
                                 @elseif($brw->fine)
                                     <p class="px-6 py-3 text-primary whitespace-nowrap">Paid on {{ \Carbon\Carbon::parse($brw->fine->date_finepayment)->format('Y-m-d') }}</p>
@@ -144,5 +153,72 @@
         });
     </script>
 @endif
+
+<script>
+    document.getElementById('filterForm').addEventListener('submit', function(e) {
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+
+        if (startDate && endDate) {
+            if (startDate >= endDate) {
+                e.preventDefault(); 
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Start Date must be before End Date!',
+                });
+            }
+        }
+    });
+
+    // Reset untuk search bar dan filter (kembali ke default)
+    document.getElementById('resetBtn').addEventListener('click', function() {
+        window.location.href = "{{ route('borrowing.index') }}"; // tanpa query params
+    });
+
+
+    // Konfirmasi return
+    document.querySelectorAll('.btnReturn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to return this borrowing?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    btn.closest('form').submit();
+                }
+            });
+        });
+    });
+
+    // Konfirmasi Pay Fine
+    document.querySelectorAll('.btnPay').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to pay this fine?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    btn.closest('form').submit();
+                }
+            });
+        });
+    });
+
+</script>
     
 @endsection

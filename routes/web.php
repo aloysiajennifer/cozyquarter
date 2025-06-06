@@ -46,12 +46,15 @@ Route::post('/book/delete/{id}', [BookController::class, 'delete'])->name('book.
 //HOME LIBRARY
 Route::get('/library/home', [BookController::class, 'home'])->name('library.home');
 
-// BORROWING
+// BORROWING ADMIN
 Route::get('/borrowing/index', [BorrowingController::class, 'index'])->name('borrowing.index');
 Route::put('/borrowing/returned/{id}', [BorrowingController::class, 'returned'])->name('borrowing.returned');
 Route::put('/fine/paid/{id}', [FineController::class, 'paid'])->name('fine.paid');
 Route::get('/borrowing/form', [BorrowingController::class, 'form'])->name('borrowing.form');
 Route::post('/borrowing/insert', [BorrowingController::class, 'insert'])->name('borrowing.insert');
+
+// BOOKS BORROWED LIBRARY (USER)
+Route::get('/library/booksborrowed', [BorrowingController::class, 'borrowed'])->name('library.borrowed');
 
 // HOME ADMIN
 Route::get('admin/home', function () {
