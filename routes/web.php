@@ -41,6 +41,9 @@ Route::get('/dashboard', function () {
 
 //ROUTE NAVBAR
 
+
+//MIDDLEWARE ADMIN
+Route::middleware('role:admin')->group(function(){
 //SHELF CRUD
 Route::get('/shelf/index', [ShelfController::class, 'index'])->name('shelf.index');
 Route::get('/shelf/form', [ShelfController::class, 'form'])->name('shelf.form');
@@ -65,8 +68,13 @@ Route::get('/book/detail/{id}', [BookController::class, 'detail'])->name('book.d
 Route::post('/book/update/', action: [BookController::class, 'update'])->name('book.update');
 Route::post('/book/delete/{id}', [BookController::class, 'delete'])->name('book.delete');
 
+});
+
+//MIDDLEWARE USER
+Route::middleware('role:user')->group(function(){
 //HOME LIBRARY USER
 Route::get('/library/home', [BookController::class, 'home'])->name('library.home');
+});
 
 // BORROWING ADMIN
 Route::get('/borrowing/index', [BorrowingController::class, 'index'])->name('borrowing.index');
