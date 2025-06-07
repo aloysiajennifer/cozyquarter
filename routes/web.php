@@ -28,9 +28,11 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/home', function () {
-    return view('layout');
-})->middleware('auth')->name('home');
+// Route::get('/home', function () {
+//     return view('layout');
+// })->middleware('auth')->name('home');
+
+Route::get('/home', [BookController::class, 'home'])->middleware('auth')->name('home');
 
 Route::get('/dashboard', function () {
     return view('admin.layoutAdmin');
@@ -63,7 +65,7 @@ Route::get('/book/detail/{id}', [BookController::class, 'detail'])->name('book.d
 Route::post('/book/update/', action: [BookController::class, 'update'])->name('book.update');
 Route::post('/book/delete/{id}', [BookController::class, 'delete'])->name('book.delete');
 
-//HOME LIBRARY
+//HOME LIBRARY USER
 Route::get('/library/home', [BookController::class, 'home'])->name('library.home');
 
 // BORROWING ADMIN
