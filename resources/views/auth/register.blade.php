@@ -33,10 +33,10 @@
     </style>
 </head>
 
-<body class="bg-[var(--bg-light)] text-[var(--text-primary)] min-h-screen flex flex-col">
+<body class="bg-[var(--background-light)] text-[var(--text-primary)] min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <nav class="bg-[var(--primary)] fixed top-0 w-full z-50 shadow-md p-2">
+    <nav class="bg-[var(--primary)] top-0 w-full z-50 shadow-md p-2">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
                 <!-- Logo -->
@@ -100,7 +100,7 @@
                     </form>
 
                     <p class="text-sm text-center mt-4 text-[var(--primary)]">
-                        Sudah punya akun?
+                        Already have an account?
                         <a href="{{ route('login') }}" class="text-[var(--accent-blue)] hover:underline">Login</a>
                     </p>
                 </div>

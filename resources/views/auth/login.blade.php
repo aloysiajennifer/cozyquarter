@@ -33,10 +33,10 @@
     </style>
 </head>
 
-<body class="bg-[var(--bg-light)] text-[var(--text-primary)] min-h-screen flex flex-col">
+<body class="bg-[var(--background-light)] text-[var(--text-primary)] min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <nav class="bg-[var(--primary)] fixed top-0 w-full z-50 shadow-md p-2">
+    <nav class="bg-[var(--primary)] top-0 w-full z-50 shadow-md p-2">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
                 <!-- Logo -->
@@ -50,7 +50,7 @@
     <!-- Main Content -->
     <div class="pt-16 flex-1">
         <main>
-            <div class="flex items-center justify-center min-h-screen bg-[var(--background-light)] px-4">
+            <div class="flex items-center justify-center bg-[var(--background-light)] px-4 ">
                 <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
                     <div class="flex flex-col items-center mb-6">
                         <img src="{{ asset('images/logo.jpeg') }}" alt="Logo Perpustakaan" class="w-28 h-28 mb-4 rounded-full border-4 border-[var(--accent-blue)]">
@@ -79,11 +79,11 @@
                     </form>
 
                     <p class="text-sm text-center mt-4 text-[var(--primary)]">
-                        Belum punya akun?
-                        <a href="{{ route('register') }}" class="text-[var(--accent-blue)] hover:underline">Daftar</a>
+                        Don't have an account?
+                        <a href="{{ route('register') }}" class="text-[var(--accent-blue)] hover:underline">Register</a>
                     </p>
                 </div>
-            </div>
+            </d>
         </main>
 
         <!-- Footer -->
