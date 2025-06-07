@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('layout');
+    return view('auth.login');
 });
 
 // ROUTE AUTHENTICATION LOGIN SIGNUP
