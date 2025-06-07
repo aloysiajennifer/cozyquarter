@@ -11,11 +11,31 @@ use App\Http\Controllers\FineController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('layout');
 });
+
+// ROUTE AUTHENTICATION LOGIN SIGNUP
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/home', function () {
+    return view('home');
+})->middleware('auth')->name('home');
+
+Route::get('/dashboard', function () {
+    return view('admin.layoutAdmin');
+})->middleware('auth')->name('dashboard');
+
 
 //ROUTE NAVBAR
 
