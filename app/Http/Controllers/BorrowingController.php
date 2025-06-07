@@ -116,8 +116,8 @@ class BorrowingController extends Controller
     // Form create
         public function form() {
         try {
-            $listUsers = User::all();
-            $listBooks = Book::where('status_book', 1)->get();
+            $listUsers = User::orderBy('name', 'asc')->get();
+            $listBooks = Book::where('status_book', 1)->orderBy('title_book', 'asc')->get();
             $borrowingDate = Carbon::now();
             $returnDue = Carbon::now()->addDays(7)->setTime(23, 59, 59);
             // $borrowingDate = Carbon::parse('2025-05-01 10:00:00');  // contoh tanggal pinjam sudah lalu

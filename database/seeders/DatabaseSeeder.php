@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ShelfSeeder::class,
             BookSeeder::class,
+            BorrowingSeeder::class,
             TimeSeeder::class,
             CwspaceSeeder::class,
             //Cara bikin operational sm schedule otomatis untuk 2 minggu kedepan

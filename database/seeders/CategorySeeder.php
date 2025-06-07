@@ -21,7 +21,7 @@ class CategorySeeder extends Seeder
             ['name_category' => 'Fantasy'],
             ['name_category' => 'Horror'],
             ['name_category' => 'Mystery'],
-            ['name_category' => 'Dci-fi'],
+            ['name_category' => 'Sci-fi'],
             ['name_category' => 'Comic'],
             ['name_category' => 'Poetry'],
             ['name_category' => 'Academic'],

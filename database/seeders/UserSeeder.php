@@ -21,7 +21,6 @@ class UserSeeder extends Seeder
             ['name' => 'Valerie Alexia', 'phone' => '081465829301', 'email' => 'valerieaa@gmail.com', 'username' => 'valexia.jpg', 'password' => 'c14230205', 'role_id'=>'2'],
             ['name' => 'Felicia Audrey', 'phone' => '081463709817', 'email' => 'feliciaa@gmail.com', 'username' => 'feliverie', 'password' => 'c14230207', 'role_id'=>'2'],
             ['name' => 'Fiora Agnesia', 'phone' => '081563892028', 'email' => 'fioraaw@gmail.com', 'username' => 'fioraagnesia', 'password' => 'c14230218', 'role_id'=>'2'],
-            ['name' => 'User1', 'phone' => '08123456789', 'email' => 'user@gmail.com', 'username' => 'user1', 'password' => 'user', 'role_id'=>'1'],
         ];
 
         foreach ($data as $item) {
