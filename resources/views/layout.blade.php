@@ -53,9 +53,9 @@
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Home
                     </a>
-                    <a href=""
+                    <a href="{{ route('library.borrowed') }}"
                         class="rounded-md px-3 py-2 text-sm font-medium 
-                        {{ Route::currentRouteName() == ''
+                        {{ Route::currentRouteName() == 'library.borrowed'
                             ? 'bg-[var(--accent-blue)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Books Borrowed

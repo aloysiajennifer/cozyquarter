@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Book;
 use App\Models\Fine;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 
 class BorrowingController extends Controller
 {
@@ -95,7 +97,7 @@ class BorrowingController extends Controller
         $borrowing->book->save();
 
 
-        // OPSI 1: HITUNG DENDA setelah direturn
+        // HITUNG DENDA setelah direturn
         $returnDue = Carbon::parse($borrowing->return_due)->startOfDay();
         $returnDate = Carbon::parse($borrowing->return_date)->startOfDay();
         $fineAmount = 1000; // Denda per hari
@@ -116,7 +118,7 @@ class BorrowingController extends Controller
     // Form create
         public function form() {
         try {
-            $listUsers = User::orderBy('name', 'asc')->get();
+            $listUsers = User::where('role_id', '1')->orderBy('name', 'asc')->get();
             $listBooks = Book::where('status_book', 1)->orderBy('title_book', 'asc')->get();
             $borrowingDate = Carbon::now();
             $returnDue = Carbon::now()->addDays(7)->setTime(23, 59, 59);
@@ -156,11 +158,11 @@ class BorrowingController extends Controller
 
     // Books Borrowed (user)
     public function borrowed(Request $request) {
-        // $user = Auth::user(); // Ambil user yang sedang login
+        $user = Auth::user(); // Ambil user yang sedang login
 
         // Semua buku yang sedang dipinjam user ini (belum returned dan/atau belum bayar denda)
         $borrowings = Borrowing::with('book')
-                        // ->where('user_id', $user->id)
+                        ->where('id_user', $user->id)
                         ->where(function ($query) {
                             $query->where('status_returned', false) 
                                     ->orWhereHas('fine', function ($fineQuery) {
@@ -168,6 +170,36 @@ class BorrowingController extends Controller
                                     });
                         })
                         ->get();
+
+
+            // HITUNG DENDA REALTIME (tidak disimpan dalam database)
+            $fineAmount = 1000;
+            foreach ($borrowings as $borrowing) {       // semua borrowing dicek
+                $returnDue = \Carbon\Carbon::parse($borrowing->return_due)->startOfDay();
+
+                // Jika sudah dikembalikan
+                if ($borrowing->return_date) {
+                    $returnDate = \Carbon\Carbon::parse($borrowing->return_date)->startOfDay();
+
+                    if ($returnDate->greaterThan($returnDue)) {
+                        $daysLate = $returnDue->diffInDays($returnDate);
+                        $totalFine = $daysLate * $fineAmount;
+                        $borrowing->fine_realtime = $totalFine;
+                    } else {
+                        $borrowing->fine_realtime = 0;
+                    }
+                } else {
+                    // Belum dikembalikan, hitung denda realtime
+                    $today = \Carbon\Carbon::now()->startOfDay();
+
+                    if ($today->greaterThan($returnDue)) {
+                        $daysLate = $returnDue->diffInDays($today);
+                        $borrowing->fine_realtime = $daysLate * $fineAmount;
+                    } else {
+                        $borrowing->fine_realtime = 0;
+                    }
+                }
+            }
 
         return view('user.library.booksBorrowed')->with('borrowings', $borrowings);
     }
