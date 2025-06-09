@@ -22,28 +22,21 @@ Route::get('/', function () {
 // ROUTE AUTHENTICATION LOGIN SIGNUP
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// Route::get('/home', function () {
-//     return view('layout');
-// })->middleware('auth')->name('home');
-
 Route::get('/home', [BookController::class, 'home'])->middleware('auth')->name('home');
 
 Route::get('/dashboard', function () {
     return view('admin.layoutAdmin');
 })->middleware('auth')->name('dashboard');
 
-
 //ROUTE NAVBAR
 
 
 //MIDDLEWARE ADMIN
 Route::middleware('role:admin')->group(function(){
+
 //SHELF CRUD
 Route::get('/shelf/index', [ShelfController::class, 'index'])->name('shelf.index');
 Route::get('/shelf/form', [ShelfController::class, 'form'])->name('shelf.form');
@@ -68,12 +61,25 @@ Route::get('/book/detail/{id}', [BookController::class, 'detail'])->name('book.d
 Route::post('/book/update/', action: [BookController::class, 'update'])->name('book.update');
 Route::post('/book/delete/{id}', [BookController::class, 'delete'])->name('book.delete');
 
+//BEVERAGES CRUD
+Route::prefix('beverage')->group(function () {
+    Route::get('/index', [BeverageController::class, 'index'])->name('beverage.index'); // List beverage
+    Route::get('/form', [BeverageController::class, 'create'])->name('beverage.create'); // Form tambah
+    Route::post('/store', [BeverageController::class, 'store'])->name('beverage.store'); // Simpan baru
+    Route::get('/edit/{id}', [BeverageController::class, 'edit'])->name('beverage.edit'); // Form edit
+    Route::put('/update/{id}', [BeverageController::class, 'update'])->name('beverage.update');
+    Route::post('/delete/{id}', [BeverageController::class, 'destroy'])->name('beverage.delete'); // Hapus data
+
+});
+
 });
 
 //MIDDLEWARE USER
 Route::middleware('role:user')->group(function(){
+
 //HOME LIBRARY USER
 Route::get('/library/home', [BookController::class, 'home'])->name('library.home');
+
 });
 
 // BORROWING ADMIN
@@ -96,18 +102,6 @@ Route::get('/cwspace/index', [CwspaceController::class, 'index'])->name('cwspace
 Route::post('/cwspace/insert', [CwspaceController::class, 'insert'])->name('cwspace.insert'); //add cwspace to the db
 Route::put('/cwspace/{id}', [CwspaceController::class, 'update'])->name('cwspace.update'); //update
 Route::delete('/cwspace/{id}', [CwspaceController::class, 'delete'])->name('cwspace.delete');
-
-//BEVERAGES CRUD
-Route::prefix('beverage')->group(function () {
-    Route::get('/index', [BeverageController::class, 'index'])->name('beverage.index'); // List beverage
-    Route::get('/form', [BeverageController::class, 'create'])->name('beverage.create'); // Form tambah
-
-    Route::post('/store', [BeverageController::class, 'store'])->name('beverage.store'); // Simpan baru
-    Route::get('/edit/{id}', [BeverageController::class, 'edit'])->name('beverage.edit'); // Form edit
-    Route::put('/update/{id}', [BeverageController::class, 'update'])->name('beverage.update');
-    Route::post('/delete/{id}', [BeverageController::class, 'destroy'])->name('beverage.delete'); // Hapus data
-
-});
 
 //BEVERAGES USER
 Route::get('/menu', [BeverageController::class, 'menu'])->name('beverages.menu');
