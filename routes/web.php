@@ -121,4 +121,5 @@ Route::put('/order/confirm/{id}', [OrderController::class, 'confirm'])->name('or
 // Route::post('/order/delete/{id}', [OrderController::class, 'delete'])->name('order.delete');
 
 // REPORTS
-Route::get('/reports/borrowing', [ReportController::class, 'borrowing'])->name('report.borrowing');
+Route::get('/report/borrowing', [ReportController::class, 'borrowing'])->name('report.borrowing');
+Route::get('/report/borrowing/pdf', [ReportController::class, 'borrowingPDF'])->name('report.borrowingPDF');

@@ -5,10 +5,10 @@
 
 <div class="pt-16">
     <div class="w-full p-4 min-h-screen">
-        <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Borrowing List</h1>
+        <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Borrowing Report</h1>
 
-        <form action="{{ route('borrowing.index') }}" method="GET" class="max-w-4xl mx-auto mb-5" id="filterForm">    
-            <div class="flex flex-wrap gap-4 items-center">
+        <form action="{{ route('report.borrowing') }}" method="GET" class="max-w-4xl mx-auto mb-5" id="filterForm">    
+            <div class="flex flex-wrap gap-4 items-center justify-center">
 
                     {{-- FILTER --}}
                     <div class="flex relative bg-gray-50 text-sm text-primary border border-gray-300 rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]
@@ -99,14 +99,14 @@
         </div>
 
 
-        {{-- <div class="mb-4 mt-4 text-right">
-            <a href="{{ url('/borrowing/form') }}">
+        <div class="mb-4 mt-4 text-right">
+            <a href="{{ route('report.borrowingPDF', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}">
                 <button
-                    class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5">
-                    Add Borrowing
+                    class="bg-rose-600 hover:bg-rose-500 text-white focus:ring-4 focus:ring-rose-200 font-medium rounded-lg text-sm px-5 py-2.5">
+                    Export to PDF
                 </button>
             </a>
-        </div> --}}
+        </div>
 
     </div>
 </div>
@@ -143,50 +143,7 @@
 
     // Reset untuk search bar dan filter (kembali ke default)
     document.getElementById('resetBtn').addEventListener('click', function() {
-        window.location.href = "{{ route('borrowing.index') }}"; // tanpa query params
-    });
-
-
-    // Konfirmasi return
-    document.querySelectorAll('.btnReturn').forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Do you want to return this borrowing?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    btn.closest('form').submit();
-                }
-            });
-        });
-    });
-
-    // Konfirmasi Pay Fine
-    document.querySelectorAll('.btnPay').forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Do you want to pay this fine?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    btn.closest('form').submit();
-                }
-            });
-        });
+        window.location.href = "{{ route('report.borrowing') }}";
     });
 
 </script>
