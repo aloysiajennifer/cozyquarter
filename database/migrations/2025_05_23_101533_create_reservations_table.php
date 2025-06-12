@@ -22,9 +22,9 @@ return new class extends Migration
             $table->dateTime('check_in_time')->nullable();
             $table->dateTime('check_out_time')->nullable();
             $table->timestamp('timestamp_reservation');
-            $table->string('purpose');
-            $table->string('name');
-            $table->string('contact');
+            $table->string('purpose')->nullable();
+            $table->string('name')->nullable();
+            $table->string('contact')->nullable();
             $table->timestamps();
 
         });

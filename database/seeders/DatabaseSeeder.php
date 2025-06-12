@@ -19,15 +19,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       
+
         // Jalanin seeder otomatis
-         $this->call([
+        $this->call([
             RoleSeeder::class,
             UserSeeder::class,
             BeverageSeeder::class,
             CategorySeeder::class,
             ShelfSeeder::class,
             BookSeeder::class,
+            BorrowingSeeder::class,
             TimeSeeder::class,
             CwspaceSeeder::class,
         ]);
@@ -41,6 +42,5 @@ class DatabaseSeeder extends Seeder
             ReservationSeeder::class,
             OrderSeeder::class,
         ]);
-
     }
 }

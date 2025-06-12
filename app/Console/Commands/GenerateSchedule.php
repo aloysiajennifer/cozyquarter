@@ -36,10 +36,8 @@ class GenerateSchedule extends Command
         $startDate = $now->copy();
         $endDate = $now->copy()->addDays(14); // Menyiapkan jadwal untuk 15 hari (hari ini + 14 hari ke depan)
 
-        // Loop cerdas dari hari ini sampai 14 hari ke depan
         for ($currentDate = $startDate; $currentDate->lte($endDate); $currentDate->addDay()) {
-            
-            // KUNCI UTAMA: Cari atau BUAT OperationalDay. Menggantikan command terpisah Anda.
+        
             $day = OperationalDay::firstOrCreate(['date' => $currentDate->toDateString()]);
 
             $dayOfWeek = $currentDate->dayOfWeek;

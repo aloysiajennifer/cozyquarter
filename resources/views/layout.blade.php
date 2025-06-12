@@ -27,6 +27,8 @@
             /* Jet Black */
             --highlight: #FFD700;
             /* Cyber Gold */
+            --medium-blue: #007BA7;
+            /* Cerulean Blue */
         }
     </style>
 </head>
@@ -51,9 +53,9 @@
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Home
                     </a>
-                    <a href=""
+                    <a href="{{ route('library.borrowed') }}"
                         class="rounded-md px-3 py-2 text-sm font-medium 
-                        {{ Route::currentRouteName() == ''
+                        {{ Route::currentRouteName() == 'library.borrowed'
                             ? 'bg-[var(--accent-blue)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Books Borrowed
@@ -72,13 +74,13 @@
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Your Reservation
                     </a>
-                    <a href=""
-                        class="rounded-md px-3 py-2 text-sm font-medium 
-                        {{ Route::currentRouteName() == ''
-                            ? 'bg-[var(--highlight)] text-[var(--primary)]'
-                            : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
-                        Logout
-                    </a>
+                    <form id="logout-form" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="button" onclick="confirmLogout()"
+                            class="rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">
+                            Logout
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Mobile Menu Button -->
@@ -109,8 +111,13 @@
                 <a href=""
                     class="block rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">Your
                     Reservation</a>
-                <a href=""
-                    class="block rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">Logout</a>
+                <form id="logout-form" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="button" onclick="confirmLogout()"
+                        class="rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
     </nav>
@@ -146,6 +153,22 @@
                 );
             });
         });
+
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You will be logged out.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#30E3CA',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Logout'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        }
     </script>
 </body>
 

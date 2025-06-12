@@ -8,16 +8,19 @@ use App\Models\User;
 use App\Models\Book;
 use App\Models\Fine;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 
 class BorrowingController extends Controller
 {
     public function index(Request $request) {
         $search = $request->query('search');
         $startDate = $request->query('start_date');
-        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
         
-        $query = Borrowing::with(['user', 'book', 'fine']);
+        $query = Borrowing::with(['user', 'book', 'fine'])->orderBy('borrowing_date', 'desc');
         
+        // SEARCH
         if ($search) {
             // Cari user dan book yang namanya cocok
             $userIds = User::where('name', 'like', "%$search%")->pluck('id');
@@ -29,9 +32,48 @@ class BorrowingController extends Controller
             });
         }
 
+        // FILTER
+        if ($startDate && $endDate) {
+            $query->whereBetween('borrowing_date', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+        } elseif ($startDate) {
+            $query->where('borrowing_date', '>=', $startDate . ' 00:00:00');
+        } elseif ($endDate) {
+            $query->where('borrowing_date', '<=', $endDate . ' 23:59:59');
+        }
+
+
         // Tampilkan semua borrowing
         $borrowings = $query->get();
         
+
+        // HITUNG DENDA REALTIME (tidak disimpan dalam database)
+            $fineAmount = 1000;
+            foreach ($borrowings as $borrowing) {       // semua borrowing dicek
+                $returnDue = \Carbon\Carbon::parse($borrowing->return_due)->startOfDay();
+
+                // Jika sudah dikembalikan
+                if ($borrowing->return_date) {
+                    $returnDate = \Carbon\Carbon::parse($borrowing->return_date)->startOfDay();
+
+                    if ($returnDate->greaterThan($returnDue)) {
+                        $daysLate = $returnDue->diffInDays($returnDate);
+                        $totalFine = $daysLate * $fineAmount;
+                        $borrowing->fine_realtime = $totalFine;
+                    } else {
+                        $borrowing->fine_realtime = 0;
+                    }
+                } else {
+                    // Belum dikembalikan, hitung denda realtime
+                    $today = \Carbon\Carbon::now()->startOfDay();
+
+                    if ($today->greaterThan($returnDue)) {
+                        $daysLate = $returnDue->diffInDays($today);
+                        $borrowing->fine_realtime = $daysLate * $fineAmount;
+                    } else {
+                        $borrowing->fine_realtime = 0;
+                    }
+                }
+            }
 
         return view('admin.borrowing.index')->with('borrowings', $borrowings);
     }
@@ -55,20 +97,20 @@ class BorrowingController extends Controller
         $borrowing->book->save();
 
 
-        // Hitung denda
+        // HITUNG DENDA setelah direturn
         $returnDue = Carbon::parse($borrowing->return_due)->startOfDay();
         $returnDate = Carbon::parse($borrowing->return_date)->startOfDay();
+        $fineAmount = 1000; // Denda per hari
+        // Cek returnDate nya melebihi returnDue tidak
         if ($returnDate->greaterThan($returnDue)) {
-            $daysLate = $returnDate->diffInDays($returnDue);
-            $dailyFine = 5000; // Contoh denda per hari (misal Rp 5000)
+            $daysLate = $returnDue->diffInDays($returnDate);
 
             // Simpan atau update denda
             $fine = Fine::updateOrCreate(
-                ['borrowing_id' => $borrowing->id],
-                ['amount' => $daysLate * $dailyFine]
+                ['id_borrowing' => $borrowing->id],
+                ['fine_total' => $daysLate * $fineAmount]
             );
         }
-
 
         return redirect()->back()->with('success', 'The return status has been updated successfully!');
     }
@@ -76,10 +118,13 @@ class BorrowingController extends Controller
     // Form create
         public function form() {
         try {
-            $listUsers = User::all();
-            $listBooks = Book::where('status_book', 1)->get();
+            $listUsers = User::where('role_id', '1')->orderBy('name', 'asc')->get();
+            $listBooks = Book::where('status_book', 1)->orderBy('title_book', 'asc')->get();
             $borrowingDate = Carbon::now();
             $returnDue = Carbon::now()->addDays(7)->setTime(23, 59, 59);
+            // $borrowingDate = Carbon::parse('2025-05-01 10:00:00');  // contoh tanggal pinjam sudah lalu
+            // $returnDue = Carbon::parse('2025-05-12 23:59:59');      // contoh tanggal harus kembali (7 hari kemudian)
+
             return view('admin.borrowing.form', compact('listUsers', 'listBooks', 'borrowingDate', 'returnDue'));
         } 
         catch (\Exception $e) {
@@ -98,8 +143,8 @@ class BorrowingController extends Controller
         $borrowing = new Borrowing;
         $borrowing->id_user = $request->id_user;
         $borrowing->id_book = $request->id_book;
-        $borrowing->borrowing_date = Carbon::now();
-        $borrowing->return_due = Carbon::now()->addDays(7)->format('Y-m-d');
+        $borrowing->borrowing_date = Carbon::parse($request->borrowing_date);
+        $borrowing->return_due = Carbon::parse($request->return_due);
         $borrowing->status_returned = 0;
         $borrowing->save();
 
@@ -110,5 +155,53 @@ class BorrowingController extends Controller
         return redirect()->route('borrowing.index')->with('success', 'Borrowing saved successfully!');
     }
 
+
+    // Books Borrowed (user)
+    public function borrowed(Request $request) {
+        $user = Auth::user(); // Ambil user yang sedang login
+
+        // Semua buku yang sedang dipinjam user ini (belum returned dan/atau belum bayar denda)
+        $borrowings = Borrowing::with('book')
+                        ->where('id_user', $user->id)
+                        ->where(function ($query) {
+                            $query->where('status_returned', false) 
+                                    ->orWhereHas('fine', function ($fineQuery) {
+                                        $fineQuery->where('status_fine', false);
+                                    });
+                        })
+                        ->get();
+
+
+            // HITUNG DENDA REALTIME (tidak disimpan dalam database)
+            $fineAmount = 1000;
+            foreach ($borrowings as $borrowing) {       // semua borrowing dicek
+                $returnDue = \Carbon\Carbon::parse($borrowing->return_due)->startOfDay();
+
+                // Jika sudah dikembalikan
+                if ($borrowing->return_date) {
+                    $returnDate = \Carbon\Carbon::parse($borrowing->return_date)->startOfDay();
+
+                    if ($returnDate->greaterThan($returnDue)) {
+                        $daysLate = $returnDue->diffInDays($returnDate);
+                        $totalFine = $daysLate * $fineAmount;
+                        $borrowing->fine_realtime = $totalFine;
+                    } else {
+                        $borrowing->fine_realtime = 0;
+                    }
+                } else {
+                    // Belum dikembalikan, hitung denda realtime
+                    $today = \Carbon\Carbon::now()->startOfDay();
+
+                    if ($today->greaterThan($returnDue)) {
+                        $daysLate = $returnDue->diffInDays($today);
+                        $borrowing->fine_realtime = $daysLate * $fineAmount;
+                    } else {
+                        $borrowing->fine_realtime = 0;
+                    }
+                }
+            }
+
+        return view('user.library.booksBorrowed')->with('borrowings', $borrowings);
+    }
 
 }

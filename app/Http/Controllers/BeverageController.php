@@ -42,7 +42,7 @@ class BeverageController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|integer|min:0',
-            'availability' => 'required|integer|min:0',
+            'stock' => 'required|integer|gte:0',
             'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
@@ -63,7 +63,7 @@ class BeverageController extends Controller
             'name' => $request->name,
             'price' => $request->price,
             'image' => $relativePath, // store relative path
-            'availability' => $request->availability,
+            'stock' => $request->stock,
         ]);
 
         return redirect()->route('beverage.index')->with('success', 'Beverage created successfully.');
@@ -85,13 +85,13 @@ class BeverageController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required|numeric|min:0',
-            'availability' => 'required|in:0,1',
+            'stock' => 'required|integer|gte:0',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $beverage->name = $request->name;
         $beverage->price = $request->price;
-        $beverage->availability = $request->availability;
+        $beverage->stock = $request->stock;
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images', 'public');
@@ -127,7 +127,7 @@ class BeverageController extends Controller
     }
 
     public function menu(){
-        $beverages = Beverages::where('availability',true)->get();
+        $beverages = Beverages::where('stock','>',0)->get();
         return view('user.beveragesMenu', compact('beverages'));
     }
 }

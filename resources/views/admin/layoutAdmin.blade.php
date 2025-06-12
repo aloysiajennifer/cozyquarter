@@ -88,7 +88,14 @@
                                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                                    <form id="logout-form" method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="button" onclick="confirmLogout()"
+                                            class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            role="menuitem">
+                                            Logout
+                                        </button>
+                                    </form>
                                 </li>
                             </ul>
                         </div>
@@ -159,6 +166,10 @@
                             <a href="{{route('beverage.index')}}"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 pl-11">Beverage</a>
                         </li>
+                        <li>
+                            <a href="{{route('order.index')}}"
+                                class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 pl-11">Order</a>
+                        </li>
                     </ul>
                 </li>
 
@@ -179,6 +190,10 @@
                         <li>
                             <a href="#"
                                 class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 pl-11">Book Report</a>
+                        </li>
+                        <li>
+                            <a href="{{route('report.borrowing')}}"
+                                class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 pl-11">Borrowing Report</a>
                         </li>
                         <li>
                             <a href="#"
@@ -227,7 +242,23 @@
     <div class="p-4 sm:ml-64">
         @yield('content')
     </div>
-
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You will be logged out.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#30E3CA',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Logout'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

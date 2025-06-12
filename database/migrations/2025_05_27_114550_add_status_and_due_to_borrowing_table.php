@@ -24,7 +24,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('borrowing', function (Blueprint $table) {
-            $table->timestamp('return_date')->nullable(false)->change();
             $table->dropColumn(['return_due', 'status_returned']);
         });
     }

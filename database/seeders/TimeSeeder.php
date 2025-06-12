@@ -49,7 +49,7 @@ class TimeSeeder extends Seeder
             'end_time' => '19:00:00'],
 
             ['start_time' => '19:00:00',
-            'end_time' => '20:00:00'],]
+            'end_time' => '20:00:00'],
         ];
 
         foreach ($items as $item){

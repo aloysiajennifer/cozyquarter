@@ -15,14 +15,14 @@ class Beverages extends Model
         'name',
         'price',
         'image',
-        'availability'
+        'stock'
     ];
 
     public static array $rules = [
         'name' => 'required|string|max: 255',
         'price' => 'required|integer|gt:0',
         'image' => 'required|string',
-        'availability' => 'required|boolean',
+        'stock' => 'required|integer|gte:0',
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];

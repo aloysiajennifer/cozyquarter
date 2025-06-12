@@ -102,7 +102,7 @@
                         </script>
                     </div>
                     <div class="mb-6 flex">
-                        <label for="id_shelf" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Rak</label>
+                        <label for="id_shelf" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Shelf</label>
                         <div class="w-2/3 relative">
                             <button id="dropdownShelfButton" data-dropdown-toggle="dropdownShelf"
                                 class="text-gray-900 bg-[var(--highlight)] hover:bg-amber-400 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-left inline-flex items-center"
