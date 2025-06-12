@@ -18,7 +18,7 @@ class Reservation extends Model
         return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
-    public function schedules(){
+    public function schedule(){
         return $this->hasMany(Schedule::class, 'id_reservation', 'id');
     }
 }

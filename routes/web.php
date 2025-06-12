@@ -87,3 +87,5 @@ Route::put('/schedules/{id}',  [ScheduleController::class, 'update'])->name('sch
 Route::get('/yourorder', [OrderController::class, 'orderdetails'])->name('yourOrder');
 
 //RESERVATION CRUD
+Route::get('/reservation/index', [ReservationController::class, 'index'])->name('reservation.index');
+Route::put('/reservation/{reservation}/update-status', [ReservationController::class, 'updateStatus'])->name('reservation.updateStatus');

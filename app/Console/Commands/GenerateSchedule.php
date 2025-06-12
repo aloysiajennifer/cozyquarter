@@ -11,77 +11,84 @@ use Illuminate\Console\Command;
 
 class GenerateSchedule extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'generate:schedule';
+    protected $signature = 'schedule:generate'; // Nama signature diubah agar lebih jelas
+    protected $description = 'Generates a rolling 14-day schedule and cleans up old entries.';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Generate schedule for each operational day';
-
-    /**
-     * Execute the console command.
-     */
-    public function handle() // jalanin pakai -> php artisan generate:schedule
-
+    public function handle()
     {
-        $days = OperationalDay::all();
-        $times = Time::all();
-        $cwspaces = Cwspace::where('status_cwspace', 0)->get(); // Ambil cwspace yg open aja
+        $this->info('Starting smart schedule generation...');
 
-        foreach ($days as $day) {
-            $carbonDate = Carbon::parse($day->date);
-            $dayOfWeek = $carbonDate->dayOfWeek;
+        $now = Carbon::now()->startOfDay();
+        $times = Time::all();
+        $cwspaces = Cwspace::where('status_cwspace', 1)->get();
+
+        // --- LANGKAH 1: Membersihkan jadwal lama yang tidak terpakai ---
+        $this->info('-> Cleaning up old, unreserved schedules...');
+        $yesterday = Carbon::yesterday()->toDateString();
+        $oldDayIds = OperationalDay::where('date', '<', $yesterday)->pluck('id');
+        $deletedCount = Schedule::whereIn('id_operational_day', $oldDayIds)
+                                ->where('status_schedule', '!=', 2)
+                                ->delete();
+        $this->info("   - Cleanup complete. Deleted {$deletedCount} old schedule entries.");
+
+        // --- LANGKAH 2: Membuat dan memvalidasi jadwal untuk 15 hari ke depan ---
+        $this->info('-> Generating and validating schedules for the next 15 days...');
+        $startDate = $now->copy();
+        $endDate = $now->copy()->addDays(14); // Menyiapkan jadwal untuk 15 hari (hari ini + 14 hari ke depan)
+
+        // Loop cerdas dari hari ini sampai 14 hari ke depan
+        for ($currentDate = $startDate; $currentDate->lte($endDate); $currentDate->addDay()) {
+            
+            // KUNCI UTAMA: Cari atau BUAT OperationalDay. Menggantikan command terpisah Anda.
+            $day = OperationalDay::firstOrCreate(['date' => $currentDate->toDateString()]);
+
+            $dayOfWeek = $currentDate->dayOfWeek;
+            $this->line("   - Processing date: {$day->date}");
 
             foreach ($times as $time) {
                 foreach ($cwspaces as $space) {
-                    $status = 0;
-
-                    if ($dayOfWeek >= 1 && $dayOfWeek <= 5) {
-                        // Senin - Jumat: semua jam aktif
-                        $status = 1;
-                    } elseif ($dayOfWeek === 6) {
-                        // Sabtu: hanya jam 08:00–14:00 yang aktif
+                    
+                    // Menentukan status default (available/closed)
+                    $defaultStatusForDayTime = 0; // Default closed
+                    if ($dayOfWeek >= 1 && $dayOfWeek <= 5) { // Senin - Jumat
+                        $defaultStatusForDayTime = 1;
+                    } elseif ($dayOfWeek === 6) { // Sabtu
                         if ($time->start_time >= '08:00:00' && $time->end_time <= '14:00:00') {
-                            $status = 1;
+                            $defaultStatusForDayTime = 1;
                         }
                     }
 
-
-                    // Cek apakah sudah ada schedule untuk kombinasi hari + waktu + space
-                    $existing = Schedule::where([
-                        'id_operational_day' => $day->id,
-                        'id_time' => $time->id,
-                        'id_cwspace' => $space->id,
+                    // Cari jadwal yang sudah ada
+                    $existingSchedule = Schedule::where([
+                        'id_operational_day' => $day->id, 'id_time' => $time->id, 'id_cwspace' => $space->id,
                     ])->first();
 
-                    if (!$existing) {
-                        // Jika belum ada, buat baru dengan default status otomatis
-                        Schedule::create(
-                            [
-                                'id_operational_day' => $day->id,
-                                'id_time' => $time->id,
-                                'id_cwspace' => $space->id,
-                                'status_schedule' => $status,
-                                'updated_at' => now(),
-                            ]
-                        );
+                    if (!$existingSchedule) {
+                        // Jika tidak ada, buat baru
+                        Schedule::create([
+                            'id_operational_day' => $day->id, 'id_time' => $time->id, 'id_cwspace' => $space->id,
+                            'status_schedule' => $defaultStatusForDayTime,
+                        ]);
                     } else {
-                        // Kalau sudah ada, update status hanya jika berbeda
-                        if ($existing->status_schedule != $status) {
-                            $existing->status_schedule = $status;
-                            $existing->updated_at = now();
-                            $existing->save();
+                        // Jika ada, terapkan logika perlindungan reservasi
+                        $safeLimitDate = Carbon::now()->addDays(14); 
+                        if ($existingSchedule->status_schedule == 2 && $currentDate->isFuture() && $currentDate->lte($safeLimitDate)) {
+                            // Ini adalah reservasi aktif, jangan diubah
+                            continue;
+                        }
+
+                        // Jika statusnya tidak cocok dengan default (termasuk reservasi lama), perbarui
+                        if ($existingSchedule->status_schedule != $defaultStatusForDayTime) {
+                            $existingSchedule->status_schedule = $defaultStatusForDayTime;
+                            $existingSchedule->id_reservation = null;
+                            $existingSchedule->save();
                         }
                     }
                 }
             }
         }
+
+        $this->info('Schedule generation complete.');
+        return 0;
     }
 }

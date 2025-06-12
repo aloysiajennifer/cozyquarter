@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code_cwspace')->unique();
             $table->integer('capacity_cwspace');
-            // 0 = available, 1 = not available -> nunjukin ruang cwspace open or not
-            $table->boolean('status_cwspace')->default(0);
+            $table->boolean('status_cwspace')->default(1); //1 = open, 0 = closed
             $table->timestamps();
         });
     }

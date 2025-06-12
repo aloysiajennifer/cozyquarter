@@ -36,10 +36,7 @@
                         Status
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Edit
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Delete
+                        Aksi
                     </th>
                 </tr>
             </thead>
@@ -56,23 +53,20 @@
                         {{ $cwspace -> capacity_cwspace}}
                     </td>
                     <td class="px-6 py-4">
-                        <span class="font-semibold {{ $cwspace->status_cwspace == 0 ? 'text-green-600' : 'text-red-600' }}">
-                            {{ $cwspace->status_cwspace == 0 ? 'Open' : 'Closed' }}
+                        <span class="font-semibold {{ $cwspace->status_cwspace == 1 ? 'text-green-600' : 'text-red-600' }}">
+                            {{ $cwspace->status_cwspace == 1 ? 'Open' : 'Closed' }}
                         </span>
                     </td>
 
-                    <!-- Edit -->
-                    <td class="px-6 py-4">
+                    <!-- Edit & Delete -->
+                    <td class="px-6 py-4 flex justify-center flex-row gap-1">
                         <button data-modal-target="cwspace-edit-{{ $cwspace->id }}" data-modal-toggle="cwspace-edit-{{ $cwspace->id }}"
                             class="block mx-auto text-white bg-amber-400 hover:bg-amber-500 focus:ring-4 
                                 focus:outline-none focus:ring-amber-400 font-medium rounded-lg text-sm px-5 py-2.5 
                                 text-center dark:bg-amber-400 dark:hover:bg-amber-400 dark:focus:ring-amber-500" type="button">
                             Edit
                         </button>
-                    </td>
 
-                    <!-- Delete -->
-                    <td class="px-6 py-4">
                         <button
                             data-modal-target="cwspace-delete-{{ $cwspace->id }}"
                             data-modal-toggle="cwspace-delete-{{ $cwspace->id }}"
@@ -120,8 +114,8 @@
                                             <label for="status_cwspace" class="block text-sm font-medium text-gray-900 dark:text-white">Status</label>
                                             <select name="status_cwspace"
                                                 class="border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5">
-                                                <option value="0" {{ $cwspace->status_cwspace == 0 ? 'selected' : '' }}>Open</option>
-                                                <option value="1" {{ $cwspace->status_cwspace == 1 ? 'selected' : '' }}>Closed</option>
+                                                <option value="0" {{ $cwspace->status_cwspace == 1 ? 'selected' : '' }}>Open</option>
+                                                <option value="1" {{ $cwspace->status_cwspace == 0 ? 'selected' : '' }}>Closed</option>
                                             </select>
                                         </div>
 
@@ -231,8 +225,8 @@
                                     class="block text-sm font-medium text-gray-900 dark:text-white">Status</label>
                                 <select name="status_cwspace"
                                     class="border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5">
-                                    <option value="0">Available</option>
-                                    <option value="1">Closed</option>
+                                    <option value="1">Available</option>
+                                    <option value="0">Closed</option>
                                 </select>
                             </div>
 

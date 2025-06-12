@@ -39,7 +39,7 @@
         </div>
     </form>
 
-    @if ($selectedCwspaceObj && $selectedCwspaceObj->status_cwspace == 1)
+    @if ($selectedCwspaceObj && $selectedCwspaceObj->status_cwspace == 0)
     <div class="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
             <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
@@ -67,22 +67,34 @@
                     <td class="px-4 py-2">{{ $schedule->time->start_time }} - {{ $schedule->time->end_time }}</td>
                     <td class="px-4 py-2">{{ $schedule->cwspace->code_cwspace }}</td>
                     <td class="px-4 py-2">
-                        @php
-                        $statusLabels = ['Closed', 'Available', 'Reserved'];
-                        $statusColors = ['text-red-600', 'text-green-600', 'text-yellow-600'];
-                        @endphp
-                        <span class="{{ $statusColors[$schedule->status_schedule] }} font-semibold">
-                            {{ $statusLabels[$schedule->status_schedule] }}
+                        @if ($schedule->status_schedule == 1)
+                        <span class="text-green-600 font-semibold">
+                            Available
                         </span>
+                        @elseif ($schedule->status_schedule == 0)
+                        <span class="text-red-600 font-semibold">
+                            Closed
+                        </span>
+                        @else {{-- Anggap saja selain 0 dan 1 adalah "Reserved" atau status lain --}}
+                        <span class="text-yellow-600 font-semibold">
+                            Reserved
+                        </span>
+                        @endif
 
                     </td>
 
                     <td class="px-6 py-4">
+                        @if ($schedule->status_schedule == 2)
+                        <span class="text-gray-500">No Action</span>
+
+                        @else
                         <button data-modal-target="schedule-edit-{{ $schedule->id }}" data-modal-toggle="schedule-edit-{{ $schedule->id }}"
                             class="block mx-auto text-white bg-amber-400 hover:bg-amber-500 focus:ring-4 focus:outline-none focus:ring-amber-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                             type="button">
                             Edit
                         </button>
+
+                        @endif
                     </td>
                 </tr>
 
@@ -112,7 +124,6 @@
                                                 class="border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5" required>
                                                 <option value="0" {{ $schedule->status_schedule == 0 ? 'selected' : '' }}>Closed</option>
                                                 <option value="1" {{ $schedule->status_schedule == 1 ? 'selected' : '' }}>Available</option>
-                                                <option value="2" {{ $schedule->status_schedule == 2 ? 'selected' : '' }}>Reserved</option>
                                             </select>
                                         </div>
 

@@ -10,6 +10,7 @@ use App\Models\Time;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,9 +30,14 @@ class DatabaseSeeder extends Seeder
             BookSeeder::class,
             TimeSeeder::class,
             CwspaceSeeder::class,
-            //Cara bikin operational sm schedule otomatis untuk 2 minggu kedepan
-            OperationalDaySeeder::class, // hbs jalanin seeder ketik -> php artisan operational:update
-            ScheduleSeeder::class, // hbs jalanin seeder ketik -> php artisan generate:schedule
+        ]);
+
+        Artisan::call('operational:update');
+        $this->command->info('Membuat jadwal operasional untuk 2 minggu ke depan...');
+        Artisan::call('schedule:generate');
+        $this->command->info('Membuat jadwal cwspace untuk 2 minggu ke depan...');
+
+        $this->call([
             ReservationSeeder::class,
             OrderSeeder::class,
         ]);
