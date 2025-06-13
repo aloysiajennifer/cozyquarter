@@ -13,10 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'role' => CheckRoleMiddleware::class // untuk role
+            'role' => CheckRoleMiddleware::class, // <== kurang koma
+            'auth.alert' => \App\Http\Middleware\RedirectIfUnauthenticatedWithAlert::class,
+
         ]);
 
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+    

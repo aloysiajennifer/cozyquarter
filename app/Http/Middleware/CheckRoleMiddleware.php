@@ -14,18 +14,23 @@ class CheckRoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, ...$permission): Response{
-    if (Auth::check()) {
-        $userRole = Auth::user()->role->type; 
-
-
-        if (in_array($userRole, $permission)) {
-            return $next($request);
+    public function handle(Request $request, Closure $next, ...$permission): Response
+    {
+        if (Auth::guard()->guest()) {
+            return redirect()->route('login')->with('auth_alert', 'Anda harus login untuk mengakses halaman ini.');
         }
 
-        abort(403);
-    } else {
+
+        if (Auth::check()) {
+            $userRole = Auth::user()->role->type;
+
+            if (in_array($userRole, $permission)) {
+                return $next($request);
+            }
+
+            abort(403);
+        }
+
         return redirect()->route('login');
-    }
     }
 }

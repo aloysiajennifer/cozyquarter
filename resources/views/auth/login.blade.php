@@ -69,7 +69,7 @@
                             required>
 
                         @if ($errors->any())
-                            <div class="text-red-600 text-sm">{{ $errors->first() }}</div>
+                        <div class="text-red-600 text-sm">{{ $errors->first() }}</div>
                         @endif
 
                         <button type="submit"
@@ -83,7 +83,7 @@
                         <a href="{{ route('register') }}" class="text-[var(--accent-blue)] hover:underline">Register</a>
                     </p>
                 </div>
-            </d>
+                </d>
         </main>
 
         <!-- Footer -->
@@ -112,5 +112,17 @@
             });
         });
     </script>
+    @if (session('auth_alert'))
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'Akses Dibatasi',
+            text: "{{ session('auth_alert') }}",
+            confirmButtonColor: '#119DA4'
+        });
+    </script>
+    @endif
+
 </body>
+
 </html>

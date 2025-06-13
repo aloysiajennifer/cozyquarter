@@ -27,7 +27,7 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth.alert')->group(function () {
     // HOME USER
     Route::get('/home', [BookController::class, 'home'])->name('home');
 
