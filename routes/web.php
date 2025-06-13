@@ -36,7 +36,7 @@ Route::get('/dashboard', function () {
 
 
 //MIDDLEWARE ADMIN
-Route::middleware('role:admin')->prefix('admin')->group(function(){
+Route::middleware('role:admin')->prefix('admin')->group(function () {
 
     //SHELF CRUD
     Route::get('/shelf/index', [ShelfController::class, 'index'])->name('shelf.index');
@@ -79,50 +79,50 @@ Route::middleware('role:admin')->prefix('admin')->group(function(){
     Route::get('/borrowing/form', [BorrowingController::class, 'form'])->name('borrowing.form');
     Route::post('/borrowing/insert', [BorrowingController::class, 'insert'])->name('borrowing.insert');
 
+    // CWSPACE CRUD
+    Route::get('/cwspace/index', [CwspaceController::class, 'index'])->name('cwspace.index'); //return the page with all cwspaces
+    Route::post('/cwspace/insert', [CwspaceController::class, 'insert'])->name('cwspace.insert'); //add cwspace to the db
+    Route::put('/cwspace/{id}', [CwspaceController::class, 'update'])->name('cwspace.update'); //update
+    Route::delete('/cwspace/{id}', [CwspaceController::class, 'delete'])->name('cwspace.delete');
+
+
+    // SCHEDULES CRUD
+    Route::get('/schedules/index', [ScheduleController::class, 'index'])->name('schedule.index');
+    Route::put('/schedules/{id}',  [ScheduleController::class, 'update'])->name('schedule.update');
+
+
+    //RESERVATION CRUD
+    Route::get('/reservation/index', [ReservationController::class, 'index'])->name('reservation.index');
+    Route::put('/reservation/{reservation}/update-status', [ReservationController::class, 'updateStatus'])->name('reservation.updateStatus');
+
+    //ORDER CRUD
+    Route::get('/order/index', [OrderController::class, 'index'])->name('order.index');
+    Route::put('/order/confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
+
+    // REPORTS
+    Route::get('/report/borrowing', [ReportController::class, 'borrowing'])->name('report.borrowing');
+    Route::get('/report/borrowing/pdf', [ReportController::class, 'borrowingPDF'])->name('report.borrowingPDF');
 });
 
 //MIDDLEWARE USER
-Route::middleware('role:user')->group(function(){
+Route::middleware('role:user')->group(function () {
 
     // BOOKS BORROWED LIBRARY (USER)
     Route::get('/library/booksborrowed', [BorrowingController::class, 'borrowed'])->name('library.borrowed');
-   
+
+    //BEVERAGES USER
+    Route::get('/menu', [BeverageController::class, 'menu'])->name('beverages.menu');
+
+    //ORDER USER
+    Route::get('/yourOrder', [OrderController::class, 'yourOrder'])->name('yourOrder');
+    Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('placeOrder');
 });
- 
+
 
 //HOME LIBRARY USER
-    Route::get('/library/home', [BookController::class, 'home'])->name('library.home');
+Route::get('/library/home', [BookController::class, 'home'])->name('library.home');
 
 // HOME ADMIN
 Route::get('admin/home', function () {
     return view('admin.layoutAdmin');
 });
-
-// CWSPACE CRUD
-Route::get('/cwspace/index', [CwspaceController::class, 'index'])->name('cwspace.index'); //return the page with all cwspaces
-Route::post('/cwspace/insert', [CwspaceController::class, 'insert'])->name('cwspace.insert'); //add cwspace to the db
-Route::put('/cwspace/{id}', [CwspaceController::class, 'update'])->name('cwspace.update'); //update
-Route::delete('/cwspace/{id}', [CwspaceController::class, 'delete'])->name('cwspace.delete');
-
-//BEVERAGES USER
-Route::get('/menu', [BeverageController::class, 'menu'])->name('beverages.menu');
-
-// SCHEDULES CRUD
-Route::get('/schedules/index', [ScheduleController::class, 'index'])->name('schedule.index');
-Route::put('/schedules/{id}',  [ScheduleController::class, 'update'])->name('schedule.update');
-
-//ORDER USER
-Route::get('/yourOrder', [OrderController::class, 'yourOrder'])->name('yourOrder');
-Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('placeOrder');
-
-//RESERVATION CRUD
-Route::get('/reservation/index', [ReservationController::class, 'index'])->name('reservation.index');
-Route::put('/reservation/{reservation}/update-status', [ReservationController::class, 'updateStatus'])->name('reservation.updateStatus');
-//ORDER CRUD
-Route::get('/order/index', [OrderController::class, 'index'])->name('order.index');
-Route::put('/order/confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
-// Route::post('/order/delete/{id}', [OrderController::class, 'delete'])->name('order.delete');
-
-// REPORTS
-Route::get('/report/borrowing', [ReportController::class, 'borrowing'])->name('report.borrowing');
-Route::get('/report/borrowing/pdf', [ReportController::class, 'borrowingPDF'])->name('report.borrowingPDF');
