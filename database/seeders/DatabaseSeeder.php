@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             BorrowingSeeder::class,
             TimeSeeder::class,
             CwspaceSeeder::class,
+            InitialScheduleSeeder::class,
         ]);
 
         Artisan::call('operational:update');

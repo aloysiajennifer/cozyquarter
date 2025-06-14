@@ -60,16 +60,16 @@
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Books Borrowed
                     </a>
-                    <a href=""
-                        class="rounded-md px-3 py-2 text-sm font-medium 
-                        {{ Route::currentRouteName() == ''
+                    <a href="{{ route('coworking.schedule') }}"
+                        class="rounded-md px-3 py-2 text-sm font-medium
+                        {{ Route::currentRouteName() == 'coworking.schedule'
                             ? 'bg-[var(--highlight)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Co-Working Space
                     </a>
-                    <a href=""
-                        class="rounded-md px-3 py-2 text-sm font-medium 
-                        {{ Route::currentRouteName() == ''
+                    <a href="{{ route('user.reservations.index') }}" {{-- Updated link to Your Reservations --}}
+                        class="rounded-md px-3 py-2 text-sm font-medium
+                        {{ Route::currentRouteName() == 'user.reservations.index'
                             ? 'bg-[var(--highlight)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Your Reservation

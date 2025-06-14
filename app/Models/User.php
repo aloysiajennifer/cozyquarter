@@ -23,7 +23,8 @@ class User extends Authenticatable
         'email',
         'username',
         'password',
-        'penalty_counter',
+        'penalty_counter', // <--- Keep this
+        // 'is_blacklisted', // <--- REMOVE THIS LINE if it's there from previous iterations
         'role_id',
     ];
 
@@ -57,6 +58,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            // 'is_blacklisted' => 'boolean', // <--- REMOVE THIS LINE if it's there
+            'penalty_counter' => 'integer', // <--- Keep this
         ];
     }
 
@@ -69,6 +72,15 @@ class User extends Authenticatable
     }
 
     public function reservation(){
-        return $this->hasMany(Reservation::class, 'id_reservation', 'id');
+        // Corrected: A user has many reservations, foreign key is 'id_user' on the reservations table.
+        return $this->hasMany(Reservation::class, 'id_user', 'id');
+    }
+
+    /**
+     * Helper method to check if the user is blacklisted based on penalty_counter.
+     */
+    public function isBlacklisted(): bool
+    {
+        return $this->penalty_counter >= 3; // <--- UPDATED LOGIC HERE
     }
 }
