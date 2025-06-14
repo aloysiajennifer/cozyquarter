@@ -52,7 +52,7 @@
                                     @php
                                         $schedules =
                                             $order->reservation->status_reservation == 0
-                                                ? $order->reservation->schedules->first()
+                                                ? $order->reservation->schedule->first()
                                                 : null;
                                     @endphp
                                     {{ $schedules->cwspace->code_cwspace }}

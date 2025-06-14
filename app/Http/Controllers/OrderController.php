@@ -20,11 +20,11 @@ class OrderController extends Controller
                 $query->whereHas('reservation.user', function ($q) use ($search) {
                     $q->where('name', 'like', '%' . $search . '%');
                 })
-                    ->orWhereHas('reservation.schedules.cwspace', function ($q) use ($search) {
+                    ->orWhereHas('reservation.schedule.cwspace', function ($q) use ($search) {
                         $q->where('code_cwspace', 'like', '%' . $search . '%');
                     });
             })
-            ->with(['reservation.user', 'reservation.schedules.cwspace', 'orderdetails.beverage'])
+            ->with(['reservation.user', 'reservation.schedule.cwspace', 'orderdetails.beverage'])
             ->paginate(10);
 
         return view('admin.order.orderIndex', compact('orders'));

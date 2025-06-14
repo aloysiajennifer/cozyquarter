@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
             CwspaceSeeder::class,
         ]);
 
-        Artisan::call('operational:update');
-        $this->command->info('Membuat jadwal operasional untuk 2 minggu ke depan...');
+        // Artisan::call('operational:update');
+        // $this->command->info('Membuat jadwal operasional untuk 2 minggu ke depan...');
         Artisan::call('schedule:generate');
         $this->command->info('Membuat jadwal cwspace untuk 2 minggu ke depan...');
 

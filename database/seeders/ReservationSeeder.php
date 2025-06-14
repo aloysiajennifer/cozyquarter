@@ -10,189 +10,194 @@ use App\Models\Time;
 use App\Models\Cwspace;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Collection;
 
 class ReservationSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    private const STATUS_RESERVED    = 0;
+    private const STATUS_ATTENDED    = 1;
+    private const STATUS_NOT_ATTENDED = 2;
+    private const STATUS_CANCELLED   = 3;
+    private const STATUS_CLOSED      = 4;
+
     public function run(): void
     {
-        $users = User::where('role_id', '1')->inRandomOrder()->limit(5)->get();
+        $this->command->info('Memulai Reservation Seeder...');
 
-        // Jika user kurang dari 5, buat sisanya
-        if ($users->count() < 5) {
-            $this->command->warn('Jumlah user dengan role_id 1 kurang dari 5, membuat user baru...');
-            $usersToCreate = 5 - $users->count();
-            User::factory()->count($usersToCreate)->create(['role_id' => '1']);
-            // Ambil lagi user setelah dibuat
-            $users = User::where('role_id', '1')->inRandomOrder()->limit(5)->get();
-        }
+        // 1. Siapkan data user
+        $users = $this->getOrCreateUsers();
         $now = Carbon::now();
-        // --- Definisi Status ---
-        // null = Pending (belum waktunya)
-        // 0    = Not Attended (lewat waktu, tidak datang)
-        // 1    = Attended (datang, check-in)
-        // 2    = Cancelled (dibatalkan)
-        // 3    = Closed (selesai, check-out)
 
-        // --- Reservasi 1: Pending (Masa Depan) - Status NULL ---
-        $schedule_pending = Schedule::where('status_schedule', 1)
+        // 2. Buat satu reservasi untuk setiap status
+        $this->createReservedReservation($users[0], $now);
+        $this->createNotAttendedReservation($users[1]);
+        $this->createAttendedReservation($users[2], $now);
+        $this->createClosedReservation($users[3]);
+        $this->createCancelledReservation($users[4], $now);
+
+        $this->command->info('Reservation Seeder selesai.');
+    }
+
+    /**
+     * Membuat reservasi dengan status 'Reserved' (0) untuk jadwal di masa depan.
+     */
+    private function createReservedReservation(User $user, Carbon $now): void
+    {
+        $schedule = $this->findAvailableFutureSchedule($now);
+
+        $this->command->info('Membuat reservasi "Reserved"...');
+        $reservation = Reservation::create($this->buildReservationData($user, $schedule, self::STATUS_RESERVED));
+        $schedule->update(['id_reservation' => $reservation->id, 'status_schedule' => 2]);
+    }
+
+    /**
+     * Membuat reservasi dengan status 'Not Attended' (2) untuk jadwal di masa lalu.
+     */
+    private function createNotAttendedReservation(User $user): void
+    {
+        $this->command->info('Membuat reservasi "Not Attended"...');
+        $this->createReservationFromScratch($user, self::STATUS_NOT_ATTENDED, 'past');
+    }
+
+    /**
+     * Membuat reservasi dengan status 'Attended' (1) jika ada jadwal yang sedang berlangsung.
+     */
+    private function createAttendedReservation(User $user, Carbon $now): void
+    {
+        $schedule = Schedule::where('status_schedule', 1)
             ->whereNull('id_reservation')
-            ->whereHas('operationalDay', function ($q) use ($now) {
-                $q->where('date', '>', $now->toDateString()); // Di masa depan
-            })
-            ->inRandomOrder()->first();
-
-
-        $reservation = Reservation::create([
-            'id_user' => $users[0]->id,
-            'reservation_code_cwspace' => $schedule_pending->cwspace->code_cwspace,
-            'reservation_date' => $schedule_pending->operationalDay->date,
-            'reservation_start_time' => $schedule_pending->time->start_time,
-            'reservation_end_time' => $schedule_pending->time->end_time,
-            'status_reservation' => null,
-            'timestamp_reservation' => Carbon::now()->subDays(rand(1, 2)),
-        ]);
-        $schedule_pending->update(['id_reservation' => $reservation->id, 'status_schedule' => 2]);
-
-        // --- Reservasi 2: Not Attended - Status 0 ---
-        // Bikin jadwal baru untuk yg di datang di masa lalu krn schedule cuma simpan 2 minggu ke depan
-        $this->createHardcodedReservation($users[1], 0, 'past');
-
-        // --- Reservasi 3: Attended - Status 1 ---
-        // Mencari jadwal untuk hari ini
-        $schedule_attended = Schedule::where('status_schedule', 1)
-            ->whereNull('id_reservation')
-            ->whereHas('operationalDay', function ($q) use ($now) {
-                $q->where('date', $now->toDateString()); // harus hari ini
-            })
+            ->whereHas('operationalDay', fn($q) => $q->where('date', $now->toDateString()))
             ->whereHas('time', function ($q) use ($now) {
-                $q->where('start_time', '<=', $now->toTimeString()); // Waktu mulai sudah lewat
+                $q->where('start_time', '<=', $now->toTimeString())
+                    ->where('end_time', '>', $now->toTimeString());
             })
             ->inRandomOrder()->first();
 
-        if ($schedule_attended) {
-            $checkInTime = Carbon::parse($schedule_attended->operationalDay->date . ' ' . $schedule_attended->time->start_time)->addMinutes(rand(5, 15));
-            if ($checkInTime->isFuture()) {
-                $checkInTime = Carbon::now()->subMinutes(rand(1, 10));
-            }
-
-            $reservation = Reservation::create([
-                'id_user' => $users[2]->id,
-                'reservation_code_cwspace' => $schedule_attended->cwspace->code_cwspace,
-                'reservation_date' => $schedule_attended->operationalDay->date,
-                'reservation_start_time' => $schedule_attended->time->start_time,
-                'reservation_end_time' => $schedule_attended->time->end_time,
-                'status_reservation' => 1,
-                'check_in_time' => $checkInTime,
-                'timestamp_reservation' => $checkInTime->copy()->subHours(rand(1, 24)),
-            ]);
-            $schedule_attended->update(['id_reservation' => $reservation->id, 'status_schedule' => 2]);
+        if ($schedule) {
+            $this->command->info('Jadwal aktif ditemukan, membuat reservasi "Attended"...');
+            $checkInTime = Carbon::parse($schedule->time->start_time)->addMinutes(rand(1, 10));
+            $reservationData = $this->buildReservationData($user, $schedule, self::STATUS_ATTENDED, ['check_in_time' => $checkInTime]);
+            $reservation = Reservation::create($reservationData);
+            $schedule->update(['id_reservation' => $reservation->id, 'status_schedule' => 2]);
         } else {
-            $this->createHardcodedReservation($users[2], 1, 'today');
+            $this->command->warn('Tidak ada jadwal aktif untuk "Attended", data tidak dibuat.');
         }
+    }
 
-        // --- Reservasi 4: Closed - Status 3 ---
-        $this->createHardcodedReservation($users[3], 3, 'past');
+    /**
+     * Membuat reservasi dengan status 'Closed' (4) untuk jadwal di masa lalu.
+     */
+    private function createClosedReservation(User $user): void
+    {
+        $this->command->info('Membuat reservasi "Closed"...');
+        $this->createReservationFromScratch($user, self::STATUS_CLOSED, 'past');
+    }
 
-        // --- Reservasi 5: Cancelled - Status 2 ---
-        // Reservasi dibatalkan di untuk jadwal masa depan
-        $schedule_to_cancel = Schedule::where('status_schedule', 1)
-            ->whereNull('id_reservation')
-            ->whereHas('operationalDay', function ($q) use ($now) {
-                $q->where('date', '>', $now->toDateString()); // di masa depan
-            })
-            ->inRandomOrder()->first();
-
-
-        $reservation = Reservation::create([
-            'id_user' => $users[4]->id,
-            'reservation_code_cwspace' => $schedule_to_cancel->cwspace->code_cwspace,
-            'reservation_date' => $schedule_to_cancel->operationalDay->date,
-            'reservation_start_time' => $schedule_to_cancel->time->start_time,
-            'reservation_end_time' => $schedule_to_cancel->time->end_time,
-            'status_reservation' => 2,
-            'timestamp_reservation' => Carbon::now()->subHours(rand(1, 24)), // Waktu pembatalan
-        ]);
+    /**
+     * Membuat reservasi dengan status 'Cancelled' (3) untuk jadwal di masa depan.
+     */
+    private function createCancelledReservation(User $user, Carbon $now): void
+    {
+        $schedule = $this->findAvailableFutureSchedule($now);
+        Reservation::create($this->buildReservationData($user, $schedule, self::STATUS_CANCELLED));
     }
 
 
-    protected function createHardcodedReservation($user, $status_reservation, $dateCondition)
+    /**
+     * Mengambil atau membuat 5 user dengan role_id 1.
+     * Jika kurang dari 5, akan membuat user baru.
+     */
+    private function getOrCreateUsers(): Collection
+    {
+        $users = User::where('role_id', '1')->inRandomOrder()->limit(5)->get();
+        if ($users->count() < 5) {
+            $this->command->warn('Jumlah user (role 1) kurang dari 5, membuat user baru...');
+            User::factory()->count(5 - $users->count())->create(['role_id' => '1']);
+            return User::where('role_id', '1')->inRandomOrder()->limit(5)->get();
+        }
+        return $users;
+    }
+
+    /**
+     * Mencari satu jadwal kosong acak di masa depan.
+     */
+    private function findAvailableFutureSchedule(Carbon $now): ?Schedule
+    {
+        return Schedule::where('status_schedule', 1)
+            ->whereNull('id_reservation')
+            ->whereHas('operationalDay', fn($q) => $q->where('date', '>', $now->toDateString()))
+            ->inRandomOrder()->first();
+    }
+
+    private function buildReservationData(User $user, Schedule $schedule, int $status, array $overrides = []): array
+    {
+        return array_merge([
+            'id_user' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'purpose' => 'Discussion',
+            'reservation_code_cwspace' => $schedule->cwspace->code_cwspace,
+            'reservation_date' => $schedule->operationalDay->date,
+            'reservation_start_time' => $schedule->time->start_time,
+            'reservation_end_time' => $schedule->time->end_time,
+            'status_reservation' => $status,
+            'num_participants' => rand(1, 3),
+            'timestamp_reservation' => Carbon::now()->subDays(rand(1, 5)),
+        ], $overrides);
+    }
+
+    /**
+     * Membuat reservasi dari nol, jika jadwal tidak ditemukan.
+     */
+    private function createReservationFromScratch(User $user, int $status, string $dateCondition): void
     {
         $cwspace = Cwspace::inRandomOrder()->first() ?? Cwspace::factory()->create();
         $time = Time::inRandomOrder()->first() ?? Time::factory()->create(['start_time' => '09:00:00', 'end_time' => '10:00:00']);
 
-        $reservationDate = Carbon::now();
-        if ($dateCondition === 'future') {
-            $reservationDate = Carbon::now()->addDays(rand(3, 10));
-        } elseif ($dateCondition === 'past') {
-            $reservationDate = Carbon::now()->subDays(rand(3, 10));
-        }
-
+        $reservationDate = match ($dateCondition) {
+            'future' => Carbon::now()->addDays(rand(3, 10)),
+            'past'   => Carbon::now()->subDays(rand(3, 10)),
+            default  => Carbon::now(),
+        };
         $reservationDateStr = $reservationDate->toDateString();
 
         $data = [
             'id_user' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'purpose' => 'Discussion',
             'reservation_code_cwspace' => $cwspace->code_cwspace,
             'reservation_date' => $reservationDateStr,
             'reservation_start_time' => $time->start_time,
             'reservation_end_time' => $time->end_time,
-            'status_reservation' => $status_reservation,
+            'status_reservation' => $status,
             'check_in_time' => null,
             'check_out_time' => null,
+            'num_participants' => rand(1, 3),
             'timestamp_reservation' => Carbon::now()->subDays(1),
         ];
 
         $actualStartTime = Carbon::parse($reservationDateStr . ' ' . $time->start_time);
         $actualEndTime = Carbon::parse($reservationDateStr . ' ' . $time->end_time);
 
-        switch ($status_reservation) {
-            case 1: // Attended
+        switch ($status) {
+            case self::STATUS_ATTENDED:
                 $data['check_in_time'] = $actualStartTime->addMinutes(rand(5, 15));
-                if ($dateCondition === 'today' && $data['check_in_time']->isFuture()) {
-                    $data['check_in_time'] = Carbon::now()->subMinutes(rand(1, 10));
-                }
-                $data['timestamp_reservation'] = $actualStartTime->subHours(rand(1, 24));
                 break;
-            case 3: // Closed
+            case self::STATUS_CLOSED:
                 $data['check_in_time'] = $actualStartTime->addMinutes(rand(0, 5));
                 $data['check_out_time'] = $actualEndTime->subMinutes(rand(0, 5));
-                $data['timestamp_reservation'] = $actualStartTime->subDays(rand(2, 8));
-                break;
-            case 0: // Not Attended
-            case 2: // Cancelled
-            case null: // Pending
-                $data['timestamp_reservation'] = $actualStartTime->subHours(rand(1, 48));
                 break;
         }
 
         $reservation = Reservation::create($data);
 
-        // Hanya update schedule jika statusnya bukan Cancelled
-        if ($status_reservation != 2) {
+        if ($status !== self::STATUS_CANCELLED) {
             $operationalDay = OperationalDay::firstOrCreate(['date' => $reservationDateStr]);
-
-            // Buat schedule yang terikat dengan reservasi ini
-            $schedule = Schedule::firstOrCreate(
-                [
-                    'id_operational_day' => $operationalDay->id,
-                    'id_time' => $time->id,
-                    'id_cwspace' => $cwspace->id,
-                ],
-                [
-                    'status_schedule' => 2, // Reserved
-                    'id_reservation' => $reservation->id,
-                ]
+            Schedule::updateOrCreate(
+                ['id_operational_day' => $operationalDay->id, 'id_time' => $time->id, 'id_cwspace' => $cwspace->id],
+                ['status_schedule' => 2, 'id_reservation' => $reservation->id]
             );
-
-            // Jika schedule sudah ada sebelumnya tapi belum terisi, update
-            if ($schedule->wasRecentlyCreated === false && $schedule->id_reservation === null) {
-                $schedule->update([
-                    'status_schedule' => 2,
-                    'id_reservation' => $reservation->id,
-                ]);
-            }
         }
     }
 }

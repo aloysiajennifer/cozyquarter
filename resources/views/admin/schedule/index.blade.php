@@ -1,198 +1,196 @@
 @extends('admin.layoutAdmin')
 
-@section('title', 'CRUD - Schedule')
+@section('title', 'Schedule Management')
+
+@php
+use Carbon\Carbon;
+
+// Definisikan label dan warna untuk status jadwal
+$scheduleStatusLabels = [
+0 => 'Closed',
+1 => 'Available',
+2 => 'Reserved'
+];
+$scheduleStatusBgColors = [
+0 => 'bg-red-600',
+1 => 'bg-green-600',
+2 => 'bg-yellow-500',
+'default' => 'bg-gray-500'
+];
+@endphp
 
 @section('content')
+<div class="p-4 sm:p-6 mt-14 min-h-screen">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-center text-4xl font-bold text-var(--primary) mt-2 mb-8">Schedule Management</h1>
 
-<div class="mt-16 p-4 ">
-    <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Schedule List</h1>
-
-    <form method="GET" action="{{ route('schedule.index') }}" class="mb-6">
-        <div class="flex flex-col md:flex-row md:items-center md:gap-6 mb-6">
-
-            <!-- Operational Date -->
-            <div class="flex flex-col md:flex-row md:items-center md:gap-3 mb-4 md:mb-0 md:flex-1">
-                <label for="date" class="font-semibold text-[var(--primary)] mb-1 md:mb-0 md:w-48">
-                    Choose Operational Date:
-                </label>
-                <input type="text" id="date" name="date"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 bg-white text-[var(--text-primary)] shadow-sm focus:ring-2 focus:ring-[var(--accent-blue)] focus:outline-none"
-                    value="{{ $selectedDate }}" placeholder="dd/mm/yyyy" readonly>
-            </div>
-
-            <!-- CW Space -->
-            <div class="flex flex-col md:flex-row md:items-center md:gap-3 md:flex-1">
-                <label for="cwspace" class="font-semibold text-[var(--primary)] mb-1 md:mb-0 md:w-48">
-                    Filter by CW Space:
-                </label>
-                <select name="cwspace" id="cwspace"
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 bg-white text-[var(--text-primary)] shadow-sm focus:ring-2 focus:ring-[var(--accent-blue)] focus:outline-none"
-                    onchange="this.form.submit()">
-                    <option value="">-- All CW Spaces --</option>
-                    @foreach ($cwspaces as $space)
-                    <option value="{{ $space->id }}" {{ request('cwspace') == $space->id ? 'selected' : '' }}>
-                        {{ $space->code_cwspace }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </form>
-
-    @if ($selectedCwspaceObj && $selectedCwspaceObj->status_cwspace == 0)
-    <div class="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-            <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
-        </svg>
-
-        <span class="pl-3 block font-semibold">CW Space tutup, tidak ada jadwal.</span>
-    </div>
-
-    @elseif ($schedules && count($schedules) > 0)
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-md text-center rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">No</th>
-                    <th scope="col" class="px-6 py-3">Time</th>
-                    <th scope="col" class="px-6 py-3">CW Space</th>
-                    <th scope="col" class="px-6 py-3">Status</th>
-                    <th scope="col" class="px-6 py-3">Edit</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($schedules as $schedule)
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                    <td class="px-6 py-4">{{ $loop -> iteration}}</td>
-                    <td class="px-4 py-2">{{ $schedule->time->start_time }} - {{ $schedule->time->end_time }}</td>
-                    <td class="px-4 py-2">{{ $schedule->cwspace->code_cwspace }}</td>
-                    <td class="px-4 py-2">
-                        @if ($schedule->status_schedule == 1)
-                        <span class="text-green-600 font-semibold">
-                            Available
-                        </span>
-                        @elseif ($schedule->status_schedule == 0)
-                        <span class="text-red-600 font-semibold">
-                            Closed
-                        </span>
-                        @else {{-- Anggap saja selain 0 dan 1 adalah "Reserved" atau status lain --}}
-                        <span class="text-yellow-600 font-semibold">
-                            Reserved
-                        </span>
-                        @endif
-
-                    </td>
-
-                    <td class="px-6 py-4">
-                        @if ($schedule->status_schedule == 2)
-                        <span class="text-gray-500">No Action</span>
-
-                        @else
-                        <button data-modal-target="schedule-edit-{{ $schedule->id }}" data-modal-toggle="schedule-edit-{{ $schedule->id }}"
-                            class="block mx-auto text-white bg-amber-400 hover:bg-amber-500 focus:ring-4 focus:outline-none focus:ring-amber-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                            type="button">
-                            Edit
-                        </button>
-
-                        @endif
-                    </td>
-                </tr>
-
-                <!-- Modal Edit -->
-                <div id="schedule-edit-{{ $schedule->id }}" tabindex="-1" aria-hidden="true"
-                    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                    <div class="relative p-4 w-full max-w-lg max-h-full">
-                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                <h3 class="text-xl font-semibold text-gray-600 dark:text-white">
-                                    Edit Schedule Status
-                                </h3>
-                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                    data-modal-hide="schedule-edit-{{ $schedule->id }}">
-                                    ✕
-                                </button>
-                            </div>
-
-                            <div class="p-4">
-                                <form action="{{ route('schedule.update', $schedule->id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="space-y-4">
-                                        <div>
-                                            <label for="status_schedule_{{ $schedule->id }}" class="block text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                                            <select name="status_schedule" id="status_schedule_{{ $schedule->id }}"
-                                                class="border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5" required>
-                                                <option value="0" {{ $schedule->status_schedule == 0 ? 'selected' : '' }}>Closed</option>
-                                                <option value="1" {{ $schedule->status_schedule == 1 ? 'selected' : '' }}>Available</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="flex justify-end pt-3 border-t">
-                                            <button type="submit"
-                                                class="bg-blue-700 text-white rounded-lg px-4 py-2 hover:bg-blue-800">Update</button>
-                                        </div>
-                                    </div>
-                                </form>
+        <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
+            <form method="GET" action="{{ route('schedule.index') }}" id="scheduleFilterForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Choose Date:</label>
+                        <div class="relative">
+                            <input type="text" id="date" name="date"
+                                class="w-full pl-4 pr-10 py-2 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition cursor-pointer"
+                                value="{{ $selectedDate }}" placeholder="Pilih tanggal..." readonly>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                </svg>
                             </div>
                         </div>
                     </div>
+
+                    <div>
+                        <label for="cwspace" class="block text-sm font-medium text-gray-700 mb-1">Filter by CW Space:</label>
+                        <select name="cwspace" id="cwspace"
+                            class="w-full px-4 py-2 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition"
+                            onchange="this.form.submit()">
+                            <option value="">-- All CW Spaces --</option>
+                            @foreach ($cwspaces as $space)
+                            <option value="{{ $space->id }}" {{ request('cwspace') == $space->id ? 'selected' : '' }}>
+                                {{ $space->code_cwspace }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-                @endforeach
-            </tbody>
-        </table>
+            </form>
+        </div>
+
+        @if ($selectedCwspaceObj && $selectedCwspaceObj->status_cwspace == 0)
+        <div class="flex items-center bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-lg shadow mb-6" role="alert">
+            <p class="font-bold">Co-working space ini sedang ditutup dan tidak memiliki jadwal.</p>
+        </div>
+        @elseif ($schedules && count($schedules) > 0)
+        <div class="relative overflow-x-auto shadow-xl sm:rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">No</th>
+                        <th scope="col" class="px-6 py-3">Time</th>
+                        <th scope="col" class="px-6 py-3">CW Space</th>
+                        <th scope="col" class="px-6 py-3 text-center">Status</th>
+                        <th scope="col" class="px-6 py-3 text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($schedules as $schedule)
+                    <tr class="bg-white border-b hover:bg-gray-50 transition">
+                        <td class="px-6 py-4">{{ $loop->iteration }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900">{{ Carbon::parse($schedule->time->start_time)->format('H:i') }} - {{ Carbon::parse($schedule->time->end_time)->format('H:i') }}</td>
+                        <td class="px-6 py-4">{{ $schedule->cwspace->code_cwspace }}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex justify-center">
+                                <span class="w-24 inline-flex items-center justify-center py-1 px-2 text-xs font-semibold text-white rounded-full {{ $scheduleStatusBgColors[$schedule->status_schedule] ?? $scheduleStatusBgColors['default'] }}">
+                                    {{ $scheduleStatusLabels[$schedule->status_schedule] ?? 'Unknown' }}
+                                </span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            @if ($schedule->status_schedule == 2)
+                            <span class="text-gray-400">-</span>
+                            @else
+                            <button data-modal-target="schedule-edit-{{ $schedule->id }}" data-modal-toggle="schedule-edit-{{ $schedule->id }}"
+                                class="bg-amber-500 hover:bg-amber-600 text-white font-semibold text-xs py-1.5 px-3 rounded-lg shadow-sm transition-colors duration-150" type="button">
+                                Edit
+                            </button>
+                            @endif
+                        </td>
+
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @else
+        <div class="text-center py-12 bg-white rounded-xl shadow-lg">
+            <p class="text-gray-500 text-lg">Tidak ada jadwal yang ditemukan untuk kriteria yang dipilih.</p>
+        </div>
+        @endif
     </div>
-    @endif
 </div>
 
-<!-- Pilih tanggal -->
+@if(!empty($schedules))
+@foreach ($schedules as $schedule)
+<div id="schedule-edit-{{ $schedule->id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow">
+            <div class="flex items-center justify-between p-4 border-b">
+                <h3 class="text-lg font-semibold text-gray-900">Edit Schedule Status</h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="schedule-edit-{{ $schedule->id }}">
+                    ✕<span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <form action="{{ route('schedule.update', $schedule->id) }}" method="POST" class="p-4">
+                @csrf
+                @method('PUT')
+                <div class="space-y-4">
+                    <div>
+                        <label for="status_schedule_{{ $schedule->id }}" class="block mb-2 text-sm font-medium text-gray-900">Status</label>
+                        <select name="status_schedule" id="status_schedule_{{ $schedule->id }}" class="w-full px-4 py-2 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" required>
+                            <option value="0" {{ $schedule->status_schedule == 0 ? 'selected' : '' }}>Closed</option>
+                            <option value="1" {{ $schedule->status_schedule == 1 ? 'selected' : '' }}>Available</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-end pt-3 border-t">
+                        <button type="submit" class="bg-teal-600 text-white rounded-lg px-5 py-2.5 hover:bg-teal-700 font-medium text-sm text-center transition">Update Status</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+@endif
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // Inisialisasi Flatpickr
         flatpickr("#date", {
-            dateFormat: "Y-m-d", // format untuk value input
+            altInput: true,
+            altFormat: "d F Y",
+            dateFormat: "Y-m-d",
             enable: [
                 @foreach($operationalDays as $day)
-                "{{ \Carbon\Carbon::parse($day->date)->format('Y-m-d') }}",
+                "{{ Carbon::parse($day->date)->format('Y-m-d') }}",
                 @endforeach
             ],
             onChange: function(selectedDates, dateStr, instance) {
-                instance.input.form.submit(); // submit otomatis saat pilih tanggal
+                document.getElementById('scheduleFilterForm').submit();
             }
         });
     });
+
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            window.location.reload();
+        }
+    });
 </script>
 
-{{-- SweetAlert Success --}}
 @if(session('success'))
 <script>
     Swal.fire({
         icon: 'success',
         title: 'Success!',
         text: '{{ session("success") }}',
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#22c55e'
+        confirmButtonColor: '#14b8a6'
     });
 </script>
 @endif
 
-{{-- SweetAlert Validasi --}}
 @if($errors->any())
 <script>
     Swal.fire({
         icon: 'error',
         title: 'Input Tidak Valid!',
         html: `{!! implode('<br>', $errors->all()) !!}`,
-        confirmButtonText: 'Try Again',
         confirmButtonColor: '#ef4444'
     });
 </script>
 @endif
 
-<script>
-    // Prevent showing old alerts when pressing back
-    window.addEventListener('pageshow', function(event) {
-        if (event.persisted || (window.performance && performance.navigation.type === 2)) {
-            window.location.reload();
-        }
-    });
-</script>
+
 @endsection
