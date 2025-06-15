@@ -44,30 +44,26 @@ class BeverageController extends Controller
             'price' => 'required|integer|min:0',
             'stock' => 'required|integer|gte:0',
             'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'availability' => 'required|in:0,1',
         ]);
 
-        $beverage = new Beverages;
-
+        $relativePath = null;
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $destinationPath = public_path('images/beverages');
-            $file->move($destinationPath, $filename);
-
-            $relativePath = 'images/beverages/' . $filename;
-        } else {
-            $relativePath = null; // or set a default image path
+            $imagePath = $request->file('image')->store('images', 'public');
+            $relativePath = 'storage/' . $imagePath;
         }
 
         Beverages::create([
             'name' => $request->name,
             'price' => $request->price,
-            'image' => $relativePath, // store relative path
+            'image' => $relativePath,
             'stock' => $request->stock,
+            'availability' => $request->availability,
         ]);
 
         return redirect()->route('beverage.index')->with('success', 'Beverage created successfully.');
     }
+
 
     // Form edit beverage
     public function edit($id)
@@ -126,8 +122,9 @@ class BeverageController extends Controller
         return view('admin.beverage.show', compact('beverage'));
     }
 
-    public function menu(){
-        $beverages = Beverages::where('stock','>',0)->get();
+    public function menu()
+    {
+        $beverages = Beverages::where('stock', '>', 0)->get();
         return view('user.beveragesMenu', compact('beverages'));
     }
 }
