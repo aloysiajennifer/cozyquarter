@@ -15,6 +15,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\CoworkingSpaceController;
+use App\Http\Controllers\UserReservationController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -116,6 +118,19 @@ Route::middleware('auth.alert')->group(function () {
         //ORDER USER
         Route::get('/yourOrder', [OrderController::class, 'yourOrder'])->name('yourOrder');
         Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('placeOrder');
+        
+        // CO-WORKING SPACE ROUTES (User-facing)
+        // Now protected by 'auth' middleware
+        Route::get('/coworking/schedule', [CoworkingSpaceController::class, 'showSchedule'])->name('coworking.schedule');
+        Route::post('/coworking/book', [CoworkingSpaceController::class, 'storeReservation'])->name('coworking.book');
+
+        // NEW: USER RESERVATION ROUTES
+        Route::prefix('user/reservations')->name('user.reservations.')->group(function () {
+            Route::get('/', [UserReservationController::class, 'index'])->name('index');
+            Route::post('/{id}/cancel', [UserReservationController::class, 'cancelReservation'])->name('cancel');
+            Route::post('/{id}/attend', [UserReservationController::class, 'markAttended'])->name('attend'); // For 'Mark Attended' button
+            Route::get('/{id}/order-drink', [UserReservationController::class, 'orderDrink'])->name('order-drink'); // Redirect to beverage menu
+        });
     });
 });
 
