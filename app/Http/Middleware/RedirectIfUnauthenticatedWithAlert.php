@@ -17,7 +17,7 @@ class RedirectIfUnauthenticatedWithAlert
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('auth_alert', 'Anda harus login terlebih dahulu!');
+            return redirect()->route('login')->with('auth_alert', 'You have to log in first to access this page!');
         }
 
         return $next($request);
