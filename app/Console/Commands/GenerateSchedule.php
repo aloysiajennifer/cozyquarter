@@ -31,10 +31,10 @@ class GenerateSchedule extends Command
                                 ->delete();
         $this->info("   - Cleanup complete. Deleted {$deletedCount} old schedule entries.");
 
-        // --- LANGKAH 2: Membuat dan memvalidasi jadwal untuk 15 hari ke depan ---
-        $this->info('-> Generating and validating schedules for the next 15 days...');
+        // --- LANGKAH 2: Membuat dan memvalidasi jadwal untuk 14 hari  ---
+        $this->info('-> Generating and validating schedules for the next 14 days...');
         $startDate = $now->copy();
-        $endDate = $now->copy()->addDays(14); // Menyiapkan jadwal untuk 15 hari (hari ini + 14 hari ke depan)
+        $endDate = $now->copy()->addDays(13); // Menyiapkan jadwal untuk 13 hari ke depan
 
         for ($currentDate = $startDate; $currentDate->lte($endDate); $currentDate->addDay()) {
         
@@ -50,10 +50,6 @@ class GenerateSchedule extends Command
                     $defaultStatusForDayTime = 0; // Default closed
                     if ($dayOfWeek >= 1 && $dayOfWeek <= 5) { // Senin - Jumat
                         $defaultStatusForDayTime = 1;
-                    } elseif ($dayOfWeek === 6) { // Sabtu
-                        if ($time->start_time >= '08:00:00' && $time->end_time <= '14:00:00') {
-                            $defaultStatusForDayTime = 1;
-                        }
                     }
 
                     // Cari jadwal yang sudah ada
@@ -70,7 +66,7 @@ class GenerateSchedule extends Command
                     } else {
                         // Jika ada, terapkan logika perlindungan reservasi
                         $safeLimitDate = Carbon::now()->addDays(14); 
-                        if ($existingSchedule->status_schedule == 2 && $currentDate->isFuture() && $currentDate->lte($safeLimitDate)) {
+                        if ($existingSchedule->status_schedule == 1 && $currentDate->isFuture() && $currentDate->lte($safeLimitDate)) {
                             // Ini adalah reservasi aktif, jangan diubah
                             continue;
                         }

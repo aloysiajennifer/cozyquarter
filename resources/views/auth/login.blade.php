@@ -116,7 +116,7 @@
     <script>
         Swal.fire({
             icon: 'warning',
-            title: 'Akses Dibatasi',
+            title: 'Access Denied',
             text: "{{ session('auth_alert') }}",
             confirmButtonColor: '#119DA4'
         });

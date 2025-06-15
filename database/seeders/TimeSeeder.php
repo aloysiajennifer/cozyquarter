@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Time;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Time; // Import the Time model
 
 class TimeSeeder extends Seeder
 {
@@ -13,47 +12,25 @@ class TimeSeeder extends Seeder
      */
     public function run(): void
     {
-               // Dummy data for time
-        $items = [
-            ['start_time' => '08:00:00',
-            'end_time' => '09:00:00'],
-            
-            ['start_time' => '09:00:00',
-            'end_time' => '10:00:00'],
-
-            ['start_time' => '10:00:00',
-            'end_time' => '11:00:00'],
-
-            ['start_time' => '11:00:00',
-            'end_time' => '12:00:00'],
-
-            ['start_time' => '12:00:00',
-            'end_time' => '13:00:00'],
-
-            ['start_time' => '13:00:00',
-            'end_time' => '14:00:00'],
-
-            ['start_time' => '14:00:00',
-            'end_time' => '15:00:00'],
-
-            ['start_time' => '15:00:00',
-            'end_time' => '16:00:00'],
-
-            ['start_time' => '16:00:00',
-            'end_time' => '17:00:00'],
-
-            ['start_time' => '17:00:00',
-            'end_time' => '18:00:00'],
-
-            ['start_time' => '18:00:00',
-            'end_time' => '19:00:00'],
-
-            ['start_time' => '19:00:00',
-            'end_time' => '20:00:00'],
+        $timeSlots = [
+            ['start' => '09:00:00', 'end' => '10:00:00'],
+            ['start' => '10:00:00', 'end' => '11:00:00'],
+            ['start' => '11:00:00', 'end' => '12:00:00'],
+            ['start' => '12:00:00', 'end' => '13:00:00'],
+            ['start' => '13:00:00', 'end' => '14:00:00'],
+            ['start' => '14:00:00', 'end' => '15:00:00'],
+            ['start' => '15:00:00', 'end' => '16:00:00'],
+            ['start' => '16:00:00', 'end' => '17:00:00'],
+            ['start' => '17:00:00', 'end' => '18:00:00'],
+            ['start' => '18:00:00', 'end' => '19:00:00'],
+            ['start' => '19:00:00', 'end' => '20:00:00'],
         ];
 
-        foreach ($items as $item){
-            Time::create($item);
+        foreach ($timeSlots as $slot) {
+            Time::firstOrCreate(
+                ['start_time' => $slot['start']], // Use 'start_time' as unique identifier
+                ['end_time' => $slot['end']]
+            );
         }
     }
 }

@@ -17,7 +17,7 @@ class CheckRoleMiddleware
     public function handle(Request $request, Closure $next, ...$permission): Response
     {
         if (Auth::guard()->guest()) {
-            return redirect()->route('login')->with('auth_alert', 'Anda harus login untuk mengakses halaman ini.');
+            return redirect()->route('login')->with('auth_alert', 'You have to log in first to access this page!');
         }
 
 
