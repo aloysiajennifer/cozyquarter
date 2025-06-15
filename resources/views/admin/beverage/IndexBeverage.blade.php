@@ -125,7 +125,7 @@
                             <tr class="bg-white border-b hover:bg-gray-100">
                                 <td class="px-6 py-4 text-primary">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4">
-                                    <img src="{{ asset($beverage->image) }}" alt="Image"
+                                    <img src="{{ asset($beverage->image) }}" alt="{{ $beverage->name }}"
                                         class="w-16 h-20 object-cover rounded">
                                 </td>
                                 <td class="px-6 py-4 font-medium text-[var(--primary)] whitespace-nowrap">

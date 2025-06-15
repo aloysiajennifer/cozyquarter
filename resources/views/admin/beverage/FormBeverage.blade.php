@@ -43,7 +43,7 @@
                             placeholder="Enter stock quantity" required />
                     </div>
 
-                    <div class="mb-6 flex items-center">
+                    <!-- <div class="mb-6 flex items-center">
                         <label class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Availability</label>
                         <div class="w-2/3 flex space-x-6">
                             <label class="inline-flex items-center">
@@ -55,7 +55,7 @@
                                 <span class="ml-2">Available</span>
                             </label>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="mb-6 flex">
                         <label for="image"
