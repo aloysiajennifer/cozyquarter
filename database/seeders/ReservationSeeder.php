@@ -160,9 +160,9 @@ class ReservationSeeder extends Seeder
                 $data['check_out_time'] = $actualEndTime->subMinutes(rand(0, 5));
                 $data['timestamp_reservation'] = $actualStartTime->subDays(rand(2, 8));
                 break;
-            case 0: // Not Attended
+            case 1: // Not Attended
             case 2: // Cancelled
-            case null: // Pending
+            case 0: // Reserved
                 $data['timestamp_reservation'] = $actualStartTime->subHours(rand(1, 48));
                 break;
         }
