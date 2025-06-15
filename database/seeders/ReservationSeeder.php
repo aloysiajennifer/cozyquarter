@@ -56,6 +56,9 @@ class ReservationSeeder extends Seeder
     private function createNotAttendedReservation(User $user): void
     {
         $this->command->info('Membuat reservasi "Not Attended"...');
+        // Buat 3 reservasi dengan status 'Not Attended' untuk jadwal di masa lalu
+        $this->createReservationFromScratch($user, self::STATUS_NOT_ATTENDED, 'past');
+        $this->createReservationFromScratch($user, self::STATUS_NOT_ATTENDED, 'past');
         $this->createReservationFromScratch($user, self::STATUS_NOT_ATTENDED, 'past');
     }
 
@@ -191,6 +194,11 @@ class ReservationSeeder extends Seeder
         }
 
         $reservation = Reservation::create($data);
+        // Kalau statusnya not attended, +1 penalty counter
+         if ($status === self::STATUS_NOT_ATTENDED) {
+            $user->increment('penalty_counter');
+            $this->command->info("Penalty counter untuk user {$user->name} ditambahkan.");
+        }
 
         if ($status !== self::STATUS_CANCELLED) {
             $operationalDay = OperationalDay::firstOrCreate(['date' => $reservationDateStr]);
@@ -199,5 +207,6 @@ class ReservationSeeder extends Seeder
                 ['status_schedule' => 2, 'id_reservation' => $reservation->id]
             );
         }
+
     }
 }
