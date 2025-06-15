@@ -162,7 +162,7 @@
             </div>
 
             <div class="mb-4 mt-4 text-right">
-                <a href="{{ url('/beverage/form') }}">
+                <a href="{{ route('beverage.create') }}">
                     <button
                         class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5">
                         Add
