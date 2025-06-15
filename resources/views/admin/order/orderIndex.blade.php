@@ -50,12 +50,9 @@
                                 <td class="px-6 py-4 text-primary">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4 font-medium text-[var(--primary)] whitespace-nowrap">
                                     @php
-                                        $schedules =
-                                            $order->reservation->status_reservation == 0
-                                                ? $order->reservation->schedule->first()
-                                                : null;
+                                        $schedule = $order->reservation->schedule->first();
                                     @endphp
-                                    {{ $schedules->cwspace->code_cwspace }}
+                                    {{ $schedule?->cwspace?->code_cwspace }}
                                 </td>
                                 <td class="px-6 py-4 text-[var(--primary)]">{{ $order->reservation->user->name }}</td>
                                 <td class="px-6 py-4 text-[var(--primary)]">

@@ -15,16 +15,24 @@ class OrderController extends Controller
         $search = $request->input('search');
 
         $orders = Order::query()
-            ->when($search, function ($query, $search) {
-                // Search filter
-                $query->whereHas('reservation.user', function ($q) use ($search) {
-                    $q->where('name', 'like', '%' . $search . '%');
-                })
-                    ->orWhereHas('reservation.schedule.cwspace', function ($q) use ($search) {
-                        $q->where('code_cwspace', 'like', '%' . $search . '%');
-                    });
+            ->with(['reservation.user', 'reservation.schedule.cwspace', 'orderDetails.beverage'])
+            // filter order berdasarkan status_reservation dari reservation
+            ->whereHas('reservation', function ($q) {
+                $q->whereIn('status_reservation', [1, 4]);
             })
-            ->with(['reservation.user', 'reservation.schedule.cwspace', 'orderdetails.beverage'])
+            ->when($search, function ($query, $search) {
+                // search filter --> mencari berdasarkan nama user atau code_cwspace
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->whereHas('reservation.user', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    })
+                        ->orWhereHas('reservation.schedule.cwspace', function ($q) use ($search) {
+                            $q->where('code_cwspace', 'like', '%' . $search . '%');
+                        });
+                });
+            })
+            // urutkan berdasarkan waktu order terbaru
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('admin.order.orderIndex', compact('orders'));
@@ -45,7 +53,8 @@ class OrderController extends Controller
         return view('user.yourOrder', compact('beverages'));
     }
 
-    public function placeOrder(Request $request) {
+    public function placeOrder(Request $request)
+    {
         //buat masukkin ke DB
     }
 }
