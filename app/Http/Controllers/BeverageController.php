@@ -44,7 +44,7 @@ class BeverageController extends Controller
             'price' => 'required|integer|min:0',
             'stock' => 'required|integer|gte:0',
             'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
-            'availability' => 'required|in:0,1',
+            // 'availability' => 'required|in:0,1',
         ]);
 
         $relativePath = null;
@@ -58,7 +58,7 @@ class BeverageController extends Controller
             'price' => $request->price,
             'image' => $relativePath,
             'stock' => $request->stock,
-            'availability' => $request->availability,
+            // 'availability' => $request->availability,
         ]);
 
         return redirect()->route('beverage.index')->with('success', 'Beverage created successfully.');
