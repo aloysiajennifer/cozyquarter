@@ -55,7 +55,7 @@
 
 <body>
     <div id="sidebar-backdrop" class="fixed inset-0 z-30 hidden"></div>
-    <nav id="top-navbar" class="fixed top-0 right-0 left-0 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+    <nav id="top-navbar" class="z-40 fixed top-0 right-0 left-0 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
         <div class="px-4 h-[67px]">
             <div class="flex items-center justify-between h-full">
                 <div class="flex items-center">
