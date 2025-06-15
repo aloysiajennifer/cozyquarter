@@ -13,9 +13,6 @@ class ReservationController extends Controller
     public function index(Request $request)
     {
         $cwspaces = Cwspace::where('status_cwspace', 1)->get(['id', 'code_cwspace']);
-        // If you're using Flatpickr and need to pass operationalDays for 'enable' dates, uncomment the line below.
-        // Otherwise, it's not strictly needed for basic HTML date input.
-        // $operationalDays = OperationalDay::all();
 
         $query = Reservation::with(['user']);
 
@@ -28,13 +25,13 @@ class ReservationController extends Controller
         // --- Filter By CW Space Code ---
         if ($request->filled('filter_cwspace')) {
             $cwspaceId = $request->input('filter_cwspace');
-            $selectedCwspace = Cwspace::find($cwspaceId);
-            if ($selectedCwspace) {
-                $query->where('reservation_code_cwspace', $selectedCwspace->code_cwspace);
+            // Ambil code_cwspace berdasarkan id untuk query reservasi
+            $selectedCwspaceForQuery = Cwspace::find($cwspaceId);
+            if ($selectedCwspaceForQuery) {
+                $query->where('reservation_code_cwspace', $selectedCwspaceForQuery->code_cwspace);
             }
         }
 
-        // --- Search By User Name ---
         if ($request->filled('search_user')) {
             $searchTerm = '%' . $request->input('search_user') . '%';
             $query->whereHas('user', function ($q) use ($searchTerm) {
@@ -42,52 +39,52 @@ class ReservationController extends Controller
             });
         }
 
-        $reservations = $query->orderBy('timestamp_reservation', 'desc')->paginate(10);
+        // Filter berdasarkan Status
+        if ($request->filled('filter_status')) {
+            $query->where('status_reservation', $request->filter_status);
+        }
 
-        // Pass operationalDays if Flatpickr is used; otherwise, just cwspaces
-        return view('admin.reservation.index', compact('reservations', 'cwspaces' /*, 'operationalDays' */));
+        $reservations = $query->orderBy('timestamp_reservation', 'desc')->paginate(10);
+        $cwspaces = Cwspace::all(); 
+        $selectedCwspaceObj = $request->filled('filter_cwspace') 
+        ? Cwspace::find($request->input('filter_cwspace')) 
+        : null;
+
+
+        return view('admin.reservation.index', compact('reservations', 'cwspaces', 'selectedCwspaceObj'));
     }
 
-    public function updateStatus(Request $request, Reservation $reservation)
+    public function updateStatus(Request $request, $id)
     {
-        $request->validate([
-            // Admin can ONLY submit status '0' (Attended)
-            'status' => 'required|integer|in:0',
-        ]);
+        $reservation = Reservation::findOrFail($id);
+        $newStatus = $request->input('status');
 
-        $newStatus = (int) $request->input('status');
+        // Jika admin mencoba mengubah status menjadi "Attended" (1)
+        if ($newStatus == 1 && $reservation->status_reservation == 0) {
+            // Ambil HANYA bagian tanggal dari kolom reservation_date
+            $dateOnly = Carbon::parse($reservation->reservation_date)->toDateString(); // Hasil: "2025-06-16"
 
-        // --- Status Mapping Based on your Migration:
-        // NULL: Pending / Belum Jadwalnya
-        // 0: Attended
-        // 1: Not Attended
-        // 2: Cancelled
-        // 3: Closed
+            // Gabungkan tanggal yang sudah bersih dengan waktu mulai
+            $reservationStartTime = Carbon::parse($dateOnly . ' ' . $reservation->reservation_start_time);
 
-        // Business Logic: Admin can only mark a 'NULL' reservation as 'Attended' (0).
-        if (is_null($reservation->status_reservation)) {
-            // Check if the requested new status is indeed Attended (0)
-            if ($newStatus === 0) {
-                // Optional: You might want to ensure the reservation date is today or in the past
-                // before marking it as attended. If it's a future reservation,
-                // maybe disallow it or show a specific error.
-                $reservationDate = Carbon::parse($reservation->reservation_date);
-                if ($reservationDate->isFuture()) {
-                    return redirect()->back()->with('error', 'Tidak dapat menandai reservasi di masa depan sebagai Attended secara manual.');
-                }
-
-                $reservation->status_reservation = 0; // Change status to Attended
-                $reservation->check_in_time = Carbon::now(); // Set check-in time
-                $reservation->save();
-
-                return redirect()->back()->with('success', 'Status reservasi berhasil diubah menjadi Attended.');
-            } else {
-                // This case should ideally not be hit if the button value is strictly '0'
-                // but it's a safeguard if someone tries to manipulate the request.
-                return redirect()->back()->with('error', 'Aksi tidak valid: hanya bisa mengubah status "Belum Jadwalnya" menjadi "Attended".');
+            // Cek apakah waktu sekarang MASIH SEBELUM waktu reservasi dimulai
+            if (Carbon::now()->lt($reservationStartTime)) {
+                // Jika ya, kembalikan dengan pesan error spesifik
+                return redirect()->back()->with('error', 'Gagal! Waktu check-in untuk reservasi ini belum dimulai.');
             }
-        } else {
-            return redirect()->back()->with('error', 'Reservasi ini tidak dapat diubah statusnya melalui aksi ini.');
+
+            // Jika waktu sudah sesuai, set juga waktu check-in
+            $reservation->check_in_time = Carbon::now();
         }
+
+        // Jika admin membatalkan kehadiran (dari 1 ke 0), hapus waktu check-in
+        if ($newStatus == 0 && $reservation->status_reservation == 1) {
+            $reservation->check_in_time = null;
+        }
+
+        $reservation->status_reservation = $newStatus;
+        $reservation->save();
+
+        return redirect()->route('reservation.index')->with('success', 'Status reservasi berhasil diperbarui.');
     }
 }

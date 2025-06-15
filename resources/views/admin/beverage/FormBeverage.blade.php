@@ -4,7 +4,7 @@
 @section('title', 'CRUD - Add Beverage')
 
 @section('content')
-<div class="mt-15 p-4 bg-gray-100">
+<div class="pt-16 p-4">
     <div class="container mx-auto p-4">
         <div class="text-left">
             <a href="{{ route('beverage.index') }}">

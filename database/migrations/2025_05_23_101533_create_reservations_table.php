@@ -14,17 +14,18 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name');
+            $table->string('email');
+            $table->string('purpose');
             $table->string('reservation_code_cwspace'); // Kode CW Space yang direservasi
             $table->date('reservation_date'); // Tanggal jadwal yang direservasi
             $table->time('reservation_start_time'); // Waktu mulai jadwal yang direservasi
             $table->time('reservation_end_time'); // Waktu selesai jadwal yang direservasi
-            $table->tinyInteger('status_reservation')->nullable(); //0=reserved, 1= attended, 2=not attended 3=cancelled 4=closed
+            $table->tinyInteger('status_reservation'); //0=reserved, 1= not attended, 2=attended 3=cancelled 4=closed
             $table->dateTime('check_in_time')->nullable();
             $table->dateTime('check_out_time')->nullable();
+            $table->integer('num_participants'); // Jumlah peserta, default 1
             $table->timestamp('timestamp_reservation');
-            $table->string('purpose')->nullable();
-            $table->string('name')->nullable();
-            $table->string('contact')->nullable();
             $table->timestamps();
 
         });

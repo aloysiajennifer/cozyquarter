@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Cwspace;
 use App\Models\OperationalDay;
 use App\Models\Schedule;
-use App\Models\Schedulel;
 use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
@@ -18,12 +17,10 @@ class ScheduleController extends Controller
 
 
         $selectedDate = $request->input('date');
-        $selectedCwspace = $request->input('cwspace'); // Tambahan
-
-        // Ambil daftar CW Space untuk dropdown filter
+        $selectedCwspace = $request->input('cwspace'); 
         $cwspaces = Cwspace::all();
 
-        $schedules = null;
+        $schedules = [];
         if ($selectedDate) {
             $schedules = Schedule::with(['cwspace', 'time', 'operationalDay'])
                 ->whereHas('operationalDay', function ($query) use ($selectedDate) {
@@ -59,11 +56,11 @@ class ScheduleController extends Controller
 
         $schedule = Schedule::find($id);
         if (!$schedule) {
-            return redirect()->route('schedule.index')->with('error', 'Data tidak ditemukan');
+            return redirect()->back()->with('error', 'Data tidak ditemukan');
         }
         try {
             $schedule->update($validated);
-            return redirect()->route('schedule.index')->with('success', 'Status schedule berhasil di update.');
+            return redirect()->back()->with('success', 'Status schedule berhasil di update.');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal update status schedule. Silakan coba lagi karena kesalahan database.');
         }
