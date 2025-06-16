@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Layout</title>
+    <title>COZY QUARTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="{{ asset('images/logo.jpeg') }}" type="image/jpeg">
     <style>
@@ -49,14 +49,14 @@
                     <a href="{{ route('library.home') }}"
                         class="rounded-md px-3 py-2 text-sm font-medium 
                         {{ Route::currentRouteName() == 'library.home'
-                            ? 'bg-[var(--accent-blue)] text-[var(--primary)]'
+                            ? 'bg-[var(--highlight)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Home
                     </a>
                     <a href="{{ route('library.borrowed') }}"
                         class="rounded-md px-3 py-2 text-sm font-medium 
                         {{ Route::currentRouteName() == 'library.borrowed'
-                            ? 'bg-[var(--accent-blue)] text-[var(--primary)]'
+                            ? 'bg-[var(--highlight)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Books Borrowed
                     </a>

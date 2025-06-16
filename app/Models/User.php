@@ -69,8 +69,9 @@ class User extends Authenticatable
     }
 
     public function reservation(){
-        return $this->hasMany(Reservation::class, 'id_reservation', 'id');
+        return $this->hasMany(Reservation::class, 'id_user', 'id');
     }
+    
     public function isBlacklisted(): bool
     {
         return $this->penalty_counter >= 3; // <--- UPDATED LOGIC HERE

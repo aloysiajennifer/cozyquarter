@@ -14,7 +14,7 @@ class Order extends Model
     protected $fillable = [
         'total_price',
         'status_order',
-        'id_reservation',
+        'reservation_id',
     ];
 
     public static array $rules = [

@@ -31,7 +31,7 @@ class UserReservationController extends Controller
         }
 
         $reservations = Reservation::where('id_user', $user->id)
-            ->with(['schedules'])
+            ->with(['schedule'])
             ->orderBy('reservation_date', 'asc')       // <--- CHANGED TO ASC
             ->orderBy('reservation_start_time', 'asc') // <--- CHANGED TO ASC
             ->get();
@@ -139,7 +139,7 @@ class UserReservationController extends Controller
 
             $reservation = Reservation::where('id', $id)
                                     ->where('id_user', $user->id)
-                                    ->with(['schedules'])
+                                    ->with(['schedule'])
                                     ->lockForUpdate()
                                     ->first();
 
