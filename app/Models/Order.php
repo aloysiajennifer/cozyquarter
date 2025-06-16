@@ -20,7 +20,7 @@ class Order extends Model
     public static array $rules = [
         'total_price' => 'required|integer|gt:0',
         'status_order' => 'required|boolean',
-        'id_reservation' => 'required|exists:reservations,id',
+        'reservation_id' => 'required|exists:reservations,id',
     ];
 
     public function reservation()
