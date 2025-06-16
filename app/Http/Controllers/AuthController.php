@@ -32,7 +32,7 @@ class AuthController extends Controller
             }
         }
 
-        return back()->withErrors(['login' => 'Email atau password salah']);
+        return back()->withErrors(['login' => 'Incorrect email or password']);
     }
 
     public function showRegister()
