@@ -1,9 +1,11 @@
 @extends('layout')
 
+
 @section('content')
 <div class="py-20 flex flex-col items-center justify-center min-h-screen bg-[var(--background-light)] text-[var(--text-primary)]">
     <div class="w-full max-w-6xl px-5 text-center">
         <h2 class="text-4xl font-bold mt-10 mb-8 text-center text-[var(--primary)]">Your Reservations</h2>
+
 
         @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -15,6 +17,7 @@
                 <span class="block sm:inline">{{ session('error') }}</span>
             </div>
         @endif
+
 
         @if($reservations->isEmpty())
             <p class="text-lg text-gray-600">You have no reservations yet.</p>
@@ -43,6 +46,7 @@
                             <span class="text-6xl font-bold">{{ $reservation->reservation_code_cwspace }}</span>
                         </div>
 
+
                         {{-- Right Side: Booking Details (always visible) --}}
                         {{-- flex-col and text-left ensure details stack vertically and are left-aligned --}}
                         <div class="flex flex-col text-left text-sm lg:text-md w-full">
@@ -66,6 +70,7 @@
                                 </p>
                             </div>
 
+
                             {{-- STATUS and Buttons --}}
                             {{-- Placed at the end of the right section, aligned to the right --}}
                             <div class="flex flex-col items-end self-end mt-4">
@@ -80,6 +85,7 @@
                                     @endif">
                                     {{ $reservation->status_for_display }}
                                 </span>
+
 
                                 {{-- Action Buttons (visibility controlled by controller logic) --}}
                                 <div class="flex flex-col sm:flex-row justify-center sm:justify-end gap-2 w-full">
@@ -96,13 +102,6 @@
                                             Order Drink
                                         </a>
                                     @endif
-                                    @if($reservation->show_mark_attended_button)
-                                        <button type="button"
-                                            class="mark-attended-btn w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-                                            data-reservation-id="{{ $reservation->id }}">
-                                            Mark Attended
-                                        </button>
-                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -113,6 +112,7 @@
     </div>
 </div>
 
+
 {{-- Custom Message Box/Modal and Success Modal (kept unchanged as they are already functional) --}}
 <div id="customMessageBox" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center">
@@ -120,6 +120,7 @@
         <button id="messageBoxCloseBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">OK</button>
     </div>
 </div>
+
 
 <div id="successModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full text-left">
@@ -131,8 +132,7 @@
         <p class="mb-2"><strong>Date:</strong> <span id="modalBookingDate"></span></p>
         <p class="font-semibold mb-2">Selected Slot:</p>
         <ul id="modalSelectedSlots" class="list-disc list-inside mb-4">
-            <!-- Selected slot will be injected here -->
-        </ul>
+            </ul>
         <p class="text-sm text-gray-700 text-center">
             Please kindly check your email for further instructions. Thank you!
         </p>
@@ -141,6 +141,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -153,12 +154,13 @@
             });
         }
 
+
         // Cancel Reservation button handler
         document.querySelectorAll('.cancel-reservation-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const reservationId = button.dataset.reservationId;
                 Swal.fire({
-                    title: 'Are you sure?',
+                    title: 'Are you sure?', 
                     text: "You won't be able to revert this!",
                     icon: 'warning',
                     showCancelButton: true,
@@ -186,50 +188,6 @@
                                 }
                             } else {
                                 showSweetAlert('error', 'Error', 'Failed to cancel reservation.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            showSweetAlert('error', 'Error', 'An unexpected error occurred.');
-                        });
-                    }
-                });
-            });
-        });
-
-        // Mark Attended button handler
-        document.querySelectorAll('.mark-attended-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const reservationId = button.dataset.reservationId;
-                Swal.fire({
-                    title: 'Mark as Attended?',
-                    text: "This reservation will be marked as attended.",
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, mark it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/user/reservations/${reservationId}/attend`, {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.message) {
-                                if (data.new_status === 'Attended') {
-                                    showSweetAlert('success', 'Success!', data.message);
-                                    location.reload();
-                                } else {
-                                    showSweetAlert('error', 'Error', data.message);
-                                }
-                            } else {
-                                showSweetAlert('error', 'Error', 'Failed to mark as attended.');
                             }
                         })
                         .catch(error => {
