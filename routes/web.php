@@ -136,3 +136,9 @@ Route::middleware('auth.alert')->group(function () {
 
 //HOME LIBRARY USER
 Route::get('/library/home', [BookController::class, 'home'])->name('library.home');
+
+// Route untuk tampilkan halaman laporan
+Route::get('/admin/order/report', [OrderController::class, 'report'])->name('report.orderDrink');
+
+// Route untuk export PDF
+Route::get('/admin/order/report/pdf', [OrderController::class, 'reportPDF'])->name('report.orderDrinkPDF');
