@@ -103,7 +103,7 @@
             <div class="space-y-1 px-2 pt-2 pb-3">
                 <a href=""
                     class="block rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">Home</a>
-                <a href=""
+                <a href="{{ route('library.borrowed') }}"
                     class="block rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">Books Borrowed</a>
                 <a href=""
                     class="block rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">Co-Working
@@ -123,8 +123,8 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="pt-16 flex-1">
-        <main>
+    <div class="pt-16 flex flex-col flex-grow">
+        <main class="flex-grow">
             @yield('content')
         </main>
 

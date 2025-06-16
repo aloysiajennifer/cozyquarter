@@ -194,8 +194,18 @@
                         </svg>
                     </button>
                     <ul id="dropdown-reports" class="hidden py-2 space-y-2">
-                        <li><a href="{{route('report.borrowing')}}" class=" sidebar-text flex items-center w-full p-2 rounded-lg pl-14 group hover:bg-gray-100 dark:hover:bg-gray-700 sidebar-link @if(request()->routeIs('borrowing.*')) active @endif text-gray-900 dark:text-gray-300">Borrowing Report</a></li>
-                        <li><a href="#" class=" sidebar-text flex items-center w-full p-2 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-300">x Report</a></li>
+                        <li>
+                            <a href="{{route('report.borrowing')}}"
+                                class=" sidebar-text flex items-center w-full p-2 rounded-lg pl-14 group hover:bg-gray-100 dark:hover:bg-gray-700 sidebar-link @if(request()->routeIs('borrowing.*')) active @endif text-gray-900 dark:text-gray-300">
+                                Borrowing Report
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('report.orderDrink') }}"
+                                class="sidebar-text flex items-center w-full p-2 rounded-lg pl-14 group hover:bg-gray-100 dark:hover:bg-gray-700 sidebar-link @if(request()->routeIs('report.orderDrink')) active @endif text-gray-900 dark:text-gray-300">
+                                Drink Orders Report
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>
