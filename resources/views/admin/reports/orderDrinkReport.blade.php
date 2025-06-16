@@ -11,7 +11,7 @@
             <div class="flex flex-wrap gap-4 items-center justify-start md:justify-center">
                 {{-- FILTER --}}
                 <div class="flex relative flex-wrap md:flex-row md:gap-2 bg-gray-50 text-sm text-primary border border-gray-300 rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]
-                            md:justify-center md:items-center h-full">
+                            md:justify-center md:items-center h-full shadow-md">
 
                     {{-- Start Date --}}
                     <div class="flex flex-col w-full sm:w-[48%] md:w-auto pl-2 pr-2 md:pr-4 border-b md:border-b-0 md:border-r border-gray-300">
@@ -40,14 +40,14 @@
 
                 {{-- Reset Button --}}
                 <button type="button" id="resetBtn"
-                    class="text-white bg-amber-400 hover:bg-amber-500 focus:ring-4 focus:ring-amber-400 font-medium rounded-lg text-sm px-4 py-2">
+                    class="text-white bg-amber-400 hover:bg-amber-500 focus:ring-4 focus:ring-amber-400 font-medium rounded-lg text-sm px-4 py-2 shadow-md">
                     Reset
                 </button>
             </div>
         </form>
 
         {{-- Table --}}
-        <div class="relative overflow-x-auto overflow-y-scroll max-h-[80vh] rounded-lg shadow">
+        <div class="relative overflow-x-auto overflow-y-scroll max-h-[80vh] rounded-lg shadow-md">
             <table class="min-w-full text-sm text-left text-gray-500 bg-white border border-gray-200">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -80,7 +80,7 @@
 
                     {{-- Total per Order --}}
                     <tr class="bg-gray-100 border-b">
-                        <td colspan="5" class="px-6 py-2 text-right font-semibold text-primary">Total for Order #{{ $loop->iteration }}</td>
+                        <td colspan="5" class="px-6 py-2 text-right font-semibold text-primary">Total Order #{{ $loop->iteration }}</td>
                         <td class="px-6 py-2 font-semibold text-primary">Rp{{ number_format($orderTotal, 0, ',', '.') }}</td>
                     </tr>
                     @endforeach
@@ -98,7 +98,7 @@
         <div class="mb-4 mt-4 text-right">
             <a href="{{ route('report.orderDrinkPDF', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}">
                 <button
-                    class="bg-rose-600 hover:bg-rose-500 text-white focus:ring-4 focus:ring-rose-200 font-medium rounded-lg text-sm px-5 py-2.5">
+                    class="bg-rose-600 hover:bg-rose-500 text-white focus:ring-4 focus:ring-rose-200 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md">
                     Export to PDF
                 </button>
             </a>

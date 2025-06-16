@@ -49,7 +49,7 @@
                         </svg>
                     </div>
                     <input type="search" name="search" id="search"
-                        class="block w-full p-4 pl-10 text-sm text-primary border border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
+                        class="block w-full p-4 pl-10 text-sm text-primary border border-gray-300 rounded-lg bg-gray-50 shadow-md focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
                         placeholder="Search by name..." value="{{ request('search') }}">
                     <button type="submit"
                         class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 absolute right-2.5 bottom-2.5">
@@ -108,8 +108,8 @@
                 @endif
             @endif
 
-            <div class="relative overflow-x-auto overflow-y-auto max-h-[80vh]">
-                <table class="w-full text-sm text-left text-gray-500 bg-white border border-gray-200 rounded-lg shadow-md">
+            <div class="relative overflow-x-auto overflow-y-auto max-h-[80vh] rounded-lg border border-gray-200 shadow-md">
+                <table class="w-full text-sm text-left  text-gray-500 bg-white border border-gray-200 rounded-lg shadow-md">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 z-10">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-primary">No</th>
@@ -122,7 +122,7 @@
                     </thead>
                     <tbody>
                         @foreach ($beverages as $beverage)
-                            <tr class="bg-white border-b hover:bg-gray-100">
+                            <tr class="odd:bg-white even:bg-gray-50 border-b hover:bg-gray-200 transition-colors duration-200">
                                 <td class="px-6 py-4 text-primary">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4">
                                     <img src="{{ asset($beverage->image) }}" alt="{{ $beverage->name }}"
@@ -164,7 +164,7 @@
             <div class="mb-4 mt-4 text-right">
                 <a href="{{ route('beverage.create') }}">
                     <button
-                        class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5">
+                        class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg shadow-md text-sm px-5 py-2.5">
                         Add
                     </button>
                 </a>

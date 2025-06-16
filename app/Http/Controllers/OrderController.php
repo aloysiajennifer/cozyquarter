@@ -12,8 +12,6 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
