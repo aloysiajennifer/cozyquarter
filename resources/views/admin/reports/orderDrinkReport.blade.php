@@ -57,7 +57,6 @@
                         <th class="px-6 py-3 text-primary">Drink Ordered</th>
                         <th class="px-6 py-3 text-primary">Quantity</th>
                         <th class="px-6 py-3 text-primary">Subtotal</th>
-                        <th class="px-6 py-3 text-primary">Status</th>
                     </tr>
                 </thead>
                 <tbody class="text-sm md:text-md">
@@ -70,9 +69,6 @@
                             <td class="px-6 py-3 text-primary">{{ $detail->beverage->name }}</td>
                             <td class="px-6 py-3 text-primary">{{ $detail->quantity }}</td>
                             <td class="px-6 py-3 text-primary">Rp{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
-                            <td class="px-6 py-3 text-primary">
-                                {{ $order->status_order ? 'Paid' : 'Unpaid' }}
-                            </td>
                         </tr>
                         @endforeach
                     @endforeach

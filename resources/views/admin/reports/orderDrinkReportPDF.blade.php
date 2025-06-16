@@ -33,7 +33,6 @@
                 <th>User</th>
                 <th>Beverages</th>
                 <th>Total Price</th>
-                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -50,7 +49,6 @@
                         </ul>
                     </td>
                     <td>Rp{{ number_format($order->total_price, 0, ',', '.') }}</td>
-                    <td>{{ $order->status_order ? 'Paid' : 'Unpaid' }}</td>
                 </tr>
             @endforeach
         </tbody>
