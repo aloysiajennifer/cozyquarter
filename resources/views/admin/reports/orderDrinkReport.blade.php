@@ -60,20 +60,38 @@
                     </tr>
                 </thead>
                 <tbody class="text-sm md:text-md">
+                    @php $grandTotal = 0; @endphp
                     @foreach ($orders as $order)
-                        @foreach ($order->orderDetails as $index => $detail)
-                        <tr class="bg-white border-b hover:bg-gray-100">
-                            <td class="px-6 py-3 text-primary">{{ $loop->parent->iteration }}.{{ $index + 1 }}</td>
-                            <td class="px-6 py-3 text-primary">{{ $order->created_at->format('Y-m-d') }}</td>
-                            <td class="px-6 py-3 text-primary">{{ $order->reservation->user->name }}</td>
-                            <td class="px-6 py-3 text-primary">{{ $detail->beverage->name }}</td>
-                            <td class="px-6 py-3 text-primary">{{ $detail->quantity }}</td>
-                            <td class="px-6 py-3 text-primary">Rp{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
-                        </tr>
-                        @endforeach
+                    @php
+                    $orderTotal = $order->orderDetails->sum('subtotal');
+                    $grandTotal += $orderTotal;
+                    @endphp
+
+                    @foreach ($order->orderDetails as $index => $detail)
+                    <tr class="bg-white border-b hover:bg-gray-100">
+                        <td class="px-6 py-3 text-primary">{{ $loop->parent->iteration }}.{{ $index + 1 }}</td>
+                        <td class="px-6 py-3 text-primary">{{ $order->created_at->format('Y-m-d') }}</td>
+                        <td class="px-6 py-3 text-primary">{{ $order->reservation->user->name }}</td>
+                        <td class="px-6 py-3 text-primary">{{ $detail->beverage->name }}</td>
+                        <td class="px-6 py-3 text-primary">{{ $detail->quantity }}</td>
+                        <td class="px-6 py-3 text-primary">Rp{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                    </tr>
+                    @endforeach
+
+                    {{-- Total per Order --}}
+                    <tr class="bg-gray-100 border-b">
+                        <td colspan="5" class="px-6 py-2 text-right font-semibold text-primary">Total for Order #{{ $loop->iteration }}</td>
+                        <td class="px-6 py-2 font-semibold text-primary">Rp{{ number_format($orderTotal, 0, ',', '.') }}</td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <div class="flex justify-end mt-4">
+            <div class="text-xl font-semibold text-primary">
+                Grand Total: Rp{{ number_format($grandTotal, 0, ',', '.') }}
+            </div>
         </div>
 
         {{-- Export PDF --}}

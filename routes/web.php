@@ -102,8 +102,13 @@ Route::middleware('auth.alert')->group(function () {
         Route::put('/order/confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
 
         // REPORTS
+        //Borrowing Report
         Route::get('/report/borrowing', [ReportController::class, 'borrowing'])->name('report.borrowing');
         Route::get('/report/borrowing/pdf', [ReportController::class, 'borrowingPDF'])->name('report.borrowingPDF');
+
+        // Order Drink Report
+        Route::get('order/report', [ReportController::class, 'OrderDrinkReport'])->name('report.orderDrink');
+        Route::get('order/report/pdf', [ReportController::class, 'OrderDrinkReportPDF'])->name('report.orderDrinkPDF');
     });
 
     //MIDDLEWARE USER
@@ -118,7 +123,7 @@ Route::middleware('auth.alert')->group(function () {
         //ORDER USER
         Route::get('/yourOrder', [OrderController::class, 'yourOrder'])->name('yourOrder');
         Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('placeOrder');
-        
+
         // CO-WORKING SPACE ROUTES (User-facing)
         // Now protected by 'auth' middleware
         Route::get('/coworking/schedule', [CoworkingSpaceController::class, 'showSchedule'])->name('coworking.schedule');
@@ -136,9 +141,3 @@ Route::middleware('auth.alert')->group(function () {
 
 //HOME LIBRARY USER
 Route::get('/library/home', [BookController::class, 'home'])->name('library.home');
-
-// Route untuk tampilkan halaman laporan
-Route::get('/admin/order/report', [OrderController::class, 'report'])->name('report.orderDrink');
-
-// Route untuk export PDF
-Route::get('/admin/order/report/pdf', [OrderController::class, 'reportPDF'])->name('report.orderDrinkPDF');

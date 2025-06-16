@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Borrowing;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Order;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
     // Borrowing
-    public function borrowing(Request $request) {
+    public function borrowing(Request $request)
+    {
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
-        
+
         $query = Borrowing::with(['user', 'book', 'fine'])->orderBy('borrowing_date', 'desc');
 
         // FILTER
@@ -25,7 +28,7 @@ class ReportController extends Controller
         }
 
         $borrowings = $query->get();
-        
+
         return view('admin.reports.borrowing')->with('borrowings', $borrowings);
     }
 
@@ -34,7 +37,7 @@ class ReportController extends Controller
     {
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
-        
+
         $query = Borrowing::with(['user', 'book', 'fine'])->orderBy('borrowing_date', 'asc');
 
         // FILTER
@@ -55,4 +58,44 @@ class ReportController extends Controller
         return $pdf->download('borrowing_report.pdf');
     }
 
+    // Order Drink Report
+    public function OrderDrinkReport(Request $request)
+    {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $orders = Order::with(['orderdetails.beverage', 'reservation.user'])
+            ->where('status_order', 1) // hanya yang Paid
+            ->when($start_date && $end_date, function ($query) use ($start_date, $end_date) {
+                $query->whereBetween('created_at', [
+                    Carbon::parse($start_date)->startOfDay(),
+                    Carbon::parse($end_date)->endOfDay()
+                ]);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.reports.orderDrinkReport', compact('orders', 'start_date', 'end_date'));
+    }
+
+
+    public function OrderDrinkReportPDF(Request $request)
+    {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $orders = Order::with(['orderdetails.beverage', 'reservation.user'])
+            ->where('status_order', 1) // hanya yang Paid
+            ->when($start_date && $end_date, function ($query) use ($start_date, $end_date) {
+                $query->whereBetween('created_at', [
+                    Carbon::parse($start_date)->startOfDay(),
+                    Carbon::parse($end_date)->endOfDay()
+                ]);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('admin.reports.orderDrinkReportPDF', compact('orders', 'start_date', 'end_date'));
+        return $pdf->download('order_report_' . now()->format('Ymd_His') . '.pdf');
+    }
 }

@@ -149,42 +149,4 @@ class OrderController extends Controller
             return response()->json(['message' => 'Failed to place order. Please try again.'], 500);
         }
     }
-
-    public function report(Request $request)
-    {
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
-
-        $orders = Order::with(['orderdetails.beverage', 'reservation.user'])
-            ->when($start_date && $end_date, function ($query) use ($start_date, $end_date) {
-                $query->whereBetween('created_at', [
-                    Carbon::parse($start_date)->startOfDay(),
-                    Carbon::parse($end_date)->endOfDay()
-                ]);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('admin.reports.orderDrinkReport', compact('orders', 'start_date', 'end_date'));
-    }
-
-    // Jika ingin fitur Export to PDF
-    public function reportPDF(Request $request)
-    {
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
-
-        $orders = Order::with(['orderdetails.beverage', 'reservation.user'])
-            ->when($start_date && $end_date, function ($query) use ($start_date, $end_date) {
-                $query->whereBetween('created_at', [
-                    Carbon::parse($start_date)->startOfDay(),
-                    Carbon::parse($end_date)->endOfDay()
-                ]);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $pdf = Pdf::loadView('admin.reports.orderDrinkReportPDF', compact('orders', 'start_date', 'end_date'));
-        return $pdf->download('order_report_' . now()->format('Ymd_His') . '.pdf');
-    }
 }
