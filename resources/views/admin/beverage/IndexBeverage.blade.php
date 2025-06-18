@@ -36,7 +36,7 @@
 
         <div class="w-full p-4 min-h-screen">
 
-            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Beverage List</h1>
+            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6 dark:text-white">Beverage List</h1>
 
             <form action="{{ route('beverage.index') }}" method="GET" class="max-w-md mx-auto mb-4">
                 <label for="search" class="mb-2 text-sm font-medium text-primary sr-only">Search</label>

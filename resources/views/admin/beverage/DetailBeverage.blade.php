@@ -13,14 +13,14 @@
                 </a>
             </div>
 
-            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mb-6">Edit Beverage Form</h1>
+            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mb-6 dark:text-white">Edit Beverage Form</h1>
             <form action="{{ route('beverage.update', $beverage->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="max-w-3xl mx-auto">
                     <div class="mb-6 flex">
                         <label for="name"
-                            class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Name</label>
+                            class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Name</label>
                         <input type="text" id="name" name="name" value="{{ $beverage->name }}"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                             required />
@@ -28,7 +28,7 @@
 
                     <div class="mb-6 flex">
                         <label for="price"
-                            class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Price</label>
+                            class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Price</label>
                         <input type="number" id="price" name="price" min="0" value="{{ $beverage->price }}"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                             required />
@@ -36,7 +36,7 @@
 
                     <div class="mb-6 flex">
                         <label for="stock"
-                            class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Stock</label>
+                            class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Stock</label>
                         <input type="number" id="stock" name="stock" min="0" value="{{ $beverage->stock }}"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                             required />
@@ -44,7 +44,7 @@
 
                     <div class="mb-6 flex">
                         <label for="image"
-                            class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Image</label>
+                            class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Image</label>
                         <div class="w-2/3">
                             <input
                                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
