@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Cwspace;
 use App\Models\OperationalDay;
 use App\Models\Schedule;
