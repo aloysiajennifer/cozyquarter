@@ -1,16 +1,14 @@
 <?php
-
-use App\Http\Controllers\BookController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\CwspaceController;
-use App\Models\Cwspace;
+use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\BeverageController;
 use App\Http\Controllers\FineController;
-use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +38,8 @@ Route::middleware('auth.alert')->group(function () {
 
     //MIDDLEWARE ADMIN
     Route::middleware('role:admin')->prefix('admin')->group(function () {
+        // DASHBOARD ADMIN
+        Route::get('/dashboards', function () {return view('admin.dashboard.index');})->name('dashboards');
         //SHELF CRUD
         Route::get('/shelf/index', [ShelfController::class, 'index'])->name('shelf.index');
         Route::get('/shelf/form', [ShelfController::class, 'form'])->name('shelf.form');
