@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 class Reservation extends Model
 {
+    protected $connection = 'mysql';
     protected $fillable = [
         'status_reservation',
         'reservation_date',

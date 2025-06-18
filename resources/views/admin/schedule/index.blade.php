@@ -22,7 +22,8 @@ $scheduleStatusBgColors = [
 @section('content')
 <div class="p-4 sm:p-6 mt-14 min-h-screen">
     <div class="max-w-7xl mx-auto">
-        <h1 class="text-center text-4xl font-bold text-var(--primary) mt-2 mb-8">Schedule Management</h1>
+        <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Schedule Management</h1>
+
 
         <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
             <form method="GET" action="{{ route('schedule.index') }}" id="scheduleFilterForm">
@@ -92,7 +93,7 @@ $scheduleStatusBgColors = [
                             <span class="text-gray-400">-</span>
                             @else
                             <button data-modal-target="schedule-edit-{{ $schedule->id }}" data-modal-toggle="schedule-edit-{{ $schedule->id }}"
-                                class="bg-amber-500 hover:bg-amber-600 text-white font-semibold text-xs py-1.5 px-3 rounded-lg shadow-sm transition-colors duration-150" type="button">
+                                class="bg-bg-[var(--highlight)] hover:bg-yellow-600 text-white font-semibold text-xs py-1.5 px-3 rounded-lg shadow-sm transition-colors duration-150" type="button">
                                 Edit
                             </button>
                             @endif

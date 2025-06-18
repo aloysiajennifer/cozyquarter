@@ -3,6 +3,8 @@
 <!-- Title page -->
 @section('title', 'CRUD - Update Book')
 
+
+
 @section('content')
     <div class="mt-16 p-4 bg-gray-100">
         <div class="container mx-auto p-4">

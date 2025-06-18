@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\CwspaceController;
 use App\Http\Controllers\ScheduleController;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CoworkingSpaceController;
 use App\Http\Controllers\UserReservationController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -32,14 +35,10 @@ Route::middleware('auth.alert')->group(function () {
     Route::get('/home', [BookController::class, 'home'])->name('home');
 
     // HOME ADMIN
-    Route::get('/dashboard', function () {
-        return view('admin.layoutAdmin');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //MIDDLEWARE ADMIN
     Route::middleware('role:admin')->prefix('admin')->group(function () {
-        // DASHBOARD ADMIN
-        Route::get('/dashboards', function () {return view('admin.dashboard.index');})->name('dashboards');
         //SHELF CRUD
         Route::get('/shelf/index', [ShelfController::class, 'index'])->name('shelf.index');
         Route::get('/shelf/form', [ShelfController::class, 'form'])->name('shelf.form');
@@ -125,7 +124,6 @@ Route::middleware('auth.alert')->group(function () {
         Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('placeOrder');
 
         // CO-WORKING SPACE ROUTES (User-facing)
-        // Now protected by 'auth' middleware
         Route::get('/coworking/schedule', [CoworkingSpaceController::class, 'showSchedule'])->name('coworking.schedule');
         Route::post('/coworking/book', [CoworkingSpaceController::class, 'storeReservation'])->name('coworking.book');
 

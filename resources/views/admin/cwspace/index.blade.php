@@ -18,7 +18,7 @@
 @section('content')
 <div class="p-4 sm:p-6 mt-14 min-h-screen">
     <div class="max-w-7xl mx-auto">
-        <h1 class="text-center text-4xl font-bold text-[var(--primary)] mt-2 mb-8">Co-working Space Management</h1>
+        <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Co-working Space Management</h1>
 
         <div class="mb-6 flex justify-start">
             <button data-modal-target="cwspace-create" data-modal-toggle="cwspace-create"
@@ -55,7 +55,7 @@
                         <td class="px-6 py-4">
                             <div class="flex justify-center items-center gap-3">
                                 <button data-modal-target="cwspace-edit-{{ $cwspace->id }}" data-modal-toggle="cwspace-edit-{{ $cwspace->id }}"
-                                    class="bg-amber-500 hover:bg-amber-600 text-white font-semibold text-xs py-1.5 px-3 rounded-lg shadow-sm transition-colors" type="button">
+                                    class="bg-[var(--highlight)] hover:bg-yellow-600 text-white font-semibold text-xs py-1.5 px-3 rounded-lg shadow-sm transition-colors" type="button">
                                     Edit
                                 </button>
                                 <button data-modal-target="cwspace-delete-{{ $cwspace->id }}" data-modal-toggle="cwspace-delete-{{ $cwspace->id }}"
@@ -113,7 +113,7 @@
 </div>
 
 @foreach($cwspaces as $cwspace)
-    {{-- Modal Edit --}}
+    <!-- Modal edit -->
     <div id="cwspace-edit-{{$cwspace->id}}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-lg max-h-full">
             <div class="relative bg-white rounded-lg shadow">
@@ -136,7 +136,6 @@
                         <div>
                             <label for="status_cwspace_edit_{{ $cwspace->id }}" class="block mb-2 text-sm font-medium text-gray-900">Status</label>
                             <select name="status_cwspace" id="status_cwspace_edit_{{ $cwspace->id }}" class="w-full px-4 py-2 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
-                                {{-- Logika 'selected' yang benar --}}
                                 <option value="1" {{ $cwspace->status_cwspace == 1 ? 'selected' : '' }}>Open</option>
                                 <option value="0" {{ $cwspace->status_cwspace == 0 ? 'selected' : '' }}>Closed</option>
                             </select>
@@ -150,7 +149,7 @@
         </div>
     </div>
 
-    {{-- Modal Delete --}}
+    <!-- Modal delete -->
     <div id="cwspace-delete-{{ $cwspace->id }}" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
             <div class="relative bg-white rounded-lg shadow">

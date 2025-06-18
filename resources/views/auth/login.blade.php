@@ -86,7 +86,7 @@
                 </d>
         </main>
 
-        <!-- Footer -->
+         <!-- Footer -->
         <footer class="bg-[var(--primary)] text-[var(--secondary)] py-6 mt-10 shadow-inner">
             <div class="max-w-7xl mx-auto px-4 text-center">
                 <p class="text-sm">&copy; 2025 CozyQuarter. All rights reserved.</p>

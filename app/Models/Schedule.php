@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
+    protected $connection = 'mysql';
     protected $fillable = ['status_schedule', 'id_operational_day', 'id_time', 'id_cwspace', 'id_reservation'];
     
     public function time(){
