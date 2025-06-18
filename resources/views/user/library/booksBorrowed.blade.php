@@ -12,7 +12,7 @@
                     <img src="{{ asset($brw->book->cover_book) }}" alt={{ $brw->book->title_book }} class="rounded-lg object-cover w-full h-full mx-auto mb-1">
                 </div>
                 
-                <div class="flex flex-col justify-between text-sm lg:text-md text-white w-full">
+                <div class="flex flex-col justify-between text-xs md:text-sm lg:text-md text-white w-full">
                     <div>
                     <p class="mb-1 max-w-full" title="{{ $brw->book->title_book }}">
                        <span class="font-semibold">Title: </span>
@@ -45,9 +45,9 @@
                     
                     
                     {{-- STATUS --}}
-                        <div class="flex gap-2 items-end self-end mb-1">
+                        <div class="flex flex-wrap gap-2 items-start justify-end mt-2 mb-1">
                             @if (!$brw->status_returned)
-                                <span class="text-sm font-bold bg-[#FDB813] bg-opacity-80 text-white px-2 py-1 rounded">UNRETURNED</span>
+                                <span class="text-xs md:text-sm font-bold bg-[#FDB813] bg-opacity-80 text-white px-2 py-1 rounded">UNRETURNED</span>
 
                                  @php
                                     $returnDue = \Carbon\Carbon::parse($brw->return_due)->startOfDay();
@@ -55,7 +55,7 @@
                                 @endphp
 
                                 @if ($today->gt($returnDue))
-                                    <span class="text-sm font-bold bg-[#FF4E50] bg-opacity-80 text-white px-2 py-1 rounded">UNPAID</span>
+                                    <span class="text-xs md:text-sm font-bold bg-[#FF4E50] bg-opacity-80 text-white px-2 py-1 rounded">UNPAID</span>
                                 @endif
                                                     
                             @elseif (isset($brw->fine) && !$brw->fine->status_fine)

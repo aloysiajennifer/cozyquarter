@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Layout</title>
+    <title>COZY QUARTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="{{ asset('images/logo.jpeg') }}" type="image/jpeg">
     <style>
@@ -49,27 +49,27 @@
                     <a href="{{ route('library.home') }}"
                         class="rounded-md px-3 py-2 text-sm font-medium 
                         {{ Route::currentRouteName() == 'library.home'
-                            ? 'bg-[var(--accent-blue)] text-[var(--primary)]'
+                            ? 'bg-[var(--highlight)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Home
                     </a>
                     <a href="{{ route('library.borrowed') }}"
                         class="rounded-md px-3 py-2 text-sm font-medium 
                         {{ Route::currentRouteName() == 'library.borrowed'
-                            ? 'bg-[var(--accent-blue)] text-[var(--primary)]'
+                            ? 'bg-[var(--highlight)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Books Borrowed
                     </a>
-                    <a href=""
-                        class="rounded-md px-3 py-2 text-sm font-medium 
-                        {{ Route::currentRouteName() == ''
+                    <a href="{{ route('coworking.schedule') }}"
+                        class="rounded-md px-3 py-2 text-sm font-medium
+                        {{ Route::currentRouteName() == 'coworking.schedule'
                             ? 'bg-[var(--highlight)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Co-Working Space
                     </a>
-                    <a href=""
-                        class="rounded-md px-3 py-2 text-sm font-medium 
-                        {{ Route::currentRouteName() == ''
+                    <a href="{{ route('user.reservations.index') }}" {{-- Updated link to Your Reservations --}}
+                        class="rounded-md px-3 py-2 text-sm font-medium
+                        {{ Route::currentRouteName() == 'user.reservations.index'
                             ? 'bg-[var(--highlight)] text-[var(--primary)]'
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Your Reservation
@@ -103,7 +103,7 @@
             <div class="space-y-1 px-2 pt-2 pb-3">
                 <a href=""
                     class="block rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">Home</a>
-                <a href=""
+                <a href="{{ route('library.borrowed') }}"
                     class="block rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">Books Borrowed</a>
                 <a href=""
                     class="block rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">Co-Working
@@ -123,8 +123,8 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="pt-16 flex-1">
-        <main>
+    <div class="pt-16 flex flex-col flex-grow">
+        <main class="flex-grow">
             @yield('content')
         </main>
 
