@@ -36,6 +36,60 @@
                 Back to Menu
             </a>
         </div>
+
+        <div class="mt-10 bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl text-[var(--text-primary)] font-bold mb-4 text-center">Your Orders Today</h2>
+
+            @if ($todayOrders->isEmpty())
+                <p class="text-center text-gray-500 text-lg py-4">No orders placed today.</p>
+            @else
+                <div class="relative overflow-x-auto overflow-y-auto max-h-[60vh]">
+                    <table
+                        class="w-full text-sm text-left text-gray-500 bg-white border border-gray-200 rounded-lg shadow-md">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-primary">Order ID</th>
+                                <th scope="col" class="px-6 py-3 text-primary">Time</th>
+                                <th scope="col" class="px-6 py-3 text-primary">Room</th>
+                                <th scope="col" class="px-6 py-3 text-primary">Items</th>
+                                <th scope="col" class="px-6 py-3 text-primary">Total Price</th>
+                                <th scope="col" class="px-6 py-3 text-primary">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($todayOrders as $order)
+                                <tr class="bg-white border-b hover:bg-gray-100">
+                                    <td class="px-6 py-4 text-primary">{{ $order->id }}</td>
+                                    <td class="px-6 py-4 text-primary">{{ $order->created_at->format('H:i') }}</td>
+                                    <td class="px-6 py-4 text-primary">
+                                        @php
+                                            // Mengatasi kemungkinan null pada relasi
+                                            $schedule = $order->reservation->schedule->first();
+                                            $roomCode = $schedule?->cwspace?->code_cwspace ?? 'N/A';
+                                        @endphp
+                                        {{ $roomCode }}
+                                    </td>
+                                    <td class="px-6 py-4 text-primary">
+                                        @foreach ($order->orderdetails as $detail)
+                                            • {{ $detail->beverage->name }} ({{ $detail->quantity }}x) -
+                                            Rp{{ number_format($detail->subtotal, 0, ',', '.') }} <br>
+                                        @endforeach
+                                    </td>
+                                    <td class="px-6 py-4 text-primary">
+                                        Rp{{ number_format($order->total_price, 0, ',', '.') }}</td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="{{ $order->status_order ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold' }}">
+                                            {{ $order->status_order ? 'Paid' : 'Unpaid' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -9,22 +9,43 @@
 
             <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6 dark:text-white">Order List</h1>
 
-            <form action="{{ route('order.index') }}" method="GET" class="max-w-md mx-auto mb-4">
-                <label for="search" class="mb-2 text-sm font-medium text-primary sr-only">Search</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                        </svg>
+            <form action="{{ route('order.index') }}" method="GET" class="max-w-xl mx-auto mb-6 flex items-end space-x-3">
+                <div class="flex-grow">
+                    <label for="search" class="mb-2 text-sm font-medium text-primary sr-only">Search</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input type="search" name="search" id="search"
+                            class="block w-full p-4 pl-10 text-sm text-primary border border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
+                            placeholder="Username / Room Code" value="{{ request('search') }}">
+                        <button type="submit"
+                            class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 absolute right-2.5 bottom-2.5">
+                            Search
+                        </button>
                     </div>
-                    <input type="search" name="search" id="search"
-                        class="block w-full p-4 pl-10 text-sm text-primary border border-gray-300 rounded-lg bg-gray-50 focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)]"
-                        placeholder="Search by title..." value="{{ request('search') }}">
+                </div>
+                <div class="w-48">
+                    <label for="status_filter"
+                        class="**block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only**">Filter by
+                        Status</label> {{-- **DITAMBAHKAN**: Label untuk aksesibilitas, tapi disembunyikan secara visual --}}
+                    <select id="status_filter" name="status_filter"
+                        class="**bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[var(--accent-green)] dark:focus:border-[var(--accent-green)]**">
+                        {{-- **DITAMBAHKAN**: Elemen select dengan styling Tailwind dan penanganan selected --}}
+                        <option value="">All Statuses</option>
+                        <option value="paid" {{ request('status_filter') === 'paid' ? 'selected' : '' }}>Paid</option>
+                        <option value="unpaid" {{ request('status_filter') === 'unpaid' ? 'selected' : '' }}>Unpaid</option>
+                    </select>
+                </div>
+
+                <div>
                     <button type="submit"
-                        class="bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 absolute right-2.5 bottom-2.5">
-                        Search
+                        class="px-4 py-2 bg-[var(--accent-blue)] text-white hover:bg-[var(--accent-green)] focus:ring-4 focus:ring-cyan-200 focus:outline-none font-medium rounded-lg text-sm h-full flex items-center justify-center">
+                        Filter
                     </button>
                 </div>
             </form>

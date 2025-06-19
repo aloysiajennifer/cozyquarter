@@ -12,12 +12,14 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Carbon;
 
 class OrderController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $statusFilter = $request->input('status_filter');
 
         $orders = Order::query()
             ->with(['reservation.user', 'reservation.schedule.cwspace', 'orderDetails.beverage'])
@@ -35,6 +37,14 @@ class OrderController extends Controller
                             $q->where('code_cwspace', 'like', '%' . $search . '%');
                         });
                 });
+            })
+            // filter paid unpaid
+            ->when($statusFilter, function ($query, $statusFilter) {
+                if ($statusFilter === 'paid') {
+                    $query->where('status_order', true); // true = paid
+                } elseif ($statusFilter === 'unpaid') {
+                    $query->where('status_order', false); // false = unpaid
+                }
             })
             // urutkan berdasarkan waktu order terbaru
             ->orderBy('created_at', 'desc')
@@ -55,7 +65,19 @@ class OrderController extends Controller
     public function yourorder()
     {
         $beverages = Beverages::where('stock', '>', 0)->get();
-        return view('user.yourOrder', compact('beverages'));
+
+        $todayOrders = Order::with(['orderdetails.beverage', 'reservation.schedule.cwspace'])
+            ->whereHas('reservation', function ($query) {
+                $query->where('reservations.id_user', Auth::id());
+            })
+            ->whereDate('orders.created_at', Carbon::today())
+            ->latest()
+            ->get();
+
+        return view('user.yourOrder', [
+            'beverages' => $beverages,
+            'todayOrders' => $todayOrders,
+        ]);
     }
 
     public function placeOrder(Request $request)
