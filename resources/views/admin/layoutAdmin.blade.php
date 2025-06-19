@@ -164,7 +164,7 @@
     <aside id="logo-sidebar" class="fixed top-0 left-0 z-50 h-screen w-64 transition-transform -translate-x-full sm:translate-x-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700" aria-label="Sidebar">
         <div class="flex items-center justify-between px-4 h-[68px] border-b border-gray-200 dark:border-gray-700">
             <a href="#" class="flex items-center">
-                <img src="{{ asset('images/logo.jpeg') }}" class="h-10 me-3 rounded-md" alt="CozyQuarter Logo" />
+                <img src="{{ asset('images/logo.jpeg') }}" class="h-10 me-3 rounded-full" alt="CozyQuarter Logo" />
                 <span class="sidebar-text self-center text-xl font-semibold whitespace-nowrap dark:text-white">COZY QUARTER</span>
             </a>
             <button id="sidebar-close-button" type="button" class="p-1 text-gray-400 rounded-md hover:text-gray-900 dark:hover:text-white sm:hidden">
