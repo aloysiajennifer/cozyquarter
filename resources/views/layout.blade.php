@@ -10,7 +10,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>COZY QUARTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="{{ asset('images/logo.jpeg') }}" type="image/jpeg">
+    <link rel="icon" href="{{ secure_asset('images/logo.jpeg') }}" type="image/jpeg">
+
     <style>
         :root {
             --primary: #1C1F26;
