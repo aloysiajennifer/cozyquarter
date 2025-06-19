@@ -1,6 +1,5 @@
 @extends('admin.layoutAdmin')
 
-<!-- Title page -->
 @section('title', 'CRUD - Home Beverage')
 
 @section('content')
@@ -183,7 +182,6 @@
         @endif
 
         <script>
-            // Prevent showing old alerts when pressing back
             window.addEventListener('pageshow', function(event) {
                 if (event.persisted || (window.performance && performance.navigation.type === 2)) {
                     window.location.reload();

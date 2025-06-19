@@ -11,7 +11,7 @@ use function PHPUnit\Framework\isTrue;
 
 class BeverageController extends Controller
 {
-    // Tampilkan list semua beverage dengan pagination dan pencarian
+    //index beverage 
     public function index(Request $request)
     {
         $search = $request->query('search');
@@ -30,13 +30,13 @@ class BeverageController extends Controller
         ]);
     }
 
-    // Form tambah beverage baru
+    //add beverage
     public function create()
     {
         return view('admin.beverage.FormBeverage');
     }
 
-    // Simpan beverage baru
+    //save beverage
     public function store(Request $request)
     {
         $request->validate([
@@ -63,17 +63,14 @@ class BeverageController extends Controller
         return redirect()->route('beverage.index')->with('success', 'Beverage created successfully.');
     }
 
-
-
-    // Form edit beverage
+    //edit beverage
     public function edit($id)
     {
         $beverage = Beverages::findOrFail($id);
         return view('admin.beverage.DetailBeverage', compact('beverage'));
     }
 
-
-    // Update beverage
+    //update beverage (edit)
     public function update(Request $request, $id)
     {
         $beverage = Beverages::findOrFail($id);
@@ -86,7 +83,6 @@ class BeverageController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada dan file-nya ada
             if ($beverage->image && file_exists(public_path($beverage->image))) {
                 unlink(public_path($beverage->image));
             }
@@ -105,8 +101,7 @@ class BeverageController extends Controller
         return redirect()->route('beverage.index')->with('success', 'Beverage updated successfully!');
     }
 
-
-    // Hapus beverage
+    //delete beverage
     public function destroy($encryptedId)
     {
         $id = Crypt::decrypt($encryptedId);
@@ -119,19 +114,5 @@ class BeverageController extends Controller
         $beverage->delete();
 
         return redirect()->route('beverage.index')->with('success', 'Beverage deleted successfully.');
-    }
-
-    // Detail beverage (optional)
-    public function show($encryptedId)
-    {
-        $id = Crypt::decrypt($encryptedId);
-        $beverage = Beverages::findOrFail($id);
-        return view('admin.beverage.show', compact('beverage'));
-    }
-
-    public function menu()
-    {
-        $beverages = Beverages::where('stock', '>', 0)->get();
-        return view('user.beveragesMenu', compact('beverages'));
     }
 }
