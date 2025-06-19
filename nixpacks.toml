@@ -12,7 +12,6 @@ cmds = [
 
 [phases.postbuild]
 cmds = [
-    "php /app/artisan migrate --force --seed",
     "php /app/artisan generate:schedule",
     "php /app/artisan reservation:update-statuses",
 ] 
