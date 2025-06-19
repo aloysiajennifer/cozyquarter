@@ -64,7 +64,6 @@ class BookController extends Controller
             'id_shelf' => 'required'
         ]);
 
-        $book = new Book;
 
        $book = new Book;
 
