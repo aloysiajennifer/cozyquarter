@@ -46,27 +46,23 @@ class BeverageController extends Controller
             'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
-        // $relativePath = null;
-        // if ($request->hasFile('image')) {
-        //     $imagePath = $request->file('image')->store('images', 'public');
-        //     $relativePath = 'storage/' . $imagePath;
-        // }
+        $beverage = new Beverages;
 
-        $relativePath = null;
         if ($request->hasFile('image')) {
-            $filename = time() . '_' . $request->file('image')->getClientOriginalName();
+            $filename = $request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('images/beverages'), $filename);
-            $relativePath = 'images/beverages/' . $filename;
+            $beverage->image = 'images/beverages/' . $filename;
         }
-        Beverages::create([
-            'name' => $request->name,
-            'price' => $request->price,
-            'image' => $relativePath,
-            'stock' => $request->stock,
-        ]);
+
+        $beverage->name = $request->name;
+        $beverage->price = $request->price;
+        $beverage->stock = $request->stock;
+
+        $beverage->save();
 
         return redirect()->route('beverage.index')->with('success', 'Beverage created successfully.');
     }
+
 
 
     // Form edit beverage
@@ -89,25 +85,26 @@ class BeverageController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $beverage->name = $request->name;
-        $beverage->price = $request->price;
-        $beverage->stock = $request->stock;
-
-        // if ($request->hasFile('image')) {
-        //     $imagePath = $request->file('image')->store('images', 'public');
-        //     $beverage->image = 'storage/' . $imagePath;
-        // }
-
         if ($request->hasFile('image')) {
-            $filename = time() . '_' . $request->file('image')->getClientOriginalName();
+            // Hapus gambar lama jika ada dan file-nya ada
+            if ($beverage->image && file_exists(public_path($beverage->image))) {
+                unlink(public_path($beverage->image));
+            }
+
+            $filename = $request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('images/beverages'), $filename);
             $beverage->image = 'images/beverages/' . $filename;
         }
+
+        $beverage->name = $request->name;
+        $beverage->price = $request->price;
+        $beverage->stock = $request->stock;
 
         $beverage->save();
 
         return redirect()->route('beverage.index')->with('success', 'Beverage updated successfully!');
     }
+
 
     // Hapus beverage
     public function destroy($encryptedId)
@@ -115,8 +112,8 @@ class BeverageController extends Controller
         $id = Crypt::decrypt($encryptedId);
         $beverage = Beverages::findOrFail($id);
 
-        if ($beverage->image && Storage::disk('public')->exists($beverage->image)) {
-            Storage::disk('public')->delete($beverage->image);
+        if ($beverage->image && file_exists(public_path($beverage->image))) {
+            unlink(public_path($beverage->image));
         }
 
         $beverage->delete();
