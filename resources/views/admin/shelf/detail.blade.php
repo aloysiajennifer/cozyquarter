@@ -14,7 +14,7 @@
     </a>
     </div>
 
-    <h1 class="text-center text-3xl font-semibold text-gray-800 mb-6">Update Shelf Form</h1>
+    <h1 class="text-center text-3xl font-semibold text-gray-800 mb-6 dark:text-white">Update Shelf Form</h1>
     <form action="{{ route('shelf.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
 

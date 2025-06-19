@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth; // For authenticating users
 use App\Models\User; // Import User model to check blacklist status
 
 
-class CoworkingSpaceController extends Controller
+class coworkingSpaceController extends Controller
 {
    /**
     * Display the coworking space schedule for a given date.
@@ -142,7 +142,7 @@ class CoworkingSpaceController extends Controller
        }
 
 
-       return view('user.library.coworkingSpace', compact('cwspaces', 'timeSlots', 'schedules', 'date', 'userName', 'userEmail', 'userActiveReservations'));
+       return view('user.library.coWorkingSpace', compact('cwspaces', 'timeSlots', 'schedules', 'date', 'userName', 'userEmail', 'userActiveReservations'));
    }
 
 

@@ -5,7 +5,7 @@
 
 <div class="pt-16">
     <div class="w-full p-4 min-h-screen">
-        <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Drink Orders Report</h1>
+        <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6 dark:text-white">Drink Orders Report</h1>
 
         <form action="{{ route('report.orderDrink') }}" method="GET" class="max-w-4xl mx-auto mb-5" id="filterForm">
             <div class="flex flex-wrap gap-4 items-center justify-start md:justify-center">
@@ -89,7 +89,7 @@
         </div>
 
         <div class="flex justify-end mt-4">
-            <div class="text-xl font-semibold text-primary">
+            <div class="text-xl font-semibold text-primary dark:text-white">
                 Grand Total: Rp{{ number_format($grandTotal, 0, ',', '.') }}
             </div>
         </div>

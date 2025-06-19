@@ -59,7 +59,7 @@ class CategoryController extends Controller
         $id = decrypt($request->id);
         $category = Category::findOrFail($id);
 
-        return view('admin.category.detail', ['category' => $category ]);
+        return view('category.detail', ['category' => $category ]);
     }
 
     public function update(Request $request) {

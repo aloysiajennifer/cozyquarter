@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             BorrowingSeeder::class,
             TimeSeeder::class,
             CwspaceSeeder::class,
+
         ]);
 
         Artisan::call('schedule:generate');
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ReservationSeeder::class,
             OrderSeeder::class,
+            
         ]);
     }
 }

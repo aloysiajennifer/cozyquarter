@@ -15,7 +15,7 @@
                 </a>
             </div>
 
-            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mb-6">Add Category Form</h1>
+            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mb-6 dark:text-white">Add Category Form</h1>
             <form action="{{ route('category.insert') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="max-w-3xl mx-auto">

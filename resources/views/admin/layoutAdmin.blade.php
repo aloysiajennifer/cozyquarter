@@ -24,7 +24,7 @@
 
 
     <title>@yield('title', 'Admin Dashboard') - CozyQuarter</title>
-    <link rel="icon" href="{{ asset('images/logo.jpeg') }}" type="image/jpeg">
+    <link rel="icon" href="{{ secure_asset('images/logo.jpeg') }}" type="image/jpeg">
     <style>
         :root {
             --primary: #1C1F26;

@@ -5,7 +5,7 @@
 
 <div class="pt-16">
     <div class="w-full p-4 min-h-screen">
-        <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Borrowing Report</h1>
+        <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6 dark:text-white">Borrowing Report</h1>
 
         <form action="{{ route('report.borrowing') }}" method="GET" class="max-w-4xl mx-auto mb-5" id="filterForm">    
             <div class="flex flex-wrap gap-4 items-center justify-start md:justify-center">

@@ -15,7 +15,7 @@
                 </a>
             </div>
 
-            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mb-6">Add Borrowing Form</h1>
+            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mb-6 dark:text-white">Add Borrowing Form</h1>
             <form action="{{ route('borrowing.insert') }}" method="POST" enctype="multipart/form-data" id="borrowingForm">
                 @csrf
                 <div class="max-w-3xl mx-auto">

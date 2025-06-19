@@ -7,7 +7,7 @@
     <div class="pt-16">
         <div class="w-full p-4 min-h-screen">
 
-            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Order List</h1>
+            <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6 dark:text-white">Order List</h1>
 
             <form action="{{ route('order.index') }}" method="GET" class="max-w-md mx-auto mb-4">
                 <label for="search" class="mb-2 text-sm font-medium text-primary sr-only">Search</label>

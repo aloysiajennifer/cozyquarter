@@ -18,7 +18,7 @@
 @section('content')
 <div class="p-4 sm:p-6 mt-14 min-h-screen">
     <div class="max-w-7xl mx-auto">
-        <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Co-working Space Management</h1>
+        <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6 dark:text-white">Co-working Space Management</h1>
 
         <div class="mb-6 flex justify-start">
             <button data-modal-target="cwspace-create" data-modal-toggle="cwspace-create"
