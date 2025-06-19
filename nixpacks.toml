@@ -7,12 +7,12 @@ cmds = [
     "cp /assets/worker-*.conf /etc/supervisor/conf.d/",
     "cp /assets/supervisord.conf /etc/supervisord.conf",
     "chmod +x /assets/start.sh",
-    "chown -R www-data:www-data /app/public",
     "..."
 ]
 
 [phases.postbuild]
 cmds = [
+    "chown -R www-data:www-data /app/public",
 ] 
 dependsOn = ["build"]
 
