@@ -44,21 +44,25 @@ class BeverageController extends Controller
             'price' => 'required|integer|min:0',
             'stock' => 'required|integer|gte:0',
             'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
-            // 'availability' => 'required|in:0,1',
         ]);
+
+        // $relativePath = null;
+        // if ($request->hasFile('image')) {
+        //     $imagePath = $request->file('image')->store('images', 'public');
+        //     $relativePath = 'storage/' . $imagePath;
+        // }
 
         $relativePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-            $relativePath = 'storage/' . $imagePath;
+            $filename = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('images/beverages'), $filename);
+            $relativePath = 'images/beverages/' . $filename;
         }
-
         Beverages::create([
             'name' => $request->name,
             'price' => $request->price,
             'image' => $relativePath,
             'stock' => $request->stock,
-            // 'availability' => $request->availability,
         ]);
 
         return redirect()->route('beverage.index')->with('success', 'Beverage created successfully.');
@@ -89,9 +93,15 @@ class BeverageController extends Controller
         $beverage->price = $request->price;
         $beverage->stock = $request->stock;
 
+        // if ($request->hasFile('image')) {
+        //     $imagePath = $request->file('image')->store('images', 'public');
+        //     $beverage->image = 'storage/' . $imagePath;
+        // }
+
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-            $beverage->image = 'storage/' . $imagePath;
+            $filename = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('images/beverages'), $filename);
+            $beverage->image = 'images/beverages/' . $filename;
         }
 
         $beverage->save();
