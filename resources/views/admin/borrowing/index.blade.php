@@ -160,7 +160,7 @@
         const endDate = document.getElementById('end_date').value;
 
         if (startDate && endDate) {
-            if (startDate >= endDate) {
+            if (startDate > endDate) {
                 e.preventDefault(); 
                 Swal.fire({
                     icon: 'error',
