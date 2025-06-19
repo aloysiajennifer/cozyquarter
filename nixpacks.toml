@@ -12,7 +12,6 @@ cmds = [
 
 [phases.postbuild]
 cmds = [
-    "php /app/artisan migrate --force --seed",
 ] 
 dependsOn = ["build"]
 
