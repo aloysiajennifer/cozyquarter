@@ -10,6 +10,13 @@ cmds = [
     "..."
 ]
 
+[phases.postbuild]
+cmds = [
+    "php /app/artisan optimize:clear",
+    "php /app/artisan migrate --seed",
+]
+dependsOn = ["build"]
+
 [start]
 cmd = '/assets/start.sh'
 
