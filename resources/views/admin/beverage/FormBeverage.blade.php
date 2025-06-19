@@ -1,6 +1,5 @@
 @extends('admin.layoutAdmin')
 
-<!-- Title page -->
 @section('title', 'CRUD - Add Beverage')
 
 @section('content')
