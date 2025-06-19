@@ -6,6 +6,13 @@
     <h1 class="text-center text-3xl font-semibold text-[var(--primary)] mt-2 mb-6">Books Borrowed</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @if ($borrowings->isEmpty())
+            <div class="col-span-full text-center text-gray-600 text-lg flex justify-center items-center min-h-[100px]">
+                No borrowed books at the moment. <br>
+                They’ll show up here once you borrow one
+            </div>    
+        @endif
+
         @foreach ($borrowings as $brw)
              <div class="relative flex bg-[var(--accent-blue)] rounded-xl shadow p-4">
                 <div class="aspect-[2/3] w-32 h-48 object-cover rounded mr-4 flex-shrink-0">
