@@ -70,7 +70,7 @@ class BookController extends Controller
 
     if ($request->hasFile('cover_book')) {
         $imagePath = $request->file('cover_book')->store('images/covers', 'public');
-        $book->cover_book = 'storage/' . $imagePath;
+        $book->cover_book = $imagePath;
     }
 
 
@@ -117,7 +117,7 @@ class BookController extends Controller
 
         if ($request->hasFile('cover_book')) {
         $imagePath = $request->file('cover_book')->store('images/covers', 'public');
-        $book->cover_book = 'storage/' . $imagePath;
+        $book->cover_book = $imagePath;
     }
 
         $book->title_book = $request->title_book;
