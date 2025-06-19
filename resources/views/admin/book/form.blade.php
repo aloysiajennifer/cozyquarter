@@ -4,7 +4,7 @@
 @section('title', 'CRUD - Add Book')
 
 @section('content')
-    <div class="mt-16 p-4 bg-gray-100">
+    <div class="mt-16 p-">
         <div class="container mx-auto p-4">
             <div class="text-left">
                 <a href="{{ route('book.index') }}">
