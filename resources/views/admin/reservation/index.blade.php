@@ -115,7 +115,7 @@ $statusBgColors = [
                         <th scope="col" class="px-6 py-3">Datetime</th>
                         <th scope="col" class="px-6 py-3 text-center">Check-in / Out</th>
                         <th scope="col" class="px-6 py-3 text-center">Status</th>
-                        <th scope="col" class="px-6 py-3 text-center">Aksi</th>
+                        <th scope="col" class="px-6 py-3 text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -149,23 +149,23 @@ $statusBgColors = [
                         </td>
                         <td class="px-6 py-4 text-center">
                             <div class="flex items-center justify-center gap-2">
-                                @if($reservation->status_reservation == 0) {{-- Jika Reserved --}}
+                                @if($reservation->status_reservation == 0)
                                 <form action="{{ route('reservation.updateStatus', $reservation->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="status" value="1">
-                                    <button type="submit" class="bg-bg-[var(--highlight)] hover:bg-yellow-600 text-white font-semibold text-xs py-1.5 px-3 rounded-lg shadow-sm transition-colors duration-150" title="Tandai Attended" onclick="return confirm('Tandai reservasi ini sebagai HADIR (Attended)?')">
+                                    <button type="submit" class="bg-[var(--highlight)] hover:bg-yellow-600 text-white font-semibold text-xs py-1.5 px-3 rounded-lg shadow-sm transition-colors" title="Mark as Attended" onclick="return confirm('Are you sure you want to mark this reservation as attended?')">
                                         Edit
                                     </button>
 
                                     
                                 </form>
-                                @elseif($reservation->status_reservation == 1) {{-- Jika Attended --}}
+                                @elseif($reservation->status_reservation == 1) 
                                 <form action="{{ route('reservation.updateStatus', $reservation->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="status" value="0">
-                                    <button type="submit" class="text-blue-600 hover:text-blue-900" title="Batalkan Kehadiran (kembali ke Reserved)" onclick="return confirm('Batalkan kehadiran? Status akan kembali menjadi DIPESAN (Reserved).')">
+                                    <button type="submit" class="text-blue-600 hover:text-blue-900" title="Batalkan Kehadiran (kembali ke Reserved)" onclick="return confirm('Cancel attendance? Status will revert to RESERVED.')">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                                         </svg>
@@ -204,7 +204,7 @@ $statusBgColors = [
 <script>
     Swal.fire({
         icon: 'error',
-        title: 'Gagal!',
+        title: 'Error!',
         html: '{!! session("error") ?? implode("<br>", $errors->all()) !!}',
         confirmButtonText: 'OK',
         confirmButtonColor: '#ef4444'

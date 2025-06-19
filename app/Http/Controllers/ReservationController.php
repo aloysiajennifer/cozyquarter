@@ -16,13 +16,13 @@ class ReservationController extends Controller
 
         $query = Reservation::with(['user']);
 
-        // --- Filter By Reservation Date ---
+        // Filter By Reservation Date 
         if ($request->filled('filter_date')) {
             $filterDate = Carbon::parse($request->input('filter_date'))->toDateString();
             $query->whereDate('reservation_date', $filterDate);
         }
 
-        // --- Filter By CW Space Code ---
+        // Filter By CW Space Codde
         if ($request->filled('filter_cwspace')) {
             $cwspaceId = $request->input('filter_cwspace');
             // Ambil code_cwspace berdasarkan id untuk query reservasi
@@ -59,21 +59,17 @@ class ReservationController extends Controller
         $reservation = Reservation::findOrFail($id);
         $newStatus = $request->input('status');
 
-        // Jika admin mencoba mengubah status menjadi "Attended" (1)
+        // Jika admin mengubah status menjadi "Attended" (1)
         if ($newStatus == 1 && $reservation->status_reservation == 0) {
             // Ambil HANYA bagian tanggal dari kolom reservation_date
             $dateOnly = Carbon::parse($reservation->reservation_date)->toDateString(); // Hasil: "2025-06-16"
 
-            // Gabungkan tanggal yang sudah bersih dengan waktu mulai
             $reservationStartTime = Carbon::parse($dateOnly . ' ' . $reservation->reservation_start_time);
 
             // Cek apakah waktu sekarang MASIH SEBELUM waktu reservasi dimulai
             if (Carbon::now()->lt($reservationStartTime)) {
-                // Jika ya, kembalikan dengan pesan error spesifik
-                return redirect()->back()->with('error', 'Gagal! Waktu check-in untuk reservasi ini belum dimulai.');
+                return redirect()->back()->with('error', 'Failed! Check-in time for this reservation has not started yet.');
             }
-
-            // Jika waktu sudah sesuai, set juga waktu check-in
             $reservation->check_in_time = Carbon::now();
         }
 
@@ -85,6 +81,6 @@ class ReservationController extends Controller
         $reservation->status_reservation = $newStatus;
         $reservation->save();
 
-        return redirect()->route('reservation.index')->with('success', 'Status reservasi berhasil diperbarui.');
+        return redirect()->route('reservation.index')->with('success', 'Status reservation has been successfully updated.');
     }
 }

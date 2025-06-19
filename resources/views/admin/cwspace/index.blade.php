@@ -210,7 +210,7 @@ Swal.fire({
 <script>
 Swal.fire({
     icon: 'error',
-    title: 'Input Tidak Valid!',
+    title: 'Input Is Not Valid!',
     html: `{!! implode('<br>', $errors->all()) !!}`,
     confirmButtonColor: '#ef4444' // Red
 });

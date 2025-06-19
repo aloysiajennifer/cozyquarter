@@ -88,7 +88,6 @@
                             <p class="text-sm font-medium text-gray-500 truncate dark:text-gray-300">{{ Auth::user()->email ?? '' }}</p>
                         </div>
                         <ul class="py-1">
-                            <li><a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200">Dashboard</a></li>
                             <li>
                                 <form id="logout-form" method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -188,5 +187,4 @@
         }
     </script>
 </body>
-
 </html>
