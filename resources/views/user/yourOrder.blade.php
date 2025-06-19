@@ -63,7 +63,6 @@
                                     <td class="px-6 py-4 text-primary">{{ $order->created_at->format('H:i') }}</td>
                                     <td class="px-6 py-4 text-primary">
                                         @php
-                                            // Mengatasi kemungkinan null pada relasi
                                             $schedule = $order->reservation->schedule->first();
                                             $roomCode = $schedule?->cwspace?->code_cwspace ?? 'N/A';
                                         @endphp
@@ -95,7 +94,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // konversi collection PHP ke objek JS, di-key berdasarkan ID beverage
         const allBeveragesData = @json($beverages->keyBy('id'));
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -126,12 +124,9 @@
                     totalAmount += subtotal;
 
                     const currentBeverageData = allBeveragesData[item.id];
-                    // jika data beverage tidak ada di server (mungkin sudah dihapus atau ID tidak valid)
                     if (!currentBeverageData) {
-                        // secara otomatis hapus dari keranjang lokal
                         delete order[item.id];
                         localStorage.setItem("order", JSON.stringify(order));
-                        // render ulang untuk menampilkan penghapusan
                         renderCart();
                         Swal.fire({
                             icon: 'error',
@@ -235,7 +230,6 @@
 
                 document.querySelectorAll('.remove-from-cart').forEach(button => {
                     button.addEventListener('click', (event) => {
-                        // memastikan mendapatkan ID dari elemen data-id, baik dari tombol atau SVG di dalamnya
                         const id = event.target.dataset.id || event.target.closest('button').dataset
                             .id;
                         Swal.fire({
@@ -266,7 +260,6 @@
             renderCart();
 
             orderNowBtn.addEventListener('click', async () => {
-                // memastikan keranjang tidak kosong sebelum mencoba membuat order
                 if (Object.keys(order).length === 0) {
                     Swal.fire({
                         icon: 'info',
@@ -276,7 +269,6 @@
                     return;
                 }
 
-                // verifikasi stok akhir di frontend sebelum mengirim ke backend
                 const itemsToVerify = [];
                 for (const itemId in order) {
                     const localQuantity = order[itemId].quantity;
@@ -309,7 +301,6 @@
                     return;
                 }
 
-                // menyiapkan data untuk dikirim ke backend
                 const orderItemsToSend = Object.values(order).map(item => ({
                     id: item.id,
                     quantity: item.quantity
@@ -350,15 +341,14 @@
                             title: 'Order Placed!',
                             text: data.message
                         });
-                        localStorage.removeItem("order"); // hapus keranjang setelah sukses
-                        order = {}; // reset objek order
-                        renderCart(); // render ulang keranjang yang kosong
+                        localStorage.removeItem("order");
+                        order = {};
+                        renderCart();
                     } else {
                         if (response.status === 422 && data.errors) {
                             let errorMessages = '';
                             for (const key in data.errors) {
                                 if (data.errors.hasOwnProperty(key)) {
-                                    // gabungkan semua pesan error untuk satu field
                                     errorMessages += `<p>${data.errors[key].join('<br>')}</p>`;
                                 }
                             }
