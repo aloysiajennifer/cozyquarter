@@ -174,7 +174,7 @@
                 </svg>
             </button>
         </div>
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <div class="h-[calc(100vh-68px)] px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
             <ul class="space-y-2 font-medium pt-4">
                 <li>
                     <a href="{{route('dashboard')}}" class="flex items-center p-2 rounded-lg group sidebar-link-main hover:bg-gray-100 dark:hover:bg-gray-700">

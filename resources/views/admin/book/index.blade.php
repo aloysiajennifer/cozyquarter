@@ -140,7 +140,7 @@
                     <tr class="bg-white border-b hover:bg-gray-100">
                         <td class="px-6 py-4 text-primary">{{ $loop->iteration }}</td>
                         <td class="px-6 py-4">
-                            <img src="{{ asset($book->cover_book) }}" alt="{{ $book->title_book }}" class="w-16 h-20 object-cover rounded">
+                            <img src="{{asset($book->cover_book)}}" alt="{{ $book->title_book }}" class="w-16 h-20 object-cover rounded">
                         </td>
                         <td class="px-6 py-4 font-medium text-[var(--primary)] whitespace-nowrap">
                             {{ $book->title_book }}

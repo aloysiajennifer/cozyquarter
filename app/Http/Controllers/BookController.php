@@ -64,14 +64,15 @@ class BookController extends Controller
             'id_shelf' => 'required'
         ]);
 
-        $book = new Book;
 
        $book = new Book;
 
     if ($request->hasFile('cover_book')) {
-        $imagePath = $request->file('cover_book')->store('images/covers', 'public');
-        $book->cover_book = $imagePath;
+    $filename = $request->file('cover_book')->getClientOriginalName();
+    $request->file('cover_book')->move(public_path('images/covers'), $filename);
+    $book->cover_book = 'images/covers/' . $filename;
     }
+
 
 
         $book->title_book = $request->title_book;
@@ -83,7 +84,7 @@ class BookController extends Controller
 
         $book->save();
 
-        return redirect()->route('admin.book.index')->with('success', 'Book successfully added!');
+        return redirect()->route('book.index')->with('success', 'Book successfully added!');
     }
 
     public function detail(Request $request) {
@@ -116,9 +117,11 @@ class BookController extends Controller
         $book = Book::find($id);
 
         if ($request->hasFile('cover_book')) {
-        $imagePath = $request->file('cover_book')->store('images/covers', 'public');
-        $book->cover_book = $imagePath;
-    }
+            $filename = $request->file('cover_book')->getClientOriginalName();
+            $request->file('cover_book')->move(public_path('images/covers'), $filename);
+            $book->cover_book = 'images/covers/' . $filename;
+        }
+
 
         $book->title_book = $request->title_book;
         $book->author_book = $request->author_book;
@@ -129,7 +132,7 @@ class BookController extends Controller
 
         $book->save();
 
-        return redirect()->route('admin.book.index')->with('success', 'Book successfully updated!');
+        return redirect()->route('book.index')->with('success', 'Book successfully updated!');
     }
 
     public function delete(Request $request) {
@@ -143,7 +146,7 @@ class BookController extends Controller
 
         $book->delete();
 
-        return redirect()->route('admin.book.index')->with('success', 'Book successfully deleted!');
+        return redirect()->route('book.index')->with('success', 'Book successfully deleted!');
     }
 
 
