@@ -4,7 +4,7 @@
 
 @section('content')
 {{-- Konten ini akan diinjeksikan ke dalam @yield('content') di layoutAuth.blade.php --}}
-<div class="flex items-center justify-center min-h-screen bg-[var(--background-light)] px-4 ">
+<div class="flex items-center justify-center pt-20 bg-[var(--background-light)] px-4 ">
     <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
         <div class="flex flex-col items-center mb-6">
             <img src="{{ asset('images/logo.jpeg') }}" alt="Logo Perpustakaan" class="w-28 h-28 mb-4 rounded-full border-4 border-[var(--accent-blue)]">
