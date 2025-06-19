@@ -29,12 +29,14 @@ supervisord -c /etc/supervisord.conf -n
 file=/assets/supervisor.sock
 
 [supervisord]
+stdout_logfile=/dev/fd/1
+stdout_logfile_maxbytes=0
 logfile=/var/log/supervisord.log
 logfile_maxbytes=50MB
 logfile_backups=10
-loglevel=info
+loglevel=debug
 pidfile=/assets/supervisord.pid
-nodaemon=false
+nodaemon=true
 silent=false
 minfds=1024
 minprocs=200
