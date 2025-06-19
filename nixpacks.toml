@@ -12,7 +12,7 @@ cmds = [
 
 [phases.postbuild]
 cmds = [
-    "php /app/artisan migrate --seed",
+    "php /app/artisan migrate --force",
 ]
 dependsOn = ["build"]
 
