@@ -26,7 +26,7 @@
                 <div class="max-w-3xl mx-auto">
                     <div>
                         <div class="mb-6 flex">
-                            <label for="name_category" class="w-1/3 block mb-2 text-sm font-medium text-gray-900">Category
+                            <label for="name_category" class="w-1/3 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category
                                 Name</label>
                             <input type="text" id="name_category" name="name_category"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"

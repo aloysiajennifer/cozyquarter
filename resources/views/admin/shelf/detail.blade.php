@@ -25,7 +25,7 @@
         <div class="max-w-3xl mx-auto">
             <div>
                 <div class="mb-6 flex">
-                    <label for="code_shelf" class="w-1/3 block mb-2 text-sm font-medium text-gray-900">Shelf Code</label>
+                    <label for="code_shelf" class="w-1/3 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shelf Code</label>
                     <input type="text" id="code_shelf" name="code_shelf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5" value="{{ old('code_shelf', $shelf->code_shelf ?? '') }}" required />
                 </div>
             </div>
