@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth; // For authenticating users
 use App\Models\User; // Import User model to check blacklist status
 
 
-class CoworkingSpaceController extends Controller
+class coworkingSpaceController extends Controller
 {
    /**
     * Display the coworking space schedule for a given date.

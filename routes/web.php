@@ -15,7 +15,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\CoworkingSpaceController;
+use App\Http\Controllers\coworkingSpaceController;
 use App\Http\Controllers\UserReservationController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -124,8 +124,8 @@ Route::middleware('auth.alert')->group(function () {
         Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('placeOrder');
 
         // CO-WORKING SPACE ROUTES (User-facing)
-        Route::get('/coworking/schedule', [CoworkingSpaceController::class, 'showSchedule'])->name('coworking.schedule');
-        Route::post('/coworking/book', [CoworkingSpaceController::class, 'storeReservation'])->name('coworking.book');
+        Route::get('/coworking/schedule', [coworkingSpaceController::class, 'showSchedule'])->name('coworking.schedule');
+        Route::post('/coworking/book', [coworkingSpaceController::class, 'storeReservation'])->name('coworking.book');
 
         // NEW: USER RESERVATION ROUTES
         Route::prefix('user/reservations')->name('user.reservations.')->group(function () {
