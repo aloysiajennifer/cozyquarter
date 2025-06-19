@@ -142,7 +142,7 @@ class coworkingSpaceController extends Controller
        }
 
 
-       return view('user.library.coworkingSpace', compact('cwspaces', 'timeSlots', 'schedules', 'date', 'userName', 'userEmail', 'userActiveReservations'));
+       return view('user.library.coWorkingSpace', compact('cwspaces', 'timeSlots', 'schedules', 'date', 'userName', 'userEmail', 'userActiveReservations'));
    }
 
 
