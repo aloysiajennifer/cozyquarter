@@ -75,13 +75,28 @@
                             : 'text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white' }}">
                         Your Reservation
                     </a>
-                    <form id="logout-form" method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="button" onclick="confirmLogout()"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-[var(--secondary)] hover:bg-[var(--accent-green)] hover:text-white">
-                            Logout
-                        </button>
-                    </form>
+
+                    <button type="button"
+                        class="h-10 w-10 flex items-center justify-center bg-gray-800 rounded-full focus:ring-4 focus:ring-[var(--accent-green)] focus:ring-opacity-50 dark:focus:ring-[var(--accent-blue)] flex-shrink-0"
+                        aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                        <span class="sr-only">Open user menu</span>
+                        <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'A') }}&background=FFD700&color=0F0F0F" alt="user photo">
+                    </button>
+                    <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user" data-dropdown-placement="bottom-end">
+                        <div class="px-4 py-3">
+                            <p class="text-sm text-gray-900 dark:text-white">{{ Auth::user()->name ?? 'Library User' }}</p>
+                            <p class="text-sm font-medium text-gray-500 truncate dark:text-gray-300">{{ Auth::user()->email ?? '' }}</p>
+                        </div>
+                        <ul class="py-1">
+                            <li>
+                                <form id="logout-form" method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="button" onclick="confirmLogout()" class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+
+                    </div>
                 </div>
 
                 <!-- Mobile Menu Button -->
@@ -172,5 +187,4 @@
         }
     </script>
 </body>
-
 </html>

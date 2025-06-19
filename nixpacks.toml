@@ -12,6 +12,7 @@ cmds = [
 
 [phases.postbuild]
 cmds = [
+    "chown -R www-data:www-data /app/public",
 ] 
 dependsOn = ["build"]
 

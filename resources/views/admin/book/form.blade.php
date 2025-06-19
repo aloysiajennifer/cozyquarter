@@ -4,7 +4,7 @@
 @section('title', 'CRUD - Add Book')
 
 @section('content')
-    <div class="mt-16 p-4 bg-gray-100">
+    <div class="mt-16 p-">
         <div class="container mx-auto p-4">
             <div class="text-left">
                 <a href="{{ route('book.index') }}">
@@ -22,35 +22,35 @@
                     <div>
                         <div class="mb-6 flex">
                             <label for="title_book"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Title</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Title</label>
                             <input type="text" id="title_book" name="title_book"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 placeholder="Enter book title" required />
                         </div>
                         <div class="mb-6 flex">
                             <label for="author_book"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] ">Author</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Author</label>
                             <input type="text" id="author_book" name="author_book"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 placeholder="Enter author name" required />
                         </div>
                         <div class="mb-6 flex">
                             <label for="isbn_book"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] ">ISBN</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">ISBN</label>
                             <input type="text" id="isbn_book" name="isbn_book"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 placeholder="Enter ISBN" required />
                         </div>
                         <div class="mb-6 flex">
                             <label for="synopsis_book"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Synopsis</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Synopsis</label>
                             <textarea id="synopsis_book" name="synopsis_book" rows="4"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                                 placeholder="Enter synopsis" required></textarea>
                         </div>
                         <div class="mb-6 flex">
                             <label for="cover_book"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Cover</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Cover</label>
                             <div class="w-2/3">
                                 <input
                                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
@@ -62,7 +62,7 @@
                         </div>
                         <div class="mb-6 flex">
                             <label for="id_category"
-                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] ">Category</label>
+                                class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Category</label>
                             <div class="w-2/3 relative">
                                 <button id="dropdownCategoryButton" data-dropdown-toggle="dropdownCategory"
                                     class="text-gray-900  bg-[var(--highlight)] hover:bg-amber-400 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-left inline-flex items-center"
@@ -102,7 +102,7 @@
                         </script>
                     </div>
                     <div class="mb-6 flex">
-                        <label for="id_shelf" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Shelf</label>
+                        <label for="id_shelf" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Shelf</label>
                         <div class="w-2/3 relative">
                             <button id="dropdownShelfButton" data-dropdown-toggle="dropdownShelf"
                                 class="text-gray-900 bg-[var(--highlight)] hover:bg-amber-400 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-left inline-flex items-center"

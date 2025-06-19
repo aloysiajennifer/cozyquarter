@@ -61,7 +61,7 @@ $scheduleStatusBgColors = [
 
         @if ($selectedCwspaceObj && $selectedCwspaceObj->status_cwspace == 0)
         <div class="flex items-center bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-lg shadow mb-6" role="alert">
-            <p class="font-bold">Co-working space ini sedang ditutup dan tidak memiliki jadwal.</p>
+            <p class="font-bold">Co-working space is closed and has no schedule.</p>
         </div>
         @elseif ($schedules && count($schedules) > 0)
         <div class="relative overflow-x-auto shadow-xl sm:rounded-lg">
@@ -93,7 +93,7 @@ $scheduleStatusBgColors = [
                             <span class="text-gray-400">-</span>
                             @else
                             <button data-modal-target="schedule-edit-{{ $schedule->id }}" data-modal-toggle="schedule-edit-{{ $schedule->id }}"
-                                class="bg-bg-[var(--highlight)] hover:bg-yellow-600 text-white font-semibold text-xs py-1.5 px-3 rounded-lg shadow-sm transition-colors duration-150" type="button">
+                                class="bg-[var(--highlight)] hover:bg-yellow-600 text-white font-semibold text-xs py-1.5 px-3 rounded-lg shadow-sm transition-colors" type="button">
                                 Edit
                             </button>
                             @endif
@@ -106,7 +106,7 @@ $scheduleStatusBgColors = [
         </div>
         @else
         <div class="text-center py-12 bg-white rounded-xl shadow-lg">
-            <p class="text-gray-500 text-lg">Tidak ada jadwal yang ditemukan untuk kriteria yang dipilih.</p>
+            <p class="text-gray-500 text-lg">There are no schedules found for the selected criteria.</p>
         </div>
         @endif
     </div>
@@ -186,7 +186,7 @@ $scheduleStatusBgColors = [
 <script>
     Swal.fire({
         icon: 'error',
-        title: 'Input Tidak Valid!',
+        title: 'Input Is Not Valid!',
         html: `{!! implode('<br>', $errors->all()) !!}`,
         confirmButtonColor: '#ef4444'
     });

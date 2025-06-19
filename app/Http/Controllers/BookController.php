@@ -64,18 +64,16 @@ class BookController extends Controller
             'id_shelf' => 'required'
         ]);
 
-        $book = new Book;
 
-       if ($request->hasFile('cover_book')) {
-    $cover = $request->file('cover_book');
-    $destinationPath = public_path('images/covers');
-    if (!file_exists($destinationPath)) {
-        mkdir($destinationPath, 0755, true);
-    }
-    $filename = uniqid() . '_' . $cover->getClientOriginalName();
-    $cover->move($destinationPath, $filename);
+       $book = new Book;
+
+    if ($request->hasFile('cover_book')) {
+    $filename = $request->file('cover_book')->getClientOriginalName();
+    $request->file('cover_book')->move(public_path('images/covers'), $filename);
     $book->cover_book = 'images/covers/' . $filename;
     }
+
+
 
         $book->title_book = $request->title_book;
         $book->author_book = $request->author_book;
@@ -119,20 +117,11 @@ class BookController extends Controller
         $book = Book::find($id);
 
         if ($request->hasFile('cover_book')) {
-    
-        if ($book->cover_book && file_exists(public_path($book->cover_book))) {
-            unlink(public_path($book->cover_book));
+            $filename = $request->file('cover_book')->getClientOriginalName();
+            $request->file('cover_book')->move(public_path('images/covers'), $filename);
+            $book->cover_book = 'images/covers/' . $filename;
         }
-    
-        $cover = $request->file('cover_book');
-        $destinationPath = public_path('images/covers');
-        if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0755, true);
-        }
-        $filename = uniqid() . '_' . $cover->getClientOriginalName();
-        $cover->move($destinationPath, $filename);
-        $book->cover_book = 'images/covers/' . $filename;
-        }
+
 
         $book->title_book = $request->title_book;
         $book->author_book = $request->author_book;

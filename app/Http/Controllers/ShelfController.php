@@ -77,6 +77,7 @@ class ShelfController extends Controller
         return redirect()->route('shelf.index')->with('success', 'Shelf successfully updated!');
     }
 
+    // delete
     public function delete(Request $request) {
         $id = decrypt($request->id);
         $shelf = Shelf::firstWhere('id', $id);

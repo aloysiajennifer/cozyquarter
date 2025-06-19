@@ -24,13 +24,13 @@ class CwspaceController extends Controller
 
         try {
             Cwspace::create($validated);
-            return redirect()->route('cwspace.index')->with('success', 'Co-working space berhasil ditambahkan.');
+            return redirect()->route('cwspace.index')->with('success', 'Co-working space successfully added.');
         } catch (\Illuminate\Database\QueryException $e) {
             // Cek kode error duplicate entry (23000)
             if ($e->getCode() == 23000) {
-                return back()->with('error', "Gagal menambahkan data: kode ruang '{$request->code_cwspace}' sudah ada. Silakan gunakan kode lain.");
+                return back()->with('error', "Failed to add data: room code '{$request->code_cwspace}' already exists. Please use a different code.");
             }
-            return back()->with('error', 'Gagal menambahkan data karena kesalahan database.');
+            return back()->with('error', 'Failed to add data due to a database error.');
         }
     }
 
@@ -44,17 +44,17 @@ class CwspaceController extends Controller
 
         $cwspace = Cwspace::find($id);
         if (!$cwspace) {
-            return redirect()->route('cwspace.index')->with('error', 'Data tidak ditemukan');
+            return redirect()->route('cwspace.index')->with('error', 'Data is not found');
         }
         try {
             $cwspace->update($validated);
-            return redirect()->route('cwspace.index')->with('success', 'Co-working space berhasil di update.');
+            return redirect()->route('cwspace.index')->with('success', 'Co-working space has been successfully updated.');
         } catch (\Illuminate\Database\QueryException $e) {
             // Cek kode error duplicate entry (23000)
             if ($e->getCode() == 23000) {
-                return back()->with('error', "Gagal update data: kode ruang '{$request->code_cwspace}' sudah ada. Silakan gunakan kode lain.");
+                return back()->with('error', "Failed to update data: room code '{$request->code_cwspace}' already exists. Please use a different code.");
             } else {
-                return back()->with('error', 'Gagal update data karena kesalahan database.');
+                return back()->with('error', 'Failed to update data due to a database error.');
             }
         }
     }
@@ -63,13 +63,13 @@ class CwspaceController extends Controller
     {
         $cwspace = Cwspace::find($id);
         if (!$cwspace) {
-            return redirect()->route('cwspace.index')->with('error', 'Data tidak ditemukan');
+            return redirect()->route('cwspace.index')->with('error', 'Data is not found');
         }
         if ($cwspace->status_cwspace == 0) {
-            return redirect()->route('cwspace.index')->with('error', 'Tidak bisa menghapus ruang yang masih aktif.');
+            return redirect()->route('cwspace.index')->with('error', 'Cannot delete an active space.');
         }
 
         $cwspace->delete();
-        return redirect()->route('cwspace.index')->with('success', 'Co-working space berhasil di delete.');
+        return redirect()->route('cwspace.index')->with('success', 'Co-working space has been successfully deleted.');
     }
 }

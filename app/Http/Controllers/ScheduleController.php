@@ -57,13 +57,13 @@ class ScheduleController extends Controller
 
         $schedule = Schedule::find($id);
         if (!$schedule) {
-            return redirect()->back()->with('error', 'Data tidak ditemukan');
+            return redirect()->back()->with('error', 'Data is not found.');
         }
         try {
             $schedule->update($validated);
-            return redirect()->back()->with('success', 'Status schedule berhasil di update.');
+            return redirect()->back()->with('success', 'Schedule status has been successfully updated.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal update status schedule. Silakan coba lagi karena kesalahan database.');
+            return back()->with('error', 'Failed to update schedule status. Please try again due to a database error.');
         }
     }
 }
