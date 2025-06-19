@@ -1,15 +1,5 @@
-# Nixpacks.toml
-
 [phases.setup]
-# Ensure all necessary packages are installed via Nixpkgs
-nixPkgs = [
-    "...",                   # Nixpacks will add its default detected packages here
-    "python311Packages.supervisor", # For Supervisor itself
-    "pkgs.nginx",                   # For Nginx web server
-    "pkgs.php82",                   # For PHP CLI (adjust version if needed, e.g., pkgs.php83)
-    "pkgs.php82Packages.fpm",       # For PHP-FPM (adjust version if needed)
-    "pkgs.nodejs",                  # For the Node.js script `prestart.mjs`
-]
+nixPkgs = ["...", "python311Packages.supervisor"]
 
 [phases.build]
 cmds = [
@@ -17,62 +7,19 @@ cmds = [
     "cp /assets/worker-*.conf /etc/supervisor/conf.d/",
     "cp /assets/supervisord.conf /etc/supervisord.conf",
     "chmod +x /assets/start.sh",
-    "php artisan optimize",      # Add back Laravel optimization commands
-    "php artisan view:cache",
-    "php artisan config:cache",
-    "php artisan route:cache"
-    # REMOVE the "..." here - it's not valid TOML syntax for array elements
+    "..."
 ]
 
 [phases.postbuild]
 cmds = [
     "php /app/artisan migrate --force --seed",
-    # If you need them back, add "php /app/artisan generate:schedule", etc. here
-]
+] 
 dependsOn = ["build"]
 
 [start]
-cmd = '/assets/start.sh' # This is correct, it will execute your custom startup script
-
-# [packages] section is implied to be missing/empty in your latest snippet.
-# If you had apt = ["supervisor"] there before, it's fine if it's gone now,
-# as we're explicitly using nixPkgs.
+cmd = '/assets/start.sh'
 
 [staticAssets]
-# Add the prestart.mjs script here, as it's called by start.sh
-"scripts/prestart.mjs" = '''
-#!/usr/bin/env node
-
-const fs = require('fs');
-const templatePath = process.argv[2];
-const outputPath = process.argv[3];
-
-if (!templatePath || !outputPath) {
-    console.error('Usage: node prestart.mjs <template_path> <output_path>');
-    process.exit(1);
-}
-
-try {
-    let content = fs.readFileSync(templatePath, 'utf8');
-
-    // Replace basic variables that might be in your template
-    content = content.replace(/\$\{PORT\}/g, process.env.PORT || '8080');
-    content = content.replace(/\$\{NIXPACKS_PHP_ROOT_DIR\}/g, process.env.NIXPACKS_PHP_ROOT_DIR || '/app');
-    content = content.replace(/\$\{NIXPACKS_PHP_FALLBACK_PATH\}/g, process.env.NIXPACKS_PHP_FALLBACK_PATH || '/index.php');
-    content = content.replace(/\$if\(IS_LARAVEL\)\s*\((.*?)\)\s*else\s*\(\)/gs, (match, p1) => {
-        return process.env.IS_LARAVEL === 'true' ? p1 : '';
-    });
-    // Ensure you handle all variables present in nginx.template.conf if not handled by Nixpacks directly
-    // and if your Node script is meant to do this.
-
-    fs.writeFileSync(outputPath, content);
-    console.log(`Nginx config transformed from ${templatePath} to ${outputPath}`);
-} catch (error) {
-    console.error(`Error transforming Nginx config: ${error.message}`);
-    process.exit(1);
-}
-'''
-
 "start.sh" = '''
 #!/bin/bash
 
@@ -174,11 +121,11 @@ events {
 }
 
 http {
-    include     $!{nginx}/conf/mime.types;
-    index     index.html index.htm index.php;
+    include    $!{nginx}/conf/mime.types;
+    index    index.html index.htm index.php;
 
     default_type application/octet-stream;
-    log_format   main '$remote_addr - $remote_user [$time_local]   $status '
+    log_format   main '$remote_addr - $remote_user [$time_local]  $status '
         '"$request" $body_bytes_sent "$http_referer" '
         '"$http_user_agent" "$http_x_forwarded_for"';
     access_log /var/log/nginx-access.log;
@@ -218,7 +165,7 @@ http {
         )
      
         location = /favicon.ico { access_log off; log_not_found off; }
-        location = /robots.txt   { access_log off; log_not_found off; }
+        location = /robots.txt  { access_log off; log_not_found off; }
      
         $if(IS_LARAVEL) (
             error_page 404 /index.php;
@@ -237,5 +184,3 @@ http {
     }
 }
 '''
-
-
