@@ -4,7 +4,7 @@
 @section('title', 'CRUD - Add Borrowing')
 
 @section('content')
-    <div class="mt-16 p-4">
+    <div class="pt-16 p-4 h-[calc(100vh-32px)] overflow-hidden">
         <div class="container mx-auto p-4">
             <div class="text-left">
                 <a href="{{ route('borrowing.index') }}">
@@ -21,7 +21,7 @@
                 <div class="max-w-3xl mx-auto">
                     {{-- Borrowing Date --}}
                     <div class="mb-6 flex">
-                        <label for="borrowing_date" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] ">Borrowing Date</label>
+                        <label for="borrowing_date" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Borrowing Date</label>
                         <input type="text" id="borrowing_date" 
                             class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                             value="{{ $borrowingDate }}" readonly/>
@@ -31,7 +31,7 @@
                     {{-- Return Due --}}
                      <div class="mb-6 flex">
                         <label for="return_due"
-                            class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] ">Return Due Date</label>
+                            class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Return Due Date</label>
                         <input type="text" id="return_due"
                             class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5"
                             value=" {{ $returnDue }}" readonly />
@@ -40,7 +40,7 @@
 
                     {{-- Dropdown Borrower's Name --}}
                     <div class="mb-6 flex">
-                        <label for="borrower_name" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Borrower's Name</label>
+                        <label for="borrower_name" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Borrower's Name</label>
                         <select name="id_user" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5" required>
                             <option value="">Select Borrower</option>
                                 @foreach ($listUsers as $user)
@@ -51,7 +51,7 @@
 
                     {{-- Dropdown Borrowed Book --}}
                     <div class="mb-6 flex">
-                        <label for="borrowed_book" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Borrowed Book</label>
+                        <label for="borrowed_book" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Borrowed Book</label>
                         <select name="id_book" id="book" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5" required>
                             <option value="">Select Book</option>
                                 @foreach ($listBooks as $book)
