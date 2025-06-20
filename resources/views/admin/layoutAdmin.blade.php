@@ -172,6 +172,35 @@
                         <span class="sidebar-text ms-3 text-[var(--primary)] dark:text-[var(--secondary)] ">Dashboard</span>
                     </a>
                 </li>
+                
+                <!-- ROLE N USER-->
+                <!-- ROLE -->
+                <li>
+                    <button type="button" class="flex items-center w-full p-2 text-base rounded-lg group hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-300" aria-controls="dropdown-user-role" data-collapse-toggle="dropdown-user-role">
+                        <i class="fas fa-user-shield fa-lg text-[var(--primary)] dark:text-[var(--secondary)] "></i> 
+                        <span class="sidebar-text flex-1 ms-3 text-left whitespace-nowrap text-[var(--primary)] dark:text-[var(--secondary)]">User & Role</span>
+                        <svg class="sidebar-text w-3 h-3 text-[var(--primary)] dark:text-[var(--secondary)]" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <ul id="dropdown-user-role" class="hidden py-2 space-y-2">
+                        <!-- ROLE -->
+                        <li>
+                            <a href="{{route('role.index')}}"
+                                class="sidebar-text flex items-center w-full p-2 rounded-lg pl-14 group hover:bg-gray-100 dark:hover:bg-gray-700 sidebar-link @if(request()->routeIs('role.*')) active @endif text-gray-900 dark:text-gray-300">
+                                <i class="fas fa-address-book fa-sm mr-2"></i> Role
+                            </a>
+                        </li>
+                        <!-- USER -->
+                        <li>
+                            <a href="#"
+                                class="sidebar-text flex items-center w-full p-2 rounded-lg pl-14 group hover:bg-gray-100 dark:hover:bg-gray-700 sidebar-link @if(request()->routeIs('user.*')) active @endif text-gray-900 dark:text-gray-300">
+                                <i class="fas fa-users-cog fa-sm mr-2"></i> User
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li>
                     <button type="button" class="flex items-center w-full p-2 text-base rounded-lg group hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-300" aria-controls="dropdown-management" data-collapse-toggle="dropdown-management">
                         <i class="fas fa-solid fa-folder-open fa-lg text-[var(--primary)] dark:text-[var(--secondary)] "></i>
@@ -342,7 +371,7 @@
                     setSidebarState(newState);
                     applyDesktopState(newState);
                     if (newState === 'collapsed') {
-                        closeAllDropdowns(); // Pindahkan ke sini
+                        // closeAllDropdowns(); // Pindahkan ke sini
                     }
                 } else {
                     applyMobileState(true);
