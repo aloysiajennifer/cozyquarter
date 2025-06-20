@@ -15,39 +15,32 @@ class UserController extends Controller
     // Ambil data role untuk dropdown filter
     $listRoles = Role::all();
 
-    $query = User::with('role');
+    $users = User::query()
+        ->with('role') // eager load role relasi
+        ->when($search, function ($query, $search) {
+            // filter berdasarkan nama
+            $query->where('name', 'like', '%' . $search . '%');
+        })
+        ->when($roleFilter, function ($query, $roleFilter) {
+            // filter berdasarkan role_id
+            $query->where('role_id', $roleFilter);
+        })
+        ->orderBy('name') // urutkan berdasarkan nama (atau sesuaikan)
+        ->get();
 
-    if ($search) {
-        $users = User::where('name', 'like', '%' . $search . '%')->get();
 
-        if ($users->isEmpty()) {
-            return view('admin.user.index', [
-                'users' => [],
-                'message' => "There's no user named \"$search\".",
-                'alertType' => 'error'
-            ]);
-        }
-
-        return view('admin.user.index', [
-            'users' => $users,
-            'message' => "Search result for \"$search\".",
-            'alertType' => 'info'
-
-        ]);
+    $message = null;
+    $alertType = null;
+    // Tampilan jika pencarian tidak ada
+    if ($search && $users->isEmpty()) {
+        $message = "There's no result for \"$search\".";
+        $alertType = 'error';
+    } elseif ($search) {
+        $message = "Search result for \"$search\".";
+        $alertType = 'info';
     }
 
-    if ($roleFilter) {
-        $query->where('role_id', $roleFilter);
-    }
-
-    $users = $query->get();
-
-    return view('admin.user.index', [
-        'users' => $users,
-        'listRoles' => $listRoles,
-        'message' => null,
-        'alertType' => null
-    ]);
+    return view('admin.user.index', compact('users', 'listRoles', 'message', 'alertType'));
     }
 
     public function form() {
