@@ -193,7 +193,7 @@
                         </li>
                         <!-- USER -->
                         <li>
-                            <a href="#"
+                            <a href="{{route('user.index')}}"
                                 class="sidebar-text flex items-center w-full p-2 rounded-lg pl-14 group hover:bg-gray-100 dark:hover:bg-gray-700 sidebar-link @if(request()->routeIs('user.*')) active @endif text-gray-900 dark:text-gray-300">
                                 <i class="fas fa-users-cog fa-sm mr-2"></i> User
                             </a>
