@@ -9,6 +9,10 @@ class Role extends Model
     protected $connection = 'mysql';
     protected $table = 'role';
 
+    public $fillable = [
+        'type'
+    ];
+
     public static array $rules = [
         'type' => 'required|string|max: 255',
         'created_at' => 'nullable',
