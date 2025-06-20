@@ -115,4 +115,11 @@ class BeverageController extends Controller
 
         return redirect()->route('beverage.index')->with('success', 'Beverage deleted successfully.');
     }
+
+    //Beverage Menu (buat user)
+    public function menu()
+    {
+        $beverages = Beverages::where('stock', '>', 0)->get();
+        return view('user.beveragesMenu', compact('beverages'));
+    }
 }
