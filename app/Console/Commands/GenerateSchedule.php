@@ -24,8 +24,8 @@ class GenerateSchedule extends Command
 
         // --- LANGKAH 1: Membersihkan jadwal lama yang tidak terpakai ---
         $this->info('-> Cleaning up old, unreserved schedules...');
-        $yesterday = Carbon::yesterday()->toDateString();
-        $oldDayIds = OperationalDay::where('date', '<', $yesterday)->pluck('id');
+        $today = Carbon::now()->startOfDay()->toDateString(); 
+        $oldDayIds = OperationalDay::where('date', '<', $today)->pluck('id');
         $deletedCount = Schedule::whereIn('id_operational_day', $oldDayIds)
                                 ->where('status_schedule', '!=', 2)
                                 ->delete();
