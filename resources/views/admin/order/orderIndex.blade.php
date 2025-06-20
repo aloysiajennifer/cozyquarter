@@ -32,10 +32,9 @@
                 <div class="w-48">
                     <label for="status_filter"
                         class="**block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only**">Filter by
-                        Status</label> {{-- **DITAMBAHKAN**: Label untuk aksesibilitas, tapi disembunyikan secara visual --}}
+                        Status</label>
                     <select id="status_filter" name="status_filter"
                         class="**bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[var(--accent-green)] dark:focus:border-[var(--accent-green)]**">
-                        {{-- **DITAMBAHKAN**: Elemen select dengan styling Tailwind dan penanganan selected --}}
                         <option value="">All Statuses</option>
                         <option value="paid" {{ request('status_filter') === 'paid' ? 'selected' : '' }}>Paid</option>
                         <option value="unpaid" {{ request('status_filter') === 'unpaid' ? 'selected' : '' }}>Unpaid</option>
@@ -130,7 +129,6 @@
         @endif
 
         <script>
-            // Prevent showing old alerts when pressing back
             window.addEventListener('pageshow', function(event) {
                 if (event.persisted || (window.performance && performance.navigation.type === 2)) {
                     window.location.reload();

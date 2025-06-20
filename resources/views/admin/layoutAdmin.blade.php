@@ -53,7 +53,6 @@
             --medium-blue-rgb: 0, 123, 167;
         }
 
-        /* Menambahkan style untuk hover pada ikon di navbar atas */
         #top-navbar .inline-flex:hover .fas,
         #top-navbar .inline-flex:focus .fas {
             color: var(--accent-blue);
@@ -64,8 +63,6 @@
             color: var(--accent-green);
         }
 
-        /* Menambahkan style untuk hover pada teks dan ikon di sidebar */
-        /* Untuk link utama di sidebar (Dashboard) */
         .sidebar-link-main:hover .sidebar-text,
         .sidebar-link-main:hover .fas,
         .sidebar-link-main:hover svg {
@@ -78,7 +75,6 @@
             color: var(--accent-green);
         }
 
-        /* Untuk dropdown triggers level 1 (Management, Reports) */
         button[data-collapse-toggle]:hover .sidebar-text,
         button[data-collapse-toggle]:hover .fas,
         button[data-collapse-toggle]:hover svg {
@@ -91,11 +87,9 @@
             color: var(--accent-green);
         }
 
-        /* Untuk dropdown triggers level 2 (Library, CW Space, Cafe) */
         button[data-collapse-toggle][aria-controls^="dropdown-"]:hover .sidebar-text,
         button[data-collapse-toggle][aria-controls^="dropdown-"]:hover .fas {
             color: var(--accent-blue);
-            /* Menggunakan accent-blue untuk konsistensi di level ini */
         }
 
         .dark button[data-collapse-toggle][aria-controls^="dropdown-"]:hover .sidebar-text,
@@ -103,13 +97,9 @@
             color: var(--accent-green);
         }
 
-        /* Untuk link di dalam dropdown level 3 (Book, Category, Borrowing Report, dll.) */
         .sidebar-link.pl-14:hover .sidebar-text,
-        /* Menargetkan teks */
         .sidebar-link.pl-14:hover .fas {
-            /* Menargetkan ikon */
             color: var(--accent-blue);
-            /* Menggunakan accent-blue untuk konsistensi di level ini */
         }
 
         .dark .sidebar-link.pl-14:hover .sidebar-text,

@@ -5,15 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\User;
-use App\Models\Borrowing; // Pastikan model ini ada
-use App\Models\Cwspace; // Perhatikan case sensitive: Cwspace bukan CwSpace
+use App\Models\Borrowing;
+use App\Models\Cwspace;
 use App\Models\Reservation;
 use App\Models\Beverage;
 use App\Models\Beverages;
 use App\Models\Order;
-// use App\Models\OrderItem; // Uncomment jika Anda membuat model OrderItem dan menggunakannya
-use Carbon\Carbon; // Untuk bekerja dengan tanggal dan waktu
-use Illuminate\Support\Facades\DB; // Untuk agregasi jika diperlukan
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {

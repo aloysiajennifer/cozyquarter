@@ -277,7 +277,7 @@ class coworkingSpaceController extends Controller
                // If existing reservation is CANCELLED (Reservation::STATUS_CANCELLED) and time has not passed, it can be re-booked
                if ($existingReservation && $existingReservation->status_reservation === Reservation::STATUS_CANCELLED && Carbon::now()->lessThan($reservationEndDateTime)) {
                    $schedule->update(['status_schedule' => 1, 'id_reservation' => null]); // Set status_schedule back to 1 (Available)
-                   Log::info("Re-enabled schedule slot after prior cancellation: Room {$bookedRoomId}, Time {$timeStart}, Date {$bookingDate->toDateString()}");
+                //    Log::info("Re-enabled schedule slot after prior cancellation: Room {$bookedRoomId}, Time {$timeStart}, Date {$bookingDate->toDateString()}");
                } else {
                    // Slot is status 1, has a reservation, and is NOT a re-bookable cancelled one -> unavailable
                    throw new \Exception("The slot '{$timeLabel}' in Room '{$bookedCwspace->code_cwspace}' is no longer available. Please select another slot.");
@@ -317,15 +317,15 @@ class coworkingSpaceController extends Controller
            DB::commit();
 
 
-           Log::info('New Co-working Space Reservation confirmed:', [
-               'reservation_id' => $reservation->id,
-               'name' => $name,
-               'email' => $email,
-               'bookingDate' => $bookingDate->toDateString(),
-               'selectedSlot' => $timeLabel . ' in Room ' . $bookedCwspace->code_cwspace,
-               'user_id' => $userId,
-               'status_reservation' => 'Reserved', // For logging clarity
-           ]);
+        //    Log::info('New Co-working Space Reservation confirmed:', [
+        //        'reservation_id' => $reservation->id,
+        //        'name' => $name,
+        //        'email' => $email,
+        //        'bookingDate' => $bookingDate->toDateString(),
+        //        'selectedSlot' => $timeLabel . ' in Room ' . $bookedCwspace->code_cwspace,
+        //        'user_id' => $userId,
+        //        'status_reservation' => 'Reserved', // For logging clarity
+        //    ]);
 
 
            $displaySelectedTimeSlots = [$timeLabel . ' (Room ' . $bookedCwspace->code_cwspace . ')'];
@@ -346,14 +346,14 @@ class coworkingSpaceController extends Controller
 
        } catch (ValidationException $e) {
            DB::rollBack();
-           Log::error('Validation Error during reservation:', ['errors' => $e->errors(), 'request_data' => $request->all()]);
+        //    Log::error('Validation Error during reservation:', ['errors' => $e->errors(), 'request_data' => $request->all()]);
            return response()->json([
                'message' => 'Validation Error',
                'errors' => $e->errors()
            ], 422);
        } catch (\Exception $e) {
            DB::rollBack();
-           Log::error('General Error storing reservation: ' . $e->getMessage(), ['trace' => $e->getTraceAsString(), 'request_data' => $request->all()]);
+        //    Log::error('General Error storing reservation: ' . $e->getMessage(), ['trace' => $e->getTraceAsString(), 'request_data' => $request->all()]);
            return response()->json([
                'message' => $e->getMessage(),
                'error' => $e->getMessage()

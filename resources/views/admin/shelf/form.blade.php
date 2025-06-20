@@ -4,7 +4,7 @@
 @section('title', 'CRUD - Add Shelf')
 
 @section('content')
-<div class="mt-16 p-4 bg-gray-100 min-h-screen">
+<div class="mt-16 p-4 min-h-screen">
 <div class="container mx-auto p-4">
     <div class="text-left">
     <a href="{{ route('shelf.index') }}">
@@ -20,7 +20,7 @@
         <div class="max-w-3xl mx-auto">
             <div>
             <div class="mb-6 flex">
-                <label for="code_shelf" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)]">Shelf Code</label>
+                <label for="code_shelf" class="w-1/3 block mb-2 text-sm font-medium text-[var(--primary)] dark:text-white">Shelf Code</label>
                 <input type="text" id="code_shelf" name="code_shelf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-2/3 p-2.5" placeholder="Enter shelf code" required />
             </div>
             </div>

@@ -3,7 +3,6 @@
 @section('title', 'Register') 
 
 @section('content')
-{{-- Konten ini akan diinjeksikan ke dalam @yield('content') di layoutAuth.blade.php --}}
 <div class="flex items-center justify-center min-h-screen px-4">
     <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
         <div class="flex flex-col items-center mb-6">

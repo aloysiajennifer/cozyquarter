@@ -23,7 +23,6 @@ class OrderController extends Controller
 
         $orders = Order::query()
             ->with(['reservation.user', 'reservation.schedule.cwspace', 'orderDetails.beverage'])
-            // filter order berdasarkan status_reservation dari reservation
             ->whereHas('reservation', function ($q) {
                 $q->whereIn('status_reservation', [1, 4]);
             })
@@ -41,9 +40,9 @@ class OrderController extends Controller
             // filter paid unpaid
             ->when($statusFilter, function ($query, $statusFilter) {
                 if ($statusFilter === 'paid') {
-                    $query->where('status_order', true); // true = paid
+                    $query->where('status_order', true);
                 } elseif ($statusFilter === 'unpaid') {
-                    $query->where('status_order', false); // false = unpaid
+                    $query->where('status_order', false);
                 }
             })
             // urutkan berdasarkan waktu order terbaru
@@ -105,9 +104,7 @@ class OrderController extends Controller
             $totalPrice = 0;
             $itemsForOrderDetails = [];
 
-            // mengambil semua ID beverage dari request untuk query tunggal
             $beverageIds = collect($validatedData['order_items'])->pluck('id')->all();
-            // mengambil semua beverage yang relevan sekaligus, dan menguncinya untuk update
             $beverages = Beverages::whereIn('id', $beverageIds)->lockForUpdate()->get()->keyBy('id');
 
             foreach ($validatedData['order_items'] as $item) {

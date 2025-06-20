@@ -40,18 +40,13 @@
                 <div class="flex items-center">
                     <img class="h-14 w-auto rounded-4xl" src="{{ asset('images/logo.jpeg') }}" alt="CozyQuarter">
                 </div>
-                {{-- Untuk halaman login/register, biasanya tidak ada menu desktop atau tombol mobile menu.
-                     Jika Anda ingin ada, pindahkan kode menu dari navbar sebelumnya ke sini. --}}
             </div>
         </div>
-        {{-- Mobile Menu Content (Jika tombol mobile menu ada di navbar di atas) --}}
         {{-- <div id="mobile-menu" class="sm:hidden hidden bg-[var(--primary)] pb-3">...</div> --}}
     </nav>
 
-    <!-- Main Content -->
-    <div class="flex-1 pt-16"> {{-- pt-16 untuk offset tinggi navbar fixed --}}
+    <div class="flex-1 pt-16"> 
         <main>
-            {{-- Ini adalah tempat konten spesifik halaman akan diinjeksikan --}}
             @yield('content')
         </main>
     </div>
@@ -65,7 +60,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Logic untuk mobile menu (jika Anda menambahkannya di navbar)
             const mobileMenuButton = document.getElementById("mobile-menu-button");
             const mobileMenu = document.getElementById("mobile-menu");
             const menuIconPath = document.getElementById("menu-path");
@@ -82,7 +76,6 @@
                 });
             }
 
-            // SweetAlert untuk session 'auth_alert'
             @if (session('auth_alert'))
                 Swal.fire({
                     icon: 'warning',

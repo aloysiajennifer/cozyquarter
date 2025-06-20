@@ -79,8 +79,8 @@
                     } else {
                         Swal.fire({
                             icon: 'warning',
-                            title: 'Stok Habis!',
-                            text: 'Jumlah pesanan melebihi stok yang tersedia!',
+                            title: 'Out of Stock!',
+                            text: 'The ordered quantity exceeds the available stock.',
                             confirmButtonColor: 'var(--primary)'
                         });
                     }
@@ -99,8 +99,8 @@
                     if (quantityToAdd === 0) {
                         Swal.fire({
                             icon: 'info',
-                            title: 'Pilih Jumlah!',
-                            text: 'Silakan pilih jumlah lebih dari 0 untuk ditambahkan ke keranjang.',
+                            title: 'Select Quantity!',
+                            text: 'Please select a quantity greater than 0 to add to cart.',
                             confirmButtonColor: 'var(--primary)'
                         });
                         return;
@@ -123,8 +123,8 @@
                         localStorage.setItem("order", JSON.stringify(order));
                         Swal.fire({
                             icon: 'success',
-                            title: 'Menu Berhasil Ditambahkan!',
-                            text: `${quantityToAdd} ${beverageName} berhasil ditambahkan ke keranjang! Total di keranjang: ${newTotalQuantity}`,
+                            title: 'Menu Added Successfully!',
+                            text: `${quantityToAdd} ${beverageName} successfully added to cart! Total in cart: ${newTotalQuantity}`,
                             timer: 2000,
                             timerProgressBar: true,
                             showConfirmButton: false
@@ -135,8 +135,8 @@
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Gagal Menambahkan!',
-                            text: `Tidak dapat menambahkan ${quantityToAdd} pesanan lagi. Total pesanan untuk ${beverageName} akan melebihi stok (${stock}).`,
+                            title: 'Failed to Add!',
+                            text: `Cannot add ${quantityToAdd} more. Total order for ${beverageName} would exceed stock (${stock}).`,
                             confirmButtonColor: 'var(--primary)'
                         });
                     }
