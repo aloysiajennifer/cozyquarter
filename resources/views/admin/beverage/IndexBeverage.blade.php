@@ -57,8 +57,8 @@
                 </div>
             </form>
 
-            @if (session()->has('message'))
-                @if ($alertType === 'error')
+           @if(isset($message) && !empty($message))
+                @if($alertType === 'error')
                     <div id="alert-error" class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
                         role="alert">
                         <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
