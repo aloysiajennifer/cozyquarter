@@ -6,6 +6,7 @@ use App\Http\Controllers\CwspaceController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\BeverageController;
@@ -108,6 +109,15 @@ Route::middleware('auth.alert')->group(function () {
         // Order Drink Report
         Route::get('order/report', [ReportController::class, 'OrderDrinkReport'])->name('report.orderDrink');
         Route::get('order/report/pdf', [ReportController::class, 'OrderDrinkReportPDF'])->name('report.orderDrinkPDF');
+    
+        //ROLE CRUD
+        Route::get('/role/index', [RoleController::class, 'index'])->name('role.index');
+        Route::get('/role/form', [RoleController::class, 'form'])->name('role.form');
+        Route::post('/role/insert', [RoleController::class, 'insert'])->name('role.insert');
+        Route::get('/role/detail/{id}', [RoleController::class, 'detail'])->name('role.detail');
+        Route::post('/role/update/', action: [RoleController::class, 'update'])->name('role.update');
+        Route::post('/role/delete/{id}', [RoleController::class, 'delete'])->name('role.delete');
+
     });
 
     //MIDDLEWARE USER
