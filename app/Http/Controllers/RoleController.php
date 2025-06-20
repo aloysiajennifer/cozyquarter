@@ -16,7 +16,7 @@ class RoleController extends Controller
         if ($roles->isEmpty()) {
             return view('admin.role.index', [
                 'roles' => [],
-                'message' => "There's no category named \"$search\".",
+                'message' => "There's no role named \"$search\".",
                 'alertType' => 'error'
             ]);
         }

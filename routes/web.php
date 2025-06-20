@@ -17,6 +17,7 @@ use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\coworkingSpaceController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserReservationController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -117,6 +118,14 @@ Route::middleware('auth.alert')->group(function () {
         Route::get('/role/detail/{id}', [RoleController::class, 'detail'])->name('role.detail');
         Route::post('/role/update/', action: [RoleController::class, 'update'])->name('role.update');
         Route::post('/role/delete/{id}', [RoleController::class, 'delete'])->name('role.delete');
+
+        //USER CRUD
+        Route::get('/user/index', [UserController::class, 'index'])->name('user.index');
+        Route::get('/user/form', [UserController::class, 'form'])->name('user.form');
+        Route::post('/user/insert', [UserController::class, 'insert'])->name('user.insert');
+        Route::get('/user/detail/{id}', [UserController::class, 'detail'])->name('user.detail');
+        Route::post('/user/update/', action: [UserController::class, 'update'])->name('user.update');
+        Route::post('/user/delete/{id}', [UserController::class, 'delete'])->name(name: 'user.delete');
 
     });
 
