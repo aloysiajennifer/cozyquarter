@@ -62,7 +62,7 @@
                     <label for="role_filter"
                         class="**block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only**">Filter by Role</label>
                     <select id="role_filter" name="role_filter"
-                        class="**bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[var(--accent-green)] dark:focus:border-[var(--accent-green)]**">
+                        class="**bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[var(--accent-green)] focus:border-[var(--accent-green)] block w-full p-4">
                         <option value="">All Roles</option>
                         @foreach ($listRoles as $role)
                             <option value="{{ $role->id }}" {{ request('role_filter') == $role->id ? 'selected' : '' }}>
