@@ -3,7 +3,7 @@
 @section('title', 'Register') 
 
 @section('content')
-<div class="flex items-center justify-center min-h-screen px-4">
+<div class="flex items-center justify-center min-h-screen px-4 pt-12">
     <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
         <div class="flex flex-col items-center mb-6">
             <img src="{{ asset('images/logo.jpeg') }}" alt="Logo Perpustakaan"

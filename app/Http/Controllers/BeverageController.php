@@ -15,7 +15,6 @@ class BeverageController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
-
         $query = Beverages::orderBy('name');
 
         if ($search) {
@@ -24,11 +23,21 @@ class BeverageController extends Controller
 
         $beverages = $query->paginate(10)->withQueryString();
 
+        if ($search && $beverages->isEmpty()) {
+            return view('admin.beverage.IndexBeverage', [
+                'beverages' => $beverages,
+                'message' => "There's no beverage named \"$search\".",
+                'alertType' => 'error'
+            ]);
+        }
+
         return view('admin.beverage.IndexBeverage', [
             'beverages' => $beverages,
-            'search' => $search,
+            'message' => $search ? "Search result for \"$search\"." : null,
+            'alertType' => $search ? 'info' : null
         ]);
     }
+
 
     //add beverage
     public function create()
